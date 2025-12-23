@@ -4,21 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <!-- SEO & Güvenlik Etiketleri -->
-    <title>Barış Öğretmen | Canlı Maaş Analiz Ağı</title>
-    <meta name="description" content="İstanbul rehabilitasyon merkezi çalışanları için anonim, şeffaf ve canlı maaş analiz platformu. Sektör ortalamalarını öğrenin, hakkınızı savunun.">
-    <meta name="author" content="Barış Öğretmen">
-    <meta name="keywords" content="özel eğitim, rehabilitasyon, maaş, öğretmen, fizyoterapist, odyolog, psikolog, istanbul, maaş analizi">
+    <!-- Güvenlik ve Kimlik Etiketleri -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:;">
+    <title>Maaş Analiz Platformu | Barış Öğretmen</title>
+    <meta name="description" content="Rehabilitasyon sektörü çalışanları için anonim maaş analiz ve kariyer destek platformu.">
     <meta name="theme-color" content="#4f46e5">
-    <meta name="robots" content="index, follow">
-
-    <!-- WhatsApp/Telegram Önizleme Kartı (Open Graph) -->
-    <!-- Bu kısım paylaştığınızda linkin güvenli ve profesyonel görünmesini sağlar -->
-    <meta property="og:title" content="Barış Öğretmen | Maaş Analiz Ağı">
-    <meta property="og:description" content="Rehabilitasyon sektöründe şeffaflık zamanı! Anonim olarak verini gir, İstanbul genelindeki gerçek piyasa ortalamasını ve hak ettiğin maaşı anında öğren.">
+    
+    <!-- Paylaşım Kartı (OG Tags) -->
+    <meta property="og:title" content="Rehabilitasyon Maaş Analizi">
+    <meta property="og:description" content="Sektör ortalamalarını gör, hakkını savun. %100 Anonim.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://barisogretmen.github.io/maas-analiz"> <!-- Kendi GitHub Linkinizle Değiştirin -->
-    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/3063/3063822.png"> <!-- Temsili Güvenli İkon -->
+    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/3063/3063822.png">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -32,31 +28,24 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Markdown Parser for AI Responses -->
+    <!-- Markdown Parser -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Outfit', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
                     colors: {
                         brand: {
-                            dark: '#0f172a', // Slate 900
-                            primary: '#6366f1', // Indigo 500
-                            secondary: '#8b5cf6', // Violet 500
-                            accent: '#06b6d4', // Cyan 500
-                            success: '#10b981', // Emerald 500
-                            warning: '#f59e0b', // Amber 500
-                            bg: '#f1f5f9' // Slate 100
+                            dark: '#0f172a',
+                            primary: '#6366f1',
+                            accent: '#06b6d4',
+                            success: '#10b981',
+                            bg: '#f8fafc'
                         }
                     },
-                    animation: {
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'bounce-slight': 'bounce 2s infinite'
-                    }
+                    animation: { 'pulse-slow': 'pulse 3s infinite' }
                 }
             }
         }
@@ -65,77 +54,48 @@
     <style>
         body {
             background-color: #f8fafc;
+            color: #1e293b;
             background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
             background-size: 24px 24px;
-            color: #1e293b;
         }
         .glass-panel {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
-        .gradient-header {
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-        }
-        .ai-gradient-bg {
-            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
-        }
-        .stat-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        /* Loading overlay */
+        .gradient-header { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); }
+        .ai-gradient-bg { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); }
+        
         #global-loader {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.95);
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.98); z-index: 9999;
+            display: flex; justify-content: center; align-items: center; flex-direction: column;
+            transition: opacity 0.5s ease;
         }
-        /* Modal Styles */
-        .modal-overlay {
-            background-color: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(4px);
-        }
-        
-        .loading-dots:after {
-            content: ' .';
-            animation: dots 1s steps(5, end) infinite;
-        }
-        @keyframes dots {
-            0%, 20% { content: ' .'; }
-            40% { content: ' ..'; }
-            60% { content: ' ...'; }
-            80%, 100% { content: ' ....'; }
-        }
-        
+        .modal-overlay { background-color: rgba(15, 23, 42, 0.8); backdrop-filter: blur(4px); }
         .admin-controls { display: none; }
         .admin-active .admin-controls { display: table-cell; }
         .admin-active .admin-section { display: block !important; }
-
-        /* Custom Scrollbar for tables */
-        .custom-scrollbar::-webkit-scrollbar { height: 6px; }
+        
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
 <body class="antialiased flex flex-col min-h-screen font-sans">
 
     <!-- Global Loader -->
     <div id="global-loader">
-        <div class="relative">
-            <div class="w-16 h-16 border-4 border-indigo-200 border-dashed rounded-full animate-spin"></div>
-            <div class="absolute top-0 left-0 w-16 h-16 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+        <div class="w-16 h-16 border-4 border-indigo-200 border-dashed rounded-full animate-spin"></div>
+        <div class="mt-4 text-center">
+            <p class="text-indigo-900 font-bold text-lg animate-pulse" id="loader-text">Sisteme Bağlanılıyor...</p>
+            <p class="text-xs text-slate-500 mt-2" id="loader-subtext">Veri ağı kontrol ediliyor</p>
         </div>
-        <p class="mt-4 text-indigo-900 font-bold tracking-tight text-lg animate-pulse">Veri Ağına Bağlanılıyor...</p>
+        <button id="manual-start-btn" onclick="forceStartApp()" class="hidden mt-6 bg-indigo-600 text-white px-6 py-2 rounded-full font-bold hover:bg-indigo-700 transition shadow-lg">
+            Manuel Başlat
+        </button>
     </div>
 
     <!-- Header -->
@@ -143,19 +103,19 @@
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-3">
                 <div class="bg-white/20 p-2 rounded-xl backdrop-blur-sm border border-white/20 shadow-inner">
-                    <i class="fa-solid fa-chart-pie text-white text-xl md:text-2xl"></i>
+                    <i class="fa-solid fa-chart-pie text-white text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="font-extrabold text-lg md:text-2xl leading-none tracking-tight">Maaş Gözlem</h1>
-                    <p class="text-[10px] md:text-xs text-indigo-100 font-medium tracking-wide opacity-90 mt-0.5">BARIŞ ÖĞRETMEN | CANLI SİSTEM <span class="w-2 h-2 bg-green-400 rounded-full inline-block ml-1 animate-pulse"></span></p>
+                    <h1 class="font-extrabold text-lg leading-none tracking-tight">Maaş Gözlem</h1>
+                    <p class="text-[10px] text-indigo-100 font-medium tracking-wide opacity-90 mt-0.5">BARIŞ ÖĞRETMEN</p>
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <div class="hidden md:flex items-center gap-2 bg-indigo-800/30 px-3 py-1.5 rounded-full border border-white/10 text-xs font-semibold">
-                    <i class="fa-solid fa-users text-green-300"></i> Ortak Havuz
-                </div>
+                <span id="connection-status" class="hidden md:flex items-center gap-2 bg-black/20 px-3 py-1 rounded-full text-[10px] font-bold border border-white/10">
+                    <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> Çevrimiçi
+                </span>
                 <button onclick="toggleApiKeyModal()" class="bg-white/10 hover:bg-white/20 p-2 rounded-lg transition text-white border border-white/10" title="Yapay Zeka Ayarları">
-                    <i class="fa-solid fa-gear"></i>
+                    <i class="fa-solid fa-robot"></i>
                 </button>
             </div>
         </div>
@@ -163,6 +123,27 @@
 
     <!-- Main Content -->
     <main class="flex-grow container mx-auto px-4 py-6 space-y-6 relative z-10 max-w-6xl">
+
+        <!-- Admin Control Panel -->
+        <section id="admin-panel" class="hidden admin-section mb-6 animate-fade-in-down">
+            <div class="bg-slate-800 text-white rounded-xl p-5 border border-slate-700 shadow-2xl">
+                <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-2">
+                    <h3 class="font-bold text-lg text-emerald-400 flex items-center gap-2"><i class="fa-solid fa-user-shield"></i> Yönetici Paneli</h3>
+                    <button onclick="adminLogout()" class="text-xs bg-red-500 hover:bg-red-600 px-3 py-1.5 rounded font-bold transition">Çıkış</button>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-xs font-bold text-slate-400 mb-1 uppercase">Duyuru Yayınla</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="new-announcement" placeholder="Mesajınızı buraya yazın..." class="flex-grow px-3 py-2 rounded bg-slate-700 border border-slate-600 text-white text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition">
+                        <button onclick="postAnnouncement()" class="bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded text-sm font-bold shadow-lg transition">Yayınla</button>
+                    </div>
+                </div>
+                <div class="bg-slate-700/50 p-3 rounded text-xs text-slate-400">
+                    <i class="fa-solid fa-circle-info"></i> Aşağıdaki listeden hatalı verileri silebilirsiniz.
+                </div>
+            </div>
+        </section>
 
         <!-- Admin Announcement -->
         <div id="admin-announcement" class="hidden animate-fade-in-down w-full bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg shadow-sm flex items-start gap-3">
@@ -173,188 +154,114 @@
             </div>
         </div>
 
-        <!-- Admin Control Panel -->
-        <section id="admin-panel" class="hidden admin-section mb-6 animate-fade-in-down">
-            <div class="bg-slate-800 text-white rounded-xl p-5 border border-slate-700 shadow-2xl">
-                <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-2">
-                    <h3 class="font-bold text-lg text-emerald-400 flex items-center gap-2"><i class="fa-solid fa-user-shield"></i> Yönetici Paneli</h3>
-                    <button onclick="adminLogout()" class="text-xs bg-red-500 hover:bg-red-600 px-3 py-1.5 rounded font-bold transition">Çıkış Yap</button>
-                </div>
-                
-                <div class="mb-4">
-                    <label class="block text-xs font-bold text-slate-400 mb-1 uppercase">Duyuru Yayınla</label>
-                    <div class="flex gap-2">
-                        <input type="text" id="new-announcement" placeholder="Mesajınızı buraya yazın..." class="flex-grow px-3 py-2 rounded bg-slate-700 border border-slate-600 text-white text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition">
-                        <button onclick="postAnnouncement()" class="bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded text-sm font-bold shadow-lg transition">Yayınla</button>
-                    </div>
-                </div>
-                <div class="bg-slate-700/50 p-3 rounded text-xs text-slate-400 flex items-center gap-2">
-                    <i class="fa-solid fa-circle-info"></i>
-                    <span>Veri silmek için aşağıdaki listede ilgili satırdaki [SİL] butonunu kullanınız.</span>
+        <!-- Intro -->
+        <section class="mb-8">
+            <div class="bg-white rounded-2xl shadow-lg border border-indigo-50 overflow-hidden text-center p-6 md:p-8">
+                <h2 class="text-2xl md:text-3xl font-extrabold text-slate-800 mb-2">
+                    Rehabilitasyon Sektöründe <span class="text-indigo-600">Şeffaflık</span>
+                </h2>
+                <p class="text-slate-600 max-w-2xl mx-auto mb-6 text-sm md:text-base leading-relaxed">
+                    Meslektaşlarınla birlikte maaş verini paylaş, gerçek piyasa ortalamalarını gör.
+                    <br><strong class="text-indigo-600">Sadece gerçek net maaşınızı giriniz.</strong>
+                </p>
+                <div class="flex flex-wrap justify-center gap-3 text-xs font-bold text-slate-500">
+                    <span class="bg-slate-100 px-3 py-1 rounded-full"><i class="fa-solid fa-shield-halved mr-1"></i> Anonim</span>
+                    <span class="bg-slate-100 px-3 py-1 rounded-full"><i class="fa-solid fa-bolt mr-1"></i> Hızlı</span>
+                    <span class="bg-slate-100 px-3 py-1 rounded-full"><i class="fa-solid fa-globe mr-1"></i> Güncel</span>
                 </div>
             </div>
         </section>
 
-        <!-- Intro Card -->
-        <section class="mb-8 animate-fade-in-down">
-            <div class="bg-white rounded-2xl shadow-lg border border-indigo-50 overflow-hidden relative">
-                <!-- Decoration -->
-                <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-bl-full opacity-50 pointer-events-none"></div>
+        <!-- Form -->
+        <section id="entry-section" class="max-w-xl mx-auto">
+            <div class="glass-panel rounded-3xl p-6 md:p-8 shadow-xl border-t-4 border-indigo-500">
+                <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-indigo-500"></i> Veri Girişi
+                </h3>
                 
-                <div class="p-6 md:p-8 text-center">
-                    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-800 mb-2">
-                        Rehabilitasyon Sektöründe <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">Şeffaflık Devrimi</span>
-                    </h2>
-                    <p class="text-slate-600 max-w-2xl mx-auto mb-6 text-sm md:text-base leading-relaxed">
-                        Binlerce meslektaşınızla birlikte maaş verinizi paylaşın, sektör ortalamalarını anlık takip edin.
-                        <strong class="text-indigo-600">Haksız rekabeti önlemek için gerçek veri girmeniz kritik önem taşır.</strong>
-                    </p>
-                    
-                    <div class="flex flex-wrap justify-center gap-4 text-xs md:text-sm font-medium text-slate-500">
-                        <span class="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full"><i class="fa-solid fa-shield-halved mr-1"></i> %100 Anonim</span>
-                        <span class="bg-green-50 text-green-700 px-3 py-1 rounded-full"><i class="fa-solid fa-bolt mr-1"></i> Anlık Güncelleme</span>
-                        <span class="bg-purple-50 text-purple-700 px-3 py-1 rounded-full"><i class="fa-solid fa-database mr-1"></i> Ortak Havuz</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Notification Area -->
-        <div id="notification-area" class="max-w-xl mx-auto hidden animate-fade-in">
-            <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-5 shadow-sm flex flex-col items-center justify-center text-center gap-4">
-                <div class="bg-emerald-100 p-3 rounded-full">
-                    <i class="fa-solid fa-check text-emerald-600 text-2xl"></i>
-                </div>
-                <div>
-                    <h4 class="font-bold text-emerald-900 text-lg">Veriniz Başarıyla Eklendi</h4>
-                    <p class="text-emerald-700 text-sm">Havuza yaptığınız katkı için teşekkürler. Sonuçlar aşağıdadır.</p>
-                </div>
-                <button onclick="showFormAgain()" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg font-bold shadow transition flex items-center gap-2">
-                    <i class="fa-solid fa-rotate-left"></i> Yeni Veri Girişi Yap
-                </button>
-            </div>
-        </div>
-
-        <!-- Module 1: Data Entry Form -->
-        <section id="entry-section" class="max-w-xl mx-auto transition-all duration-500">
-            <div class="glass-panel rounded-3xl p-6 md:p-8 relative overflow-hidden shadow-xl border-t-4 border-indigo-500">
-                <div class="flex items-center justify-between mb-6 relative z-10">
-                    <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2">
-                        <i class="fa-solid fa-pen-to-square text-indigo-500"></i> Veri Girişi
-                    </h3>
-                    <div class="text-right">
-                        <span class="bg-indigo-50 text-indigo-600 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider border border-indigo-100">Güvenli</span>
-                    </div>
-                </div>
-                
-                <form id="salaryForm" class="space-y-5 relative z-10">
-                    
-                    <div class="bg-red-50 border-l-4 border-red-500 p-3 text-xs text-red-800 rounded-r shadow-sm">
-                        <div class="flex items-start gap-2">
-                            <i class="fa-solid fa-triangle-exclamation mt-0.5"></i>
-                            <div>
-                                <strong>DİKKAT:</strong> Sadece <span class="underline font-bold">GERÇEK</span> net maaş giriniz.<br>
-                                <span class="opacity-80 mt-1 block">Asgari Ücret Limitleri: 2024 (17.002₺), 2025 (22.104₺), 2026 (28.075₺). Altında giriş yapılamaz.</span>
-                            </div>
-                        </div>
+                <form id="salaryForm" class="space-y-5">
+                    <div class="bg-red-50 border-l-4 border-red-500 p-3 text-xs text-red-800 rounded-r">
+                        <strong>Dikkat:</strong> Asgari ücretin altındaki girişler sistem tarafından engellenir. Lütfen gerçek verilerinizi giriniz.
                     </div>
 
-                    <!-- Year -->
                     <div>
                         <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Dönem</label>
-                        <select id="year" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 bg-white font-semibold text-slate-700 transition appearance-none cursor-pointer hover:bg-slate-50">
-                            <option value="2026">2026 (Beklenen)</option>
-                            <option value="2025" selected>2025 (Güncel)</option>
+                        <select id="year" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white font-bold text-slate-700">
+                            <option value="2026">2026</option>
+                            <option value="2025" selected>2025</option>
                             <option value="2024">2024</option>
                         </select>
                     </div>
 
-                    <!-- Nickname -->
                     <div>
                         <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Rumuz</label>
-                        <input type="text" id="nickname" required placeholder="Örn: ÖzelEğitim34" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition bg-white" maxlength="20">
+                        <input type="text" id="nickname" required placeholder="Örn: ÖzelEğitim34" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white" maxlength="20">
                     </div>
 
-                    <!-- Position -->
                     <div>
                         <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Branş</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-user-tag absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                            <select id="position" required class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 bg-white appearance-none cursor-pointer hover:bg-slate-50">
-                                <option value="" disabled selected>Seçiniz...</option>
-                                <optgroup label="Eğitim Grubu">
-                                    <option value="Uzman Öğretici (Okul Öncesi)">Uzman Öğretici (Okul Öncesi)</option>
-                                    <option value="Uzman Öğretici (Çocuk Gelişimi)">Uzman Öğretici (Çocuk Gelişimi)</option>
-                                    <option value="Uzman Öğretici (Sınıf Öğretmenliği)">Uzman Öğretici (Sınıf Öğrt.)</option>
-                                    <option value="Özel Eğitim Öğretmeni">Özel Eğitim Öğretmeni</option>
-                                </optgroup>
-                                <optgroup label="Rehberlik ve Psikoloji">
-                                    <option value="Psikolog">Psikolog</option>
-                                    <option value="Uzman Psikolog">Uzman Psikolog</option>
-                                    <option value="PDR / Psikolojik Danışman">PDR / Psikolojik Danışman</option>
-                                    <option value="Uzman PDR">Uzman PDR</option>
-                                    <option value="Rehber Öğretmen">Rehber Öğretmen</option>
-                                </optgroup>
-                                <optgroup label="Sağlık ve Terapi">
-                                    <option value="Fizyoterapist">Fizyoterapist</option>
-                                    <option value="Odyolog">Odyolog</option>
-                                    <option value="Dil ve Konuşma Terapisti">Dil ve Konuşma Terapisti</option>
-                                    <option value="Ergoterapist">Ergoterapist</option>
-                                </optgroup>
-                            </select>
-                        </div>
+                        <select id="position" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white">
+                            <option value="" disabled selected>Seçiniz...</option>
+                            <optgroup label="Eğitim Grubu">
+                                <option value="Uzman Öğretici (Okul Öncesi)">Uzman Öğretici (Okul Öncesi)</option>
+                                <option value="Uzman Öğretici (Çocuk Gelişimi)">Uzman Öğretici (Çocuk Gelişimi)</option>
+                                <option value="Uzman Öğretici (Sınıf Öğretmenliği)">Uzman Öğretici (Sınıf Öğrt.)</option>
+                                <option value="Özel Eğitim Öğretmeni">Özel Eğitim Öğretmeni</option>
+                            </optgroup>
+                            <optgroup label="Rehberlik ve Psikoloji">
+                                <option value="Psikolog">Psikolog</option>
+                                <option value="Uzman Psikolog">Uzman Psikolog</option>
+                                <option value="PDR / Psikolojik Danışman">PDR / Psikolojik Danışman</option>
+                                <option value="Uzman PDR">Uzman PDR</option>
+                                <option value="Rehber Öğretmen">Rehber Öğretmen</option>
+                            </optgroup>
+                            <optgroup label="Sağlık ve Terapi">
+                                <option value="Fizyoterapist">Fizyoterapist</option>
+                                <option value="Odyolog">Odyolog</option>
+                                <option value="Dil ve Konuşma Terapisti">Dil ve Konuşma Terapisti</option>
+                                <option value="Ergoterapist">Ergoterapist</option>
+                            </optgroup>
+                        </select>
                     </div>
 
-                    <!-- District -->
                     <div>
                         <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">İlçe</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-map-location-dot absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                            <select id="district" required class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 bg-white appearance-none cursor-pointer hover:bg-slate-50">
-                                <option value="" disabled selected>Seçiniz...</option>
-                                <!-- Populated by JS -->
-                            </select>
-                        </div>
+                        <select id="district" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white">
+                            <option value="" disabled selected>Seçiniz...</option>
+                            <!-- Populated by JS -->
+                        </select>
                     </div>
 
-                    <!-- Experience -->
                     <div>
                         <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Deneyim</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-hourglass-start absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                            <select id="experience" required class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 bg-white appearance-none cursor-pointer hover:bg-slate-50">
-                                <option value="" disabled selected>Seçiniz...</option>
-                                <option value="0.5">0 - 6 Ay (Yeni)</option>
-                                <option value="0.8">6 - 12 Ay</option>
-                                <option value="1">1 Yıl</option>
-                                <option value="2">2 Yıl</option>
-                                <option value="3">3 Yıl</option>
-                                <option value="4">4 Yıl</option>
-                                <option value="5">5 Yıl</option>
-                                <option value="6">6 Yıl</option>
-                                <option value="7">7 Yıl</option>
-                                <option value="8">8 Yıl</option>
-                                <option value="9">9 Yıl</option>
-                                <option value="10">10-14 Yıl</option>
-                                <option value="15">15-19 Yıl</option>
-                                <option value="20">20+ Yıl</option>
-                            </select>
-                        </div>
+                        <select id="experience" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white">
+                            <option value="" disabled selected>Seçiniz...</option>
+                            <option value="0.5">0 - 6 Ay (Yeni)</option>
+                            <option value="0.8">6 - 12 Ay</option>
+                            <option value="1">1 Yıl</option>
+                            <option value="2">2 Yıl</option>
+                            <option value="3">3 Yıl</option>
+                            <option value="4">4 Yıl</option>
+                            <option value="5">5 Yıl</option>
+                            <option value="6">6 Yıl</option>
+                            <option value="7">7 Yıl</option>
+                            <option value="8">8 Yıl</option>
+                            <option value="9">9 Yıl</option>
+                            <option value="10">10-14 Yıl</option>
+                            <option value="15">15-19 Yıl</option>
+                            <option value="20">20+ Yıl</option>
+                        </select>
                     </div>
 
-                    <!-- Salary -->
                     <div>
                         <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Net Maaş (₺)</label>
-                        <div class="relative">
-                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">₺</span>
-                            <input type="number" id="salary" required placeholder="Örn: 32000" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition bg-white text-lg font-bold text-slate-800">
-                        </div>
+                        <input type="number" id="salary" required placeholder="Örn: 32000" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-lg font-bold text-slate-800">
                     </div>
 
                     <div class="pt-4">
-                        <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-bold py-4 rounded-xl transition transform active:scale-[0.98] flex items-center justify-center gap-3 text-lg shadow-lg shadow-indigo-500/30">
-                            <span>Veriyi Gönder</span>
-                            <i class="fa-solid fa-paper-plane"></i>
+                        <button type="submit" id="submitBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl transition shadow-lg flex items-center justify-center gap-3 text-lg">
+                            <span>Analizi Gör</span>
+                            <i class="fa-solid fa-arrow-right"></i>
                         </button>
                     </div>
                 </form>
@@ -364,116 +271,79 @@
         <!-- RESULTS SECTION -->
         <section id="results-section" class="hidden space-y-8 pb-12">
             
-            <!-- Header & Filter -->
             <div class="flex flex-col md:flex-row justify-between items-end gap-4 border-b border-indigo-200/50 pb-4 mb-6">
                 <div>
-                    <h2 class="text-3xl font-extrabold text-slate-800">Piyasa Analizi</h2>
+                    <h2 class="text-3xl font-extrabold text-slate-800">Analiz Sonuçları</h2>
                     <p class="text-slate-500 mt-1 text-sm font-medium">
-                        Veritabanındaki <span id="total-participants" class="text-indigo-600 font-bold bg-indigo-50 px-2 py-0.5 rounded">--</span> kişinin verisi analiz ediliyor.
+                        Analize dahil edilen kişi sayısı: <span id="total-participants" class="text-indigo-600 font-bold">--</span>
                     </p>
                 </div>
                 
                 <div class="flex bg-white rounded-lg p-1 shadow-sm border border-slate-200">
-                    <button onclick="switchResultYear('2024')" id="btn-2024" class="px-3 py-1.5 rounded text-sm font-medium text-slate-500 hover:bg-slate-50 transition">2024</button>
-                    <button onclick="switchResultYear('2025')" id="btn-2025" class="px-3 py-1.5 rounded text-sm font-medium bg-indigo-100 text-indigo-700 font-bold transition">2025</button>
-                    <button onclick="switchResultYear('2026')" id="btn-2026" class="px-3 py-1.5 rounded text-sm font-medium text-slate-500 hover:bg-slate-50 transition">2026</button>
-                    <button onclick="switchResultYear('all')" id="btn-all" class="px-3 py-1.5 rounded text-sm font-bold text-indigo-600 hover:bg-slate-50 border-l border-slate-200 ml-1 transition">Tümü</button>
+                    <button onclick="switchResultYear('2024')" id="btn-2024" class="px-3 py-1.5 rounded text-sm font-medium text-slate-500 hover:bg-slate-50">2024</button>
+                    <button onclick="switchResultYear('2025')" id="btn-2025" class="px-3 py-1.5 rounded text-sm font-medium bg-indigo-100 text-indigo-700 font-bold">2025</button>
+                    <button onclick="switchResultYear('2026')" id="btn-2026" class="px-3 py-1.5 rounded text-sm font-medium text-slate-500 hover:bg-slate-50">2026</button>
+                    <button onclick="switchResultYear('all')" id="btn-all" class="px-3 py-1.5 rounded text-sm font-bold text-indigo-600 hover:bg-slate-50 border-l border-slate-200 ml-1">Tümü</button>
                 </div>
             </div>
 
-            <!-- AI Assistant Panel -->
-            <div class="bg-white rounded-2xl shadow-lg border border-indigo-100 overflow-hidden">
-                <div class="ai-gradient-bg p-5 text-white flex flex-col md:flex-row justify-between items-center gap-4">
-                    <div class="flex items-center gap-4">
-                        <div class="bg-white/20 p-3 rounded-full backdrop-blur-md shadow-inner">
-                            <i class="fa-solid fa-wand-magic-sparkles text-2xl animate-bounce-slight"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-lg leading-tight">Barış Öğretmen AI Asistanı</h3>
-                            <p class="text-indigo-100 text-xs opacity-90">Gemini 2.5 Flash ile Güçlendirilmiş Kariyer Rehberi</p>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 w-full md:w-auto">
-                        <button onclick="attemptAiAction('salary')" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-3 py-2 rounded-lg text-xs font-bold transition backdrop-blur-sm">Maaş Yorumla</button>
-                        <button onclick="attemptAiAction('negotiation')" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-3 py-2 rounded-lg text-xs font-bold transition backdrop-blur-sm">Pazarlık Koçu</button>
-                        <button onclick="attemptAiAction('parent_comm')" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-3 py-2 rounded-lg text-xs font-bold transition backdrop-blur-sm">Veli Mesajı</button>
-                        <button onclick="attemptAiAction('activity_idea')" class="bg-white text-indigo-700 hover:bg-indigo-50 border border-white px-3 py-2 rounded-lg text-xs font-bold shadow-lg transition transform hover:-translate-y-0.5">Etkinlik Öner</button>
-                    </div>
+            <!-- AI Panel -->
+            <div class="bg-white rounded-2xl shadow border border-indigo-100 p-4 mb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-indigo-800 flex items-center gap-2"><i class="fa-solid fa-robot"></i> Barış Öğretmen AI</h3>
+                    <span class="text-[10px] text-slate-400 bg-slate-100 px-2 py-1 rounded">Beta</span>
                 </div>
-                <!-- AI Output -->
-                <div id="ai-result-container" class="hidden p-6 bg-slate-50 border-t border-slate-100 text-sm text-slate-700 leading-relaxed relative">
-                    <button onclick="document.getElementById('ai-result-container').classList.add('hidden')" class="absolute top-2 right-2 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
-                    <div id="ai-loading" class="hidden flex flex-col items-center py-4 text-indigo-500 font-medium">
-                        <i class="fa-solid fa-circle-notch fa-spin text-2xl mb-2"></i> Analiz Yapılıyor...
-                    </div>
-                    <div id="ai-content" class="prose prose-sm max-w-none"></div>
-                    <div id="ai-error" class="hidden text-red-600 font-medium bg-red-50 p-3 rounded border border-red-100"></div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                    <button onclick="attemptAiAction('salary')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3 py-2 rounded-lg text-xs font-bold transition">Maaş Yorumla</button>
+                    <button onclick="attemptAiAction('negotiation')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3 py-2 rounded-lg text-xs font-bold transition">Pazarlık Koçu</button>
+                    <button onclick="attemptAiAction('parent_comm')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3 py-2 rounded-lg text-xs font-bold transition">Veli Mesajı</button>
+                    <button onclick="attemptAiAction('activity_idea')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3 py-2 rounded-lg text-xs font-bold transition">Etkinlik Öner</button>
+                </div>
+                <div id="ai-result-container" class="hidden mt-4 p-4 bg-slate-50 rounded-lg text-sm text-slate-700 border border-slate-200">
+                    <div id="ai-loading" class="hidden text-center"><i class="fa-solid fa-spinner fa-spin text-indigo-600"></i> Düşünüyor...</div>
+                    <div id="ai-content"></div>
+                    <div id="ai-error" class="hidden text-red-600 font-bold"></div>
                 </div>
             </div>
 
-            <!-- Stats & Toggle -->
-            <div class="flex justify-center mb-6">
-                <div class="bg-white border border-indigo-100 rounded-full px-5 py-2 shadow-sm flex items-center gap-3 hover:shadow-md transition">
-                    <input type="checkbox" id="wageToggle" class="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500 border-gray-300 cursor-pointer">
-                    <label for="wageToggle" class="text-sm font-bold text-slate-700 cursor-pointer select-none">
-                        +%25 Zamlı Tahmin Göster
-                    </label>
-                </div>
-            </div>
-
-            <!-- Dashboard Stats -->
+            <!-- Stats -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div class="stat-card bg-white p-5 rounded-xl border border-slate-100 shadow-sm relative overflow-hidden">
-                    <div class="absolute right-0 top-0 opacity-5 text-6xl text-slate-300 -mr-2 -mt-2"><i class="fa-solid fa-users"></i></div>
-                    <p class="text-xs text-slate-400 uppercase font-bold tracking-wider">Filtrelenen</p>
-                    <p class="text-3xl font-extrabold text-slate-800 mt-1" id="stat-count">0</p>
+                <div class="stat-card bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+                    <p class="text-xs text-slate-400 font-bold">Filtrelenen</p>
+                    <p class="text-2xl font-extrabold text-slate-800" id="stat-count">0</p>
                 </div>
-                <div class="stat-card bg-indigo-600 p-5 rounded-xl shadow-lg text-white relative overflow-hidden">
-                    <div class="absolute right-0 top-0 opacity-10 text-6xl text-white -mr-2 -mt-2"><i class="fa-solid fa-coins"></i></div>
-                    <p class="text-xs text-indigo-200 uppercase font-bold tracking-wider">Ortalama Maaş</p>
-                    <p class="text-3xl font-extrabold mt-1" id="stat-avg">-- ₺</p>
+                <div class="stat-card bg-indigo-600 p-5 rounded-xl shadow-lg text-white">
+                    <p class="text-xs text-indigo-200 font-bold">Ortalama</p>
+                    <p class="text-2xl font-extrabold" id="stat-avg">-- ₺</p>
                 </div>
-                <div class="stat-card bg-white p-5 rounded-xl border border-slate-100 shadow-sm relative overflow-hidden">
-                    <div class="absolute right-0 top-0 opacity-5 text-6xl text-indigo-300 -mr-2 -mt-2"><i class="fa-solid fa-scale-balanced"></i></div>
-                    <p class="text-xs text-slate-400 uppercase font-bold tracking-wider">Medyan</p>
-                    <p class="text-3xl font-extrabold text-indigo-600 mt-1" id="stat-median">-- ₺</p>
+                <div class="stat-card bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+                    <p class="text-xs text-slate-400 font-bold">Medyan</p>
+                    <p class="text-2xl font-extrabold text-indigo-600" id="stat-median">-- ₺</p>
                 </div>
-                <div class="stat-card bg-white p-5 rounded-xl border border-slate-100 shadow-sm relative overflow-hidden">
-                    <div class="absolute right-0 top-0 opacity-5 text-6xl text-emerald-300 -mr-2 -mt-2"><i class="fa-solid fa-trophy"></i></div>
-                    <p class="text-xs text-slate-400 uppercase font-bold tracking-wider">En Yüksek</p>
-                    <p class="text-3xl font-extrabold text-emerald-600 mt-1" id="stat-max">-- ₺</p>
+                <div class="stat-card bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
+                    <p class="text-xs text-slate-400 font-bold">Maksimum</p>
+                    <p class="text-2xl font-extrabold text-emerald-600" id="stat-max">-- ₺</p>
                 </div>
             </div>
 
             <!-- Charts -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-2">
-                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-                    <div class="flex items-center gap-2 mb-4">
-                        <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center"><i class="fa-solid fa-chart-simple"></i></div>
-                        <h3 class="font-bold text-slate-700 text-sm">İlçe Bazlı Ortalamalar</h3>
-                    </div>
-                    <div class="h-72"><canvas id="districtChart"></canvas></div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                    <div class="h-64"><canvas id="districtChart"></canvas></div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-                    <div class="flex items-center gap-2 mb-4">
-                        <div class="w-8 h-8 rounded-lg bg-pink-100 text-pink-600 flex items-center justify-center"><i class="fa-solid fa-chart-line"></i></div>
-                        <h3 class="font-bold text-slate-700 text-sm">Deneyim - Maaş Eğrisi</h3>
-                    </div>
-                    <div class="h-72"><canvas id="expChart"></canvas></div>
+                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                    <div class="h-64"><canvas id="expChart"></canvas></div>
                 </div>
             </div>
 
-            <!-- Live Feed List -->
-            <div class="mt-8 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
-                    <h3 class="font-bold text-slate-700 text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-tower-broadcast text-green-500 animate-pulse"></i> Canlı Veri Akışı
-                    </h3>
-                    <span class="text-[10px] bg-white border border-slate-200 px-2 py-1 rounded text-slate-400">Son 20 Kayıt</span>
+            <!-- List -->
+            <div class="mt-8 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-slate-50 px-6 py-3 border-b border-slate-200 font-bold text-slate-700 text-sm">
+                    <i class="fa-solid fa-list mr-2"></i> Son Veriler
                 </div>
-                <div class="overflow-x-auto max-h-96 custom-scrollbar">
+                <div class="overflow-x-auto max-h-80 custom-scrollbar">
                     <table class="w-full text-left text-sm text-slate-600">
-                        <thead class="bg-slate-50 text-xs uppercase font-semibold text-slate-500 sticky top-0 z-10">
+                        <thead class="bg-slate-50 text-xs uppercase font-semibold text-slate-500 sticky top-0">
                             <tr>
                                 <th class="px-6 py-3 border-b">Rumuz</th>
                                 <th class="px-6 py-3 border-b">Branş</th>
@@ -483,27 +353,15 @@
                                 <th class="px-6 py-3 border-b admin-controls text-right">Yönetim</th>
                             </tr>
                         </thead>
-                        <tbody id="live-feed-body" class="divide-y divide-slate-100">
-                            <!-- Populated by JS -->
-                        </tbody>
+                        <tbody id="live-feed-body" class="divide-y divide-slate-100"></tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- Social Sharing -->
-            <div class="bg-gradient-to-r from-slate-800 to-slate-900 rounded-2xl p-8 text-center text-white mt-8 relative overflow-hidden">
-                <div class="relative z-10">
-                    <h3 class="text-xl font-bold mb-2">Bu Ağı Büyütelim! 🚀</h3>
-                    <p class="text-slate-300 text-sm mb-6 max-w-md mx-auto">Sektördeki şeffaflığı artırmak için bu linki meslektaşlarınla paylaş.</p>
-                    <div class="flex justify-center gap-4">
-                        <a id="share-whatsapp" href="#" target="_blank" class="bg-[#25D366] hover:bg-[#1ebd59] text-white px-6 py-3 rounded-xl font-bold transition flex items-center gap-2 shadow-lg transform hover:-translate-y-1">
-                            <i class="fa-brands fa-whatsapp text-xl"></i> WhatsApp
-                        </a>
-                        <a id="share-telegram" href="#" target="_blank" class="bg-[#0088cc] hover:bg-[#0077b5] text-white px-6 py-3 rounded-xl font-bold transition flex items-center gap-2 shadow-lg transform hover:-translate-y-1">
-                            <i class="fa-brands fa-telegram text-xl"></i> Telegram
-                        </a>
-                    </div>
-                </div>
+            <div class="text-center mt-8">
+                <button onclick="showFormAgain()" class="bg-slate-200 text-slate-700 px-6 py-3 rounded-full font-bold hover:bg-slate-300 transition">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> Yeni Veri Gir
+                </button>
             </div>
 
         </section>
@@ -512,48 +370,32 @@
 
     <footer class="bg-white border-t border-slate-200 mt-12 py-10">
         <div class="container mx-auto px-4 text-center">
-            <div class="mb-4">
-                <span class="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 text-lg">Barış Öğretmen Projesi</span>
-            </div>
-            
-            <!-- Added Bio Section -->
+            <p class="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 text-lg mb-4">Barış Öğretmen Projesi</p>
             <div class="max-w-lg mx-auto mb-6 bg-slate-50 p-4 rounded-xl border border-slate-100">
-                <p class="text-slate-600 text-sm italic">
-                    "Ben de sizin gibi bir rehabilitasyon merkezi çalışanı olarak, üç yıldır sektörün tüm branşlarına yönelik dijital eğitim içerikleri üretiyorum."
-                </p>
+                <p class="text-slate-600 text-sm italic">"Ben de sizin gibi bir rehabilitasyon merkezi çalışanı olarak, üç yıldır sektörün tüm branşlarına yönelik dijital eğitim içerikleri üretiyorum."</p>
             </div>
-
-            <p class="text-slate-500 text-sm mb-2">İstanbul Rehabilitasyon Merkezleri Gönüllü İnisiyatifi © 2025</p>
             <p class="text-[10px] text-slate-400">Veriler anonimdir. Sistem kâr amacı gütmez.</p>
-            <div class="mt-4">
-                <button onclick="toggleAdminModal()" class="text-slate-300 hover:text-indigo-500 transition p-2" title="Yönetici Girişi"><i class="fa-solid fa-lock"></i></button>
-            </div>
+            <button onclick="toggleAdminModal()" class="mt-4 text-slate-300 hover:text-indigo-500"><i class="fa-solid fa-lock"></i></button>
         </div>
     </footer>
 
     <!-- Modals -->
-    <!-- API Key -->
     <div id="api-modal" class="fixed inset-0 z-50 hidden">
         <div class="absolute inset-0 modal-overlay" onclick="toggleApiKeyModal()"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl animate-fade-in-down">
-            <h3 class="font-bold text-lg mb-2 text-slate-800">API Anahtarı</h3>
-            <p class="text-xs text-slate-500 mb-3">AI özelliklerini kullanmak için kendi Gemini anahtarınızı giriniz.</p>
-            <input type="password" id="user-api-key" placeholder="AIzaSy..." class="w-full px-4 py-2 border border-slate-300 rounded-lg mb-4 focus:ring-2 focus:ring-indigo-500 bg-slate-50">
-            <div class="flex justify-end gap-2">
-                <button onclick="toggleApiKeyModal()" class="px-4 py-2 text-slate-500 text-sm font-medium hover:bg-slate-100 rounded-lg">İptal</button>
-                <button onclick="saveApiKey()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-bold hover:bg-indigo-700">Kaydet</button>
-            </div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl p-6 w-full max-w-sm shadow-2xl">
+            <h3 class="font-bold text-lg mb-3">API Ayarları</h3>
+            <input type="password" id="user-api-key" placeholder="Google Gemini API Key..." class="w-full px-3 py-2 border rounded mb-3">
+            <button onclick="saveApiKey()" class="w-full bg-indigo-600 text-white py-2 rounded font-bold">Kaydet</button>
         </div>
     </div>
 
     <!-- Admin Login -->
-    <div id="admin-login-modal" class="fixed inset-0 z-50 hidden">
+    <div id="admin-modal" class="fixed inset-0 z-50 hidden">
         <div class="absolute inset-0 modal-overlay" onclick="toggleAdminModal()"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl animate-fade-in-down border-t-4 border-emerald-500">
-            <h3 class="font-bold text-lg mb-2 text-slate-800">Yönetici Girişi</h3>
-            <p class="text-xs text-slate-500 mb-4">Veri moderasyonu için şifre gereklidir.</p>
-            <input type="password" id="admin-password" placeholder="Şifre..." class="w-full px-4 py-2 border border-slate-300 rounded-lg mb-4 focus:ring-2 focus:ring-emerald-500 bg-slate-50">
-            <button onclick="adminLogin()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg font-bold shadow-md transition">Giriş Yap</button>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl p-6 w-64 shadow-2xl text-center">
+            <i class="fa-solid fa-user-secret text-4xl text-slate-700 mb-4"></i>
+            <p class="text-sm font-bold text-slate-600 mb-4">Yönetici Modunu Aç</p>
+            <button onclick="performAdminLogin()" class="bg-slate-800 text-white px-4 py-2 rounded font-bold text-sm">Giriş Yap</button>
         </div>
     </div>
 
@@ -561,118 +403,150 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, getDocs, onSnapshot, query, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // --- CONFIG ---
-        const firebaseConfig = JSON.parse(__firebase_config);
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        
-        // --- CONSTANTS ---
-        const DISTRICTS = [
-            "Adalar", "Arnavutköy", "Ataşehir", "Avcılar", "Bağcılar", "Bahçelievler", 
-            "Bakırköy", "Başakşehir", "Bayrampaşa", "Beşiktaş", "Beykoz", "Beylikdüzü", 
-            "Beyoğlu", "Büyükçekmece", "Çatalca", "Çekmeköy", "Esenler", "Esenyurt", 
-            "Eyüpsultan", "Fatih", "Gaziosmanpaşa", "Güngören", "Kadıköy", "Kağıthane", 
-            "Kartal", "Küçükçekmece", "Maltepe", "Pendik", "Sancaktepe", "Sarıyer", 
-            "Silivri", "Sultanbeyli", "Sultangazi", "Şile", "Şişli", "Tuzla", 
-            "Ümraniye", "Üsküdar", "Zeytinburnu"
-        ];
-        const BASE_INFLATION_IMPACT = 1.25;
-        const ADMIN_HASH = "2070366657"; 
-        
-        // Min Wage Floors
-        const MIN_WAGE_2024 = 17002;
-        const MIN_WAGE_2025 = 22104; // Mid-range expectation
-        const MIN_WAGE_2026 = 28075; // User provided high expectation
+        // Global Utility Functions (Defined first to be available)
+        window.saveApiKey = function() {
+            const k = document.getElementById('user-api-key').value.trim();
+            if(k) {
+                localStorage.setItem('ist_rehab_user_api_key', k);
+                window.toggleApiKeyModal();
+                alert("Anahtar kaydedildi.");
+            }
+        };
 
-        // --- STATE ---
+        window.toggleApiKeyModal = function() {
+            const m = document.getElementById('api-modal');
+            m.classList.toggle('hidden');
+        };
+
+        window.toggleAdminModal = function() {
+            const m = document.getElementById('admin-modal');
+            m.classList.toggle('hidden');
+        };
+
+        window.showFormAgain = function() {
+            document.getElementById('results-section').classList.add('hidden');
+            document.getElementById('notification-area').classList.add('hidden');
+            document.getElementById('entry-section').classList.remove('hidden');
+            window.scrollTo({top:0, behavior:'smooth'});
+        };
+
+        // Configuration
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            apiKey: "API_KEY_YOK",
+            authDomain: "demo.firebaseapp.com",
+            projectId: "demo-project"
+        };
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'demo-app';
+
+        let app, auth, db;
+        let useLocalStorage = false;
         let globalData = [];
-        let user = null;
-        let isAdmin = false;
-        let currentRole = null;
-        let currentDistrict = null;
-        let currentExp = null;
-        let currentSalary = null;
+        let currentRole, currentDistrict, currentExp, currentSalary;
         let currentViewYear = '2025';
-        let simulationActive = false;
+        let isAdmin = false;
         let chartInstances = {};
-        
-        // --- INIT ---
+        let user = null;
+
+        const DISTRICTS = ["Adalar", "Arnavutköy", "Ataşehir", "Avcılar", "Bağcılar", "Bahçelievler", "Bakırköy", "Başakşehir", "Bayrampaşa", "Beşiktaş", "Beykoz", "Beylikdüzü", "Beyoğlu", "Büyükçekmece", "Çatalca", "Çekmeköy", "Esenler", "Esenyurt", "Eyüpsultan", "Fatih", "Gaziosmanpaşa", "Güngören", "Kadıköy", "Kağıthane", "Kartal", "Küçükçekmece", "Maltepe", "Pendik", "Sancaktepe", "Sarıyer", "Silivri", "Sultanbeyli", "Sultangazi", "Şile", "Şişli", "Tuzla", "Ümraniye", "Üsküdar", "Zeytinburnu"];
+        const MIN_WAGE = { '2024': 17002, '2025': 22104, '2026': 28075 };
+        const ADMIN_HASH = "2070366657"; 
+
         async function initApp() {
             populateSelects();
             
             try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
+                if(firebaseConfig.apiKey === "API_KEY_YOK") throw new Error("Config Missing");
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                
+                // Robust Auth Logic
+                try {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                } catch(e) {
+                    console.warn("Primary auth failed, trying anonymous fallback:", e);
                     await signInAnonymously(auth);
                 }
+
+                onAuthStateChanged(auth, (u) => {
+                    user = u;
+                    if(u) {
+                        startDataListener();
+                        startAnnouncementListener();
+                        document.getElementById('connection-status').innerHTML = '<span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> Canlı Veri';
+                    }
+                });
+
+                // Safety Timeout
+                setTimeout(() => {
+                    if(document.getElementById('global-loader').style.display !== 'none') {
+                        document.getElementById('loader-text').innerText = "Bağlantı Yavaş...";
+                        document.getElementById('manual-start-btn').classList.remove('hidden');
+                    }
+                }, 4000);
+
             } catch(e) {
-                console.error("Auth error:", e);
+                console.log("Firebase init failed, switching to Local Storage mode.");
+                switchToLocalMode();
             }
 
-            onAuthStateChanged(auth, (u) => {
-                user = u;
-                if(u) {
-                    startDataListener();
-                    startAnnouncementListener();
-                }
-            });
-
+            // Bind Events
             document.getElementById('salaryForm').addEventListener('submit', handleFormSubmit);
-            document.getElementById('wageToggle').addEventListener('change', (e) => {
-                simulationActive = e.target.checked;
-                updateDashboard();
-            });
             
-            window.toggleApiKeyModal = toggleApiKeyModal;
-            window.saveApiKey = saveApiKey;
+            // Expose logic functions to window
+            window.performAdminLogin = performAdminLogin;
             window.attemptAiAction = attemptAiAction;
             window.switchResultYear = switchResultYear;
-            window.toggleAdminModal = toggleAdminModal;
-            window.adminLogin = adminLogin;
-            window.adminLogout = adminLogout;
             window.deleteEntry = deleteEntry;
+            window.adminLogout = adminLogout;
             window.postAnnouncement = postAnnouncement;
-            window.showFormAgain = () => {
-                document.getElementById('results-section').classList.add('hidden');
-                document.getElementById('notification-area').classList.add('hidden');
-                document.getElementById('entry-section').classList.remove('hidden');
-                window.scrollTo({top: 0, behavior: 'smooth'});
-            };
+            window.forceStartApp = () => { switchToLocalMode(); };
+        }
+
+        function switchToLocalMode() {
+            useLocalStorage = true;
+            document.getElementById('global-loader').style.display = 'none';
+            document.getElementById('connection-status').innerHTML = '<span class="w-2 h-2 bg-amber-400 rounded-full"></span> Çevrimdışı';
+            const stored = localStorage.getItem('ist_rehab_local_data');
+            if(stored) globalData = JSON.parse(stored);
+            updateDashboard();
+            updateLiveFeed();
         }
 
         function startDataListener() {
+            // Using correct path structure
             const q = collection(db, 'artifacts', appId, 'public', 'data', 'salaries');
             onSnapshot(q, (snapshot) => {
-                const newData = [];
-                snapshot.forEach((doc) => {
-                    newData.push({ ...doc.data(), docId: doc.id });
-                });
-                globalData = newData;
+                globalData = [];
+                snapshot.forEach(doc => globalData.push({ ...doc.data(), docId: doc.id }));
                 document.getElementById('global-loader').style.display = 'none';
                 
-                // Update total count if visible
                 const totalEl = document.getElementById('total-participants');
                 if(totalEl) totalEl.innerText = globalData.length;
 
-                if(!document.getElementById('results-section').classList.contains('hidden')) {
-                    updateDashboard();
-                }
-                updateLiveFeed(); 
+                if(!document.getElementById('results-section').classList.contains('hidden')) updateDashboard();
+                updateLiveFeed();
             }, (error) => {
                 console.error("Data fetch error:", error);
-                document.getElementById('global-loader').innerHTML = `<p class='text-red-600 font-bold'>Bağlantı Hatası. Lütfen sayfayı yenileyin.</p>`;
+                // If permission denied or other error, fallback
+                if(error.code === 'permission-denied') {
+                     document.getElementById('loader-text').innerText = "Erişim İzni Yok (Oturum Açılmadı)";
+                } else {
+                     switchToLocalMode();
+                }
             });
         }
 
         function startAnnouncementListener() {
             const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'admin_announcement', 'main');
             onSnapshot(docRef, (docSnap) => {
-                if(docSnap.exists()) {
+                if(docSnap && docSnap.exists()) {
                     const msg = docSnap.data().text;
                     if(msg) {
                         document.getElementById('announcement-text').innerText = msg;
@@ -681,187 +555,188 @@
                         document.getElementById('admin-announcement').classList.add('hidden');
                     }
                 }
-            });
+            }, (err) => console.log("Announcement fetch error", err));
         }
-
-        // --- CORE LOGIC ---
 
         async function handleFormSubmit(e) {
             e.preventDefault();
-            if(!user) return;
-
-            const submitBtn = document.getElementById('submitBtn');
-            const originalBtnText = submitBtn.innerHTML;
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> İşleniyor...';
-
-            const yearInput = document.getElementById('year').value;
-            const nickname = document.getElementById('nickname').value.replace(/[^a-zA-Z0-9çğıöşüÇĞİÖŞÜ ]/g, "");
-            const salaryInput = parseInt(document.getElementById('salary').value);
-
-            // --- VALIDATION START ---
-            let minLimit = MIN_WAGE_2024;
-            if(yearInput === '2025') minLimit = MIN_WAGE_2025;
-            if(yearInput === '2026') minLimit = MIN_WAGE_2026;
-
-            if (salaryInput < minLimit) {
-                alert(`⚠️ DİKKAT: Seçtiğiniz yıl (${yearInput}) için beklenen asgari ücretin (${minLimit} TL) altında bir giriş yaptınız.\n\nSistem veri kalitesini korumak için bunu kabul edemez. Lütfen gerçek maaşınızı giriniz.`);
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalBtnText;
+            const year = document.getElementById('year').value;
+            const salary = parseInt(document.getElementById('salary').value);
+            
+            if(salary < MIN_WAGE[year]) {
+                alert(`HATA: ${year} yılı için asgari ücretin (${MIN_WAGE[year]} TL) altında giriş yapılamaz.`);
                 return;
             }
-            if (salaryInput > 200000) { 
-                if(!confirm(`⚠️ Girdiğiniz maaş (${salaryInput} TL) oldukça yüksek görünüyor. Onaylıyor musunuz?`)) {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalBtnText;
-                    return;
-                }
-            }
-            // --- VALIDATION END ---
-            
-            const formData = {
-                nickname: nickname,
-                year: yearInput,
+
+            const data = {
+                year: year,
+                nickname: document.getElementById('nickname').value,
                 role: document.getElementById('position').value,
                 district: document.getElementById('district').value,
                 exp: parseFloat(document.getElementById('experience').value),
-                salary: salaryInput,
-                timestamp: Date.now(),
-                userId: user.uid
+                salary: salary,
+                timestamp: Date.now()
             };
 
-            const existingEntry = globalData.find(d => d.nickname === nickname && d.year === yearInput);
-            
+            currentRole = data.role;
+            currentDistrict = data.district;
+            currentExp = data.exp;
+            currentSalary = data.salary;
+            currentViewYear = data.year;
+
+            const btn = document.getElementById('submitBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = "Kaydediliyor...";
+            btn.disabled = true;
+
             try {
-                const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'salaries');
-                
-                if(existingEntry && existingEntry.docId) {
-                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'salaries', existingEntry.docId), formData);
+                if(useLocalStorage) {
+                    globalData.push(data);
+                    localStorage.setItem('ist_rehab_local_data', JSON.stringify(globalData));
                 } else {
-                    await addDoc(colRef, formData);
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'salaries'), data);
                 }
-
-                currentRole = formData.role;
-                currentDistrict = formData.district;
-                currentExp = formData.exp;
-                currentSalary = formData.salary;
-                currentViewYear = formData.year;
-
-                document.getElementById('entry-section').classList.add('hidden');
-                document.getElementById('notification-area').classList.remove('hidden');
-                document.getElementById('results-section').classList.remove('hidden');
-                
-                switchResultYear(currentViewYear); 
-                document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
-
+                finishSubmit();
             } catch(err) {
-                console.error("Save error:", err);
-                alert("Veri kaydedilirken hata oluştu. Bağlantınızı kontrol edin.");
+                console.error("Submit Error", err);
+                alert("Hata oluştu, yerel moda geçiliyor.");
+                switchToLocalMode();
+                globalData.push(data);
+                finishSubmit();
             } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalBtnText;
+                btn.innerHTML = originalText;
+                btn.disabled = false;
             }
+        }
+
+        function finishSubmit() {
+            document.getElementById('entry-section').classList.add('hidden');
+            document.getElementById('notification-area').classList.remove('hidden');
+            document.getElementById('results-section').classList.remove('hidden');
+            switchResultYear(currentViewYear);
+            document.getElementById('results-section').scrollIntoView({behavior:'smooth'});
+        }
+
+        function updateDashboard() {
+            if(!currentRole) return;
+            document.getElementById('total-participants').innerText = globalData.length;
+
+            let d = globalData.filter(x => x.role === currentRole);
+            if(currentViewYear !== 'all') d = d.filter(x => x.year === currentViewYear);
+
+            if(d.length === 0) {
+                ['count','avg','median','max'].forEach(id => document.getElementById('stat-'+id).innerText = '-');
+                return;
+            }
+
+            const salaries = d.map(x => x.salary).sort((a,b)=>a-b);
+            const sum = salaries.reduce((a,b)=>a+b,0);
+            const mid = Math.floor(salaries.length/2);
+            const wageToggle = document.getElementById('wageToggle').checked;
+            let avg = Math.round(sum/d.length);
+            
+            if(wageToggle) avg = Math.round(avg * 1.25);
+
+            document.getElementById('stat-count').innerText = d.length;
+            document.getElementById('stat-avg').innerText = avg.toLocaleString('tr-TR') + ' ₺';
+            document.getElementById('stat-median').innerText = salaries.length%2!==0 ? salaries[mid] : Math.round((salaries[mid-1]+salaries[mid])/2).toLocaleString('tr-TR') + ' ₺';
+            document.getElementById('stat-max').innerText = salaries[salaries.length-1].toLocaleString('tr-TR') + ' ₺';
+
+            renderCharts(d);
+        }
+
+        function renderCharts(data) {
+            const ctx1 = document.getElementById('districtChart');
+            const ctx2 = document.getElementById('expChart');
+            
+            if(chartInstances.d) chartInstances.d.destroy();
+            if(chartInstances.e) chartInstances.e.destroy();
+
+            const distMap = {}; 
+            const expMap = {};
+            data.forEach(x => {
+                if(!distMap[x.district]) distMap[x.district] = {s:0, c:0};
+                distMap[x.district].s += x.salary; distMap[x.district].c++;
+                
+                if(!expMap[x.exp]) expMap[x.exp] = {s:0, c:0};
+                expMap[x.exp].s += x.salary; expMap[x.exp].c++;
+            });
+
+            const dLabels = Object.keys(distMap);
+            const dData = dLabels.map(k => Math.round(distMap[k].s/distMap[k].c));
+            
+            chartInstances.d = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: dLabels,
+                    datasets: [{ label: 'Ortalama Maaş', data: dData, backgroundColor: '#6366f1', borderRadius: 4 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, scales: { x: { display: true, ticks: { maxRotation: 90, font:{size:10} } } } }
+            });
+
+            const eLabels = Object.keys(expMap).sort((a,b)=>parseFloat(a)-parseFloat(b));
+            const eData = eLabels.map(k => Math.round(expMap[k].s/expMap[k].c));
+            
+            chartInstances.e = new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: eLabels.map(v => v==0.5?'0-6 Ay':(v==0.8?'6-12 Ay':v+' Yıl')),
+                    datasets: [{ label: 'Maaş Eğrisi', data: eData, borderColor: '#ec4899', tension: 0.4, fill: true, backgroundColor: 'rgba(236, 72, 153, 0.1)' }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
         }
 
         function updateLiveFeed() {
             const tbody = document.getElementById('live-feed-body');
             tbody.innerHTML = '';
-            
-            const sorted = [...globalData].sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0)).slice(0, 20);
-            
-            sorted.forEach(d => {
+            const list = [...globalData].sort((a,b) => b.timestamp - a.timestamp).slice(0, 20);
+            list.forEach(item => {
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50 transition border-b border-slate-100 last:border-0";
                 tr.innerHTML = `
-                    <td class="px-6 py-4 font-medium text-slate-800">${d.nickname || '-'}</td>
-                    <td class="px-6 py-4 text-xs text-slate-500">${d.role}</td>
-                    <td class="px-6 py-4 text-slate-600">${d.district}</td>
-                    <td class="px-6 py-4"><span class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded text-xs font-bold border border-indigo-100">${d.year}</span></td>
-                    <td class="px-6 py-4 font-bold text-emerald-600">${formatCurrency(d.salary)}</td>
-                    <td class="px-6 py-4 text-right admin-controls">
-                        <button onclick="deleteEntry('${d.docId}')" class="text-red-500 hover:text-red-700 text-xs font-bold border border-red-200 bg-red-50 hover:bg-red-100 px-2 py-1 rounded transition"><i class="fa-solid fa-trash-can"></i> SİL</button>
+                    <td class="px-6 py-3 font-medium">${item.nickname || '-'}</td>
+                    <td class="px-6 py-3 text-xs text-slate-500">${item.role}</td>
+                    <td class="px-6 py-3">${item.district}</td>
+                    <td class="px-6 py-3">${item.year}</td>
+                    <td class="px-6 py-3 font-bold text-emerald-600">${item.salary} ₺</td>
+                    <td class="px-6 py-3 text-right admin-controls">
+                        ${item.docId ? `<button onclick="deleteEntry('${item.docId}')" class="text-red-500 font-bold text-xs border border-red-200 px-2 py-1 rounded hover:bg-red-50">SİL</button>` : ''}
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        function updateDashboard() {
-            if(!currentRole) return;
-
-            let relevantData = globalData.filter(d => d.role === currentRole);
-            if(currentViewYear !== 'all') {
-                relevantData = relevantData.filter(d => d.year === currentViewYear);
-            }
-
-            if(relevantData.length === 0) {
-                resetStats();
-                return;
-            }
-
-            const salaries = relevantData.map(d => d.salary).sort((a,b) => a-b);
-            const sum = salaries.reduce((a, b) => a + b, 0);
-            let avg = Math.round(sum / salaries.length);
-            const max = salaries[salaries.length - 1];
-            const mid = Math.floor(salaries.length / 2);
-            const median = salaries.length % 2 !== 0 ? salaries[mid] : (salaries[mid - 1] + salaries[mid]) / 2;
-
-            if(simulationActive) {
-                avg = Math.round(avg * BASE_INFLATION_IMPACT);
-            }
-
-            document.getElementById('stat-count').innerText = relevantData.length;
-            document.getElementById('stat-avg').innerText = formatCurrency(avg);
-            document.getElementById('stat-median').innerText = formatCurrency(median);
-            document.getElementById('stat-max').innerText = formatCurrency(max);
-
-            renderCharts(relevantData);
-            updateShareLinks(currentDistrict, currentRole, currentExp, avg, currentViewYear);
-        }
-
-        // --- ADMIN LOGIC ---
-        function simpleHash(str) {
-            let hash = 0;
-            if (str.length === 0) return hash;
-            for (let i = 0; i < str.length; i++) {
-                const char = str.charCodeAt(i);
-                hash = ((hash << 5) - hash) + char;
-                hash = hash & hash; 
-            }
-            return hash.toString();
-        }
-
-        function toggleAdminModal() {
-            document.getElementById('admin-login-modal').classList.toggle('hidden');
-        }
-
-        function adminLogin() {
-            const pass = document.getElementById('admin-password').value;
-            if(simpleHash(pass) === ADMIN_HASH) {
+        // --- ADMIN & HELPER FUNCTIONS ---
+        function performAdminLogin() {
+            const p = prompt("Yönetici Şifresi:");
+            if(simpleHash(p) === ADMIN_HASH) {
                 isAdmin = true;
                 document.body.classList.add('admin-active');
-                toggleAdminModal();
-                alert("Yönetici girişi başarılı.");
-            } else {
-                alert("Hatalı şifre!");
+                window.toggleAdminModal();
+                alert("Giriş Başarılı");
+            } else { alert("Hatalı"); }
+        }
+        
+        function simpleHash(str) {
+            let hash = 0;
+            if (str.length === 0) return hash.toString();
+            for (let i = 0; i < str.length; i++) {
+                hash = ((hash << 5) - hash) + str.charCodeAt(i);
+                hash |= 0; 
             }
+            return hash.toString();
         }
 
         function adminLogout() {
             isAdmin = false;
             document.body.classList.remove('admin-active');
-            alert("Çıkış yapıldı.");
         }
 
-        async function deleteEntry(docId) {
-            if(!isAdmin) return;
-            if(confirm("Bu veriyi silmek istediğinize emin misiniz?")) {
-                try {
-                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'salaries', docId));
-                } catch(e) {
-                    console.error(e);
-                    alert("Silinemedi.");
-                }
+        async function deleteEntry(id) {
+            if(!isAdmin || useLocalStorage) return;
+            if(confirm("Silinsin mi?")) {
+                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'salaries', id));
             }
         }
 
@@ -878,192 +753,54 @@
             }
         }
 
-        // --- HELPERS & CHARTS ---
+        async function attemptAiAction(type) {
+            const key = localStorage.getItem('ist_rehab_user_api_key');
+            if(!key) { window.toggleApiKeyModal(); return; }
+            if(!currentRole) { alert("Veri giriniz."); return; }
+
+            const div = document.getElementById('ai-result-container');
+            const content = document.getElementById('ai-content');
+            div.classList.remove('hidden');
+            document.getElementById('ai-loading').classList.remove('hidden');
+            content.innerHTML = "";
+
+            const prompt = `Rol: ${currentRole}, İlçe: ${currentDistrict}, Maaş: ${currentSalary}, Yıl: ${currentViewYear}. 
+            GÖREV: ${type === 'salary' ? 'Maaşı piyasaya göre yorumla.' : (type === 'negotiation' ? 'Pazarlık taktiği ver.' : (type === 'parent_comm' ? 'Veliye mesaj taslağı yaz.' : 'Etkinlik öner.'))} Türkçe cevap ver.`;
+
+            try {
+                const req = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${key}`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+                const res = await req.json();
+                content.innerHTML = marked.parse(res.candidates[0].content.parts[0].text);
+            } catch(e) {
+                content.innerHTML = "Hata: API Anahtarını kontrol et.";
+            } finally {
+                document.getElementById('ai-loading').classList.add('hidden');
+            }
+        }
+
         function populateSelects() {
-            const distSelect = document.getElementById('district');
+            const el = document.getElementById('district');
             DISTRICTS.forEach(d => {
                 const opt = document.createElement('option');
-                opt.value = d;
-                opt.innerText = d;
-                distSelect.appendChild(opt);
+                opt.value = d; opt.innerText = d;
+                el.appendChild(opt);
             });
         }
 
-        function switchResultYear(year) {
-            currentViewYear = year;
-            ['2024', '2025', '2026', 'all'].forEach(y => {
-                const btn = document.getElementById(`btn-${y}`);
-                if(!btn) return;
-                btn.className = y === year 
-                    ? "px-3 py-1.5 rounded text-sm font-bold bg-indigo-100 text-indigo-700 transition" 
-                    : "px-3 py-1.5 rounded text-sm font-medium text-slate-500 hover:bg-slate-50 transition";
-                
-                if(y === 'all') btn.classList.add("border-l", "border-slate-200", "ml-1");
+        function switchResultYear(y) {
+            currentViewYear = y;
+            ['2024','2025','2026','all'].forEach(x => {
+                const b = document.getElementById('btn-'+x);
+                b.className = (x===y) ? "px-3 py-1.5 rounded text-sm font-bold bg-indigo-100 text-indigo-700 transition" : "px-3 py-1.5 rounded text-sm font-medium text-slate-500 hover:bg-slate-50 transition";
             });
             updateDashboard();
         }
 
-        function formatCurrency(val) {
-            return new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(val);
-        }
-
-        function resetStats() {
-            document.getElementById('stat-count').innerText = "0";
-            document.getElementById('stat-avg').innerText = "-";
-            document.getElementById('stat-median').innerText = "-";
-            document.getElementById('stat-max').innerText = "-";
-            if(chartInstances['district']) chartInstances['district'].destroy();
-            if(chartInstances['exp']) chartInstances['exp'].destroy();
-        }
-
-        function updateShareLinks(dist, role, exp, avg, year) {
-            const text = `Rehabilitasyon Maaş Analizi (${year}): ${role} branşı için ortalama maaş ${avg} ₺ görünüyor. Sen de katıl: `;
-            const url = encodeURIComponent(window.location.href);
-            const encodedText = encodeURIComponent(text);
-            document.getElementById('share-whatsapp').href = `https://api.whatsapp.com/send?text=${encodedText}%20${url}`;
-            document.getElementById('share-telegram').href = `https://t.me/share/url?url=${url}&text=${encodedText}`;
-        }
-
-        function renderCharts(data) {
-            // District Chart Logic
-            const distMap = {};
-            data.forEach(d => {
-                if(!distMap[d.district]) distMap[d.district] = { sum: 0, count: 0 };
-                distMap[d.district].sum += d.salary;
-                distMap[d.district].count += 1;
-            });
-            const distLabels = Object.keys(distMap);
-            const distValues = distLabels.map(l => Math.round(distMap[l].sum / distMap[l].count));
-
-            if(chartInstances['district']) chartInstances['district'].destroy();
-            chartInstances['district'] = new Chart(document.getElementById('districtChart'), {
-                type: 'bar',
-                data: {
-                    labels: distLabels,
-                    datasets: [{
-                        label: 'Ortalama Maaş',
-                        data: distValues,
-                        backgroundColor: distLabels.map(l => l === currentDistrict ? '#10b981' : '#6366f1'),
-                        borderRadius: 4
-                    }]
-                },
-                options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false, 
-                    scales: { 
-                        x: { 
-                            display: true, 
-                            ticks: { autoSkip: false, maxRotation: 90, minRotation: 45, font: { size: 9 } }
-                        },
-                        y: { grid: { color: '#f1f5f9' } }
-                    }, 
-                    plugins: { legend: { display: false } } 
-                }
-            });
-
-            // Exp Chart Logic
-            const expMap = {};
-            data.forEach(d => {
-                if(!expMap[d.exp]) expMap[d.exp] = { sum: 0, count: 0 };
-                expMap[d.exp].sum += d.salary;
-                expMap[d.exp].count += 1;
-            });
-            const expKeys = Object.keys(expMap).sort((a,b) => parseFloat(a)-parseFloat(b));
-            const expValues = expKeys.map(k => Math.round(expMap[k].sum / expMap[k].count));
-            const expLabels = expKeys.map(k => k == 0.5 ? "0-6 Ay" : (k == 0.8 ? "6-12 Ay" : k + " Yıl"));
-
-            if(chartInstances['exp']) chartInstances['exp'].destroy();
-            chartInstances['exp'] = new Chart(document.getElementById('expChart'), {
-                type: 'line',
-                data: {
-                    labels: expLabels,
-                    datasets: [{
-                        label: 'Deneyim Eğrisi',
-                        data: expValues,
-                        borderColor: '#ec4899',
-                        tension: 0.4,
-                        fill: true,
-                        backgroundColor: 'rgba(236, 72, 153, 0.1)'
-                    }]
-                },
-                options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false, 
-                    plugins: { legend: { display: false } },
-                    scales: { y: { grid: { color: '#f1f5f9' } } }
-                }
-            });
-        }
-
-        // --- AI LOGIC ---
-        let apiKey = localStorage.getItem('ist_rehab_user_api_key') || "";
-        
-        function toggleApiKeyModal() {
-            const m = document.getElementById('api-modal');
-            m.classList.toggle('hidden');
-        }
-        
-        function saveApiKey() {
-            const k = document.getElementById('user-api-key').value.trim();
-            if(k) {
-                apiKey = k;
-                localStorage.setItem('ist_rehab_user_api_key', k);
-                toggleApiKeyModal();
-                alert("Anahtar kaydedildi.");
-            }
-        }
-
-        async function attemptAiAction(type) {
-            if(!apiKey) { toggleApiKeyModal(); return; }
-            if(!currentRole) { alert("Önce veri giriniz."); return; }
-
-            const container = document.getElementById('ai-result-container');
-            const loading = document.getElementById('ai-loading');
-            const content = document.getElementById('ai-content');
-            const errorDiv = document.getElementById('ai-error');
-            
-            container.classList.remove('hidden');
-            loading.classList.remove('hidden');
-            content.innerHTML = "";
-            errorDiv.classList.add('hidden');
-            
-            let prompt = "";
-            let systemPrompt = "Sen yardımsever bir eğitim koçusun. Türkçe cevap ver. Kısa ve net ol.";
-            const context = `Rol: ${currentRole}, İlçe: ${currentDistrict}, Maaş: ${currentSalary}, Deneyim: ${currentExp} yıl.`;
-
-            if(type === 'salary') prompt = `Bu profile göre maaş durumu nedir? Sektör ortalamalarına göre yorumla. ${context}`;
-            else if(type === 'negotiation') prompt = `Bu profil için maaş pazarlığı taktikleri ver. Kısa madde madde. ${context}`;
-            else if(type === 'parent_comm') {
-                const msg = window.prompt("Veliye ne söylemek istiyorsun?");
-                if(!msg) { container.classList.add('hidden'); return; }
-                prompt = `Veliye şu durumu nazikçe, profesyonelce anlatmak için bir WhatsApp mesaj taslağı yaz: ${msg}`;
-            }
-            else if(type === 'activity_idea') {
-                 prompt = `Bu branş (${currentRole}) ve deneyim (${currentExp} yıl) için yaratıcı, az malzemeli bir sınıf içi etkinlik öner.`;
-            }
-
-            try {
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], systemInstruction: { parts: [{ text: systemPrompt }] } })
-                });
-                const json = await res.json();
-                
-                if (json.error) throw new Error(json.error.message);
-                
-                const md = json.candidates?.[0]?.content?.parts?.[0]?.text || "Hata oluştu.";
-                content.innerHTML = marked.parse(md);
-            } catch(e) {
-                errorDiv.innerText = "Hata: " + e.message;
-                errorDiv.classList.remove('hidden');
-            } finally {
-                loading.classList.add('hidden');
-            }
-        }
-
         initApp();
-
     </script>
 </body>
 </html>
