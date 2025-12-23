@@ -4,31 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <!-- Güvenlik ve Kimlik Etiketleri -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:;">
-    <title>Maaş Analiz Platformu | Barış Öğretmen</title>
-    <meta name="description" content="Rehabilitasyon sektörü çalışanları için anonim maaş analiz ve kariyer destek platformu.">
+    <!-- Güvenlik ve Kimlik Doğrulama Etiketleri -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Maaş Analiz Ağı | Barış Öğretmen</title>
+    <meta name="description" content="Rehabilitasyon sektörü çalışanları için şeffaf, anonim ve canlı maaş analiz platformu.">
+    <meta name="author" content="Barış Öğretmen">
     <meta name="theme-color" content="#4f46e5">
     
-    <!-- Paylaşım Kartı (OG Tags) -->
-    <meta property="og:title" content="Rehabilitasyon Maaş Analizi">
-    <meta property="og:description" content="Sektör ortalamalarını gör, hakkını savun. %100 Anonim.">
+    <!-- Paylaşım Kartı -->
+    <meta property="og:title" content="Rehabilitasyon Maaş Analizi 📊">
+    <meta property="og:description" content="Sektör ortalamalarını canlı gör, hakkını savun. %100 Anonim. Tıkla ve katıl.">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/3063/3063822.png">
 
-    <!-- Tailwind CSS -->
+    <!-- Kütüphaneler -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Markdown Parser -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <script>
@@ -36,15 +29,7 @@
             theme: {
                 extend: {
                     fontFamily: { sans: ['Outfit', 'sans-serif'] },
-                    colors: {
-                        brand: {
-                            dark: '#0f172a',
-                            primary: '#6366f1',
-                            accent: '#06b6d4',
-                            success: '#10b981',
-                            bg: '#f8fafc'
-                        }
-                    },
+                    colors: { brand: { primary: '#6366f1' } },
                     animation: { 'pulse-slow': 'pulse 3s infinite' }
                 }
             }
@@ -52,33 +37,15 @@
     </script>
 
     <style>
-        body {
-            background-color: #f8fafc;
-            color: #1e293b;
-            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
-            background-size: 24px 24px;
-        }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
+        body { background-color: #f8fafc; color: #1e293b; font-family: 'Outfit', sans-serif; background-image: radial-gradient(#e2e8f0 1px, transparent 1px); background-size: 24px 24px; }
+        .glass-panel { background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(255, 255, 255, 0.8); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
         .gradient-header { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); }
         .ai-gradient-bg { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); }
-        
-        #global-loader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.98); z-index: 9999;
-            display: flex; justify-content: center; align-items: center; flex-direction: column;
-            transition: opacity 0.5s ease;
-        }
+        #global-loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: opacity 0.3s; }
         .modal-overlay { background-color: rgba(15, 23, 42, 0.8); backdrop-filter: blur(4px); }
         .admin-controls { display: none; }
         .admin-active .admin-controls { display: table-cell; }
         .admin-active .admin-section { display: block !important; }
-        
-        /* Custom Scrollbar */
         .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
@@ -86,71 +53,62 @@
 </head>
 <body class="antialiased flex flex-col min-h-screen font-sans">
 
-    <!-- Global Loader -->
+    <!-- Loader -->
     <div id="global-loader">
         <div class="w-16 h-16 border-4 border-indigo-200 border-dashed rounded-full animate-spin"></div>
-        <div class="mt-4 text-center">
-            <p class="text-indigo-900 font-bold text-lg animate-pulse" id="loader-text">Sisteme Bağlanılıyor...</p>
-            <p class="text-xs text-slate-500 mt-2" id="loader-subtext">Veri ağı kontrol ediliyor</p>
-        </div>
-        <button id="manual-start-btn" onclick="forceStartApp()" class="hidden mt-6 bg-indigo-600 text-white px-6 py-2 rounded-full font-bold hover:bg-indigo-700 transition shadow-lg">
-            Manuel Başlat
+        <p class="mt-4 text-indigo-900 font-bold animate-pulse" id="loader-text">Canlı Veri Ağına Bağlanılıyor...</p>
+        <p class="text-xs text-slate-500 mt-2" id="loader-subtext">Güvenli bağlantı kuruluyor</p>
+        <!-- Fallback Button -->
+        <button id="manual-start-btn" onclick="forceStartApp()" class="hidden mt-6 bg-slate-200 text-slate-700 px-6 py-2 rounded-full font-bold hover:bg-slate-300 text-sm">
+            Çevrimdışı Modda Başlat
         </button>
     </div>
 
     <!-- Header -->
-    <header class="gradient-header text-white sticky top-0 z-50 shadow-lg border-b border-indigo-400/30">
+    <header class="gradient-header text-white sticky top-0 z-50 shadow-lg">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-3">
                 <div class="bg-white/20 p-2 rounded-xl backdrop-blur-sm border border-white/20 shadow-inner">
-                    <i class="fa-solid fa-chart-pie text-white text-xl"></i>
+                    <i class="fa-solid fa-chart-pie text-white text-xl md:text-2xl"></i>
                 </div>
                 <div>
-                    <h1 class="font-extrabold text-lg leading-none tracking-tight">Maaş Gözlem</h1>
-                    <p class="text-[10px] text-indigo-100 font-medium tracking-wide opacity-90 mt-0.5">BARIŞ ÖĞRETMEN</p>
+                    <h1 class="font-extrabold text-lg leading-none">Maaş Gözlem</h1>
+                    <p class="text-[10px] text-indigo-100 opacity-90 mt-0.5">BARIŞ ÖĞRETMEN</p>
                 </div>
             </div>
             <div class="flex items-center gap-2">
                 <span id="connection-status" class="hidden md:flex items-center gap-2 bg-black/20 px-3 py-1 rounded-full text-[10px] font-bold border border-white/10">
-                    <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> Çevrimiçi
+                    <span class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span> Bağlanıyor
                 </span>
-                <button onclick="toggleApiKeyModal()" class="bg-white/10 hover:bg-white/20 p-2 rounded-lg transition text-white border border-white/10" title="Yapay Zeka Ayarları">
-                    <i class="fa-solid fa-robot"></i>
-                </button>
+                <button onclick="toggleApiKeyModal()" class="bg-white/10 p-2 rounded-lg" title="AI Ayarları"><i class="fa-solid fa-robot"></i></button>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
+    <!-- Main -->
     <main class="flex-grow container mx-auto px-4 py-6 space-y-6 relative z-10 max-w-6xl">
 
-        <!-- Admin Control Panel -->
-        <section id="admin-panel" class="hidden admin-section mb-6 animate-fade-in-down">
-            <div class="bg-slate-800 text-white rounded-xl p-5 border border-slate-700 shadow-2xl">
-                <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-2">
-                    <h3 class="font-bold text-lg text-emerald-400 flex items-center gap-2"><i class="fa-solid fa-user-shield"></i> Yönetici Paneli</h3>
-                    <button onclick="adminLogout()" class="text-xs bg-red-500 hover:bg-red-600 px-3 py-1.5 rounded font-bold transition">Çıkış</button>
+        <!-- Admin Panel (Hidden) -->
+        <section id="admin-panel" class="hidden admin-section mb-6">
+            <div class="bg-slate-800 text-white rounded-xl p-4 shadow-xl border border-slate-700">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-emerald-400">Yönetici Paneli</h3>
+                    <button onclick="adminLogout()" class="text-xs bg-red-600 px-3 py-1 rounded">Çıkış</button>
                 </div>
-                
-                <div class="mb-4">
-                    <label class="block text-xs font-bold text-slate-400 mb-1 uppercase">Duyuru Yayınla</label>
-                    <div class="flex gap-2">
-                        <input type="text" id="new-announcement" placeholder="Mesajınızı buraya yazın..." class="flex-grow px-3 py-2 rounded bg-slate-700 border border-slate-600 text-white text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition">
-                        <button onclick="postAnnouncement()" class="bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded text-sm font-bold shadow-lg transition">Yayınla</button>
-                    </div>
+                <div class="flex gap-2">
+                    <input type="text" id="new-announcement" placeholder="Duyuru metni..." class="flex-grow px-3 py-2 rounded text-black text-sm outline-none">
+                    <button onclick="postAnnouncement()" class="bg-emerald-600 px-4 py-2 rounded text-sm font-bold hover:bg-emerald-700">Yayınla</button>
                 </div>
-                <div class="bg-slate-700/50 p-3 rounded text-xs text-slate-400">
-                    <i class="fa-solid fa-circle-info"></i> Aşağıdaki listeden hatalı verileri silebilirsiniz.
-                </div>
+                <div class="mt-2 text-[10px] text-slate-400">Veri silmek için aşağıdaki listedeki [SİL] butonlarını kullanın.</div>
             </div>
         </section>
 
-        <!-- Admin Announcement -->
-        <div id="admin-announcement" class="hidden animate-fade-in-down w-full bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg shadow-sm flex items-start gap-3">
-            <div class="bg-amber-100 p-2 rounded-full text-amber-600"><i class="fa-solid fa-bullhorn text-lg"></i></div>
+        <!-- Announcement Area -->
+        <div id="admin-announcement" class="hidden w-full bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg shadow-sm flex items-start gap-3">
+            <i class="fa-solid fa-bullhorn text-amber-600 mt-1"></i>
             <div>
-                <h4 class="font-bold text-amber-900 text-sm uppercase tracking-wide">Yönetici Duyurusu</h4>
-                <p id="announcement-text" class="text-amber-800 text-sm mt-1 leading-relaxed"></p>
+                <h4 class="font-bold text-amber-900 text-sm">Duyuru</h4>
+                <p id="announcement-text" class="text-amber-800 text-sm mt-1"></p>
             </div>
         </div>
 
@@ -172,206 +130,132 @@
             </div>
         </section>
 
-        <!-- Form -->
+        <!-- Form Section -->
         <section id="entry-section" class="max-w-xl mx-auto">
-            <div class="glass-panel rounded-3xl p-6 md:p-8 shadow-xl border-t-4 border-indigo-500">
+            <div class="glass-panel rounded-3xl p-6 shadow-xl border-t-4 border-indigo-500">
                 <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
                     <i class="fa-solid fa-pen-to-square text-indigo-500"></i> Veri Girişi
                 </h3>
-                
                 <form id="salaryForm" class="space-y-5">
-                    <div class="bg-red-50 border-l-4 border-red-500 p-3 text-xs text-red-800 rounded-r">
-                        <strong>Dikkat:</strong> Asgari ücretin altındaki girişler sistem tarafından engellenir. Lütfen gerçek verilerinizi giriniz.
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-3 text-xs text-blue-800 rounded-r">
+                        <strong>Bilgi:</strong> Sistem veri kalitesi için asgari ücret altı girişleri engeller. <br>
+                        <span class="font-semibold">(2024: 17.002₺ | 2025: 22.104₺ | 2026: 28.075₺)</span>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Dönem</label>
-                        <select id="year" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white font-bold text-slate-700">
-                            <option value="2026">2026</option>
-                            <option value="2025" selected>2025</option>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Dönem</label>
+                        <select id="year" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white font-bold text-slate-700 focus:border-indigo-500">
+                            <option value="2026">2026 (Beklenen)</option>
+                            <option value="2025" selected>2025 (Güncel)</option>
                             <option value="2024">2024</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Rumuz</label>
-                        <input type="text" id="nickname" required placeholder="Örn: ÖzelEğitim34" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white" maxlength="20">
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Rumuz</label>
+                        <input type="text" id="nickname" required placeholder="Örn: Rehber34" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white" maxlength="20">
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Branş</label>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Branş</label>
                         <select id="position" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white">
                             <option value="" disabled selected>Seçiniz...</option>
-                            <optgroup label="Eğitim Grubu">
-                                <option value="Uzman Öğretici (Okul Öncesi)">Uzman Öğretici (Okul Öncesi)</option>
-                                <option value="Uzman Öğretici (Çocuk Gelişimi)">Uzman Öğretici (Çocuk Gelişimi)</option>
-                                <option value="Uzman Öğretici (Sınıf Öğretmenliği)">Uzman Öğretici (Sınıf Öğrt.)</option>
-                                <option value="Özel Eğitim Öğretmeni">Özel Eğitim Öğretmeni</option>
-                            </optgroup>
-                            <optgroup label="Rehberlik ve Psikoloji">
-                                <option value="Psikolog">Psikolog</option>
-                                <option value="Uzman Psikolog">Uzman Psikolog</option>
-                                <option value="PDR / Psikolojik Danışman">PDR / Psikolojik Danışman</option>
-                                <option value="Uzman PDR">Uzman PDR</option>
-                                <option value="Rehber Öğretmen">Rehber Öğretmen</option>
-                            </optgroup>
-                            <optgroup label="Sağlık ve Terapi">
-                                <option value="Fizyoterapist">Fizyoterapist</option>
-                                <option value="Odyolog">Odyolog</option>
-                                <option value="Dil ve Konuşma Terapisti">Dil ve Konuşma Terapisti</option>
-                                <option value="Ergoterapist">Ergoterapist</option>
-                            </optgroup>
+                            <optgroup label="Eğitim"><option value="Uzman Öğretici (Okul Öncesi)">Uzman Öğretici (Okul Öncesi)</option><option value="Uzman Öğretici (Çocuk Gelişimi)">Uzman Öğretici (Çocuk Gelişimi)</option><option value="Uzman Öğretici (Sınıf Öğretmenliği)">Uzman Öğretici (Sınıf Öğrt.)</option><option value="Özel Eğitim Öğretmeni">Özel Eğitim Öğretmeni</option></optgroup>
+                            <optgroup label="Rehberlik"><option value="Psikolog">Psikolog</option><option value="Uzman Psikolog">Uzman Psikolog</option><option value="PDR / Psikolojik Danışman">PDR / Psikolojik Danışman</option><option value="Uzman PDR">Uzman PDR</option><option value="Rehber Öğretmen">Rehber Öğretmen</option></optgroup>
+                            <optgroup label="Sağlık"><option value="Fizyoterapist">Fizyoterapist</option><option value="Odyolog">Odyolog</option><option value="Dil ve Konuşma Terapisti">Dil ve Konuşma Terapisti</option><option value="Ergoterapist">Ergoterapist</option></optgroup>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">İlçe</label>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">İlçe</label>
                         <select id="district" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white">
                             <option value="" disabled selected>Seçiniz...</option>
-                            <!-- Populated by JS -->
                         </select>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Deneyim</label>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Deneyim</label>
                         <select id="experience" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white">
-                            <option value="" disabled selected>Seçiniz...</option>
-                            <option value="0.5">0 - 6 Ay (Yeni)</option>
-                            <option value="0.8">6 - 12 Ay</option>
-                            <option value="1">1 Yıl</option>
-                            <option value="2">2 Yıl</option>
-                            <option value="3">3 Yıl</option>
-                            <option value="4">4 Yıl</option>
-                            <option value="5">5 Yıl</option>
-                            <option value="6">6 Yıl</option>
-                            <option value="7">7 Yıl</option>
-                            <option value="8">8 Yıl</option>
-                            <option value="9">9 Yıl</option>
-                            <option value="10">10-14 Yıl</option>
-                            <option value="15">15-19 Yıl</option>
-                            <option value="20">20+ Yıl</option>
+                            <option value="0.5">0-6 Ay</option><option value="0.8">6-12 Ay</option><option value="1">1 Yıl</option><option value="2">2 Yıl</option><option value="3">3 Yıl</option><option value="4">4 Yıl</option><option value="5">5 Yıl</option><option value="6">6 Yıl</option><option value="7">7 Yıl</option><option value="8">8 Yıl</option><option value="9">9 Yıl</option><option value="10">10-14 Yıl</option><option value="15">15-19 Yıl</option><option value="20">20+ Yıl</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Net Maaş (₺)</label>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Net Maaş (₺)</label>
                         <input type="number" id="salary" required placeholder="Örn: 32000" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-lg font-bold text-slate-800">
                     </div>
 
                     <div class="pt-4">
                         <button type="submit" id="submitBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl transition shadow-lg flex items-center justify-center gap-3 text-lg">
-                            <span>Analizi Gör</span>
-                            <i class="fa-solid fa-arrow-right"></i>
+                            <span>Veriyi Kaydet</span> <i class="fa-solid fa-paper-plane"></i>
                         </button>
                     </div>
                 </form>
             </div>
         </section>
 
-        <!-- RESULTS SECTION -->
+        <!-- Results Section -->
         <section id="results-section" class="hidden space-y-8 pb-12">
-            
-            <div class="flex flex-col md:flex-row justify-between items-end gap-4 border-b border-indigo-200/50 pb-4 mb-6">
+            <div class="flex flex-col md:flex-row justify-between items-end gap-4 border-b border-indigo-200 pb-4 mb-6">
                 <div>
-                    <h2 class="text-3xl font-extrabold text-slate-800">Analiz Sonuçları</h2>
-                    <p class="text-slate-500 mt-1 text-sm font-medium">
-                        Analize dahil edilen kişi sayısı: <span id="total-participants" class="text-indigo-600 font-bold">--</span>
-                    </p>
+                    <h2 class="text-3xl font-extrabold text-slate-800">Canlı Analiz</h2>
+                    <p class="text-slate-500 text-sm">Toplam Katılımcı: <span id="total-participants" class="text-indigo-600 font-bold">--</span></p>
                 </div>
-                
                 <div class="flex bg-white rounded-lg p-1 shadow-sm border border-slate-200">
-                    <button onclick="switchResultYear('2024')" id="btn-2024" class="px-3 py-1.5 rounded text-sm font-medium text-slate-500 hover:bg-slate-50">2024</button>
-                    <button onclick="switchResultYear('2025')" id="btn-2025" class="px-3 py-1.5 rounded text-sm font-medium bg-indigo-100 text-indigo-700 font-bold">2025</button>
-                    <button onclick="switchResultYear('2026')" id="btn-2026" class="px-3 py-1.5 rounded text-sm font-medium text-slate-500 hover:bg-slate-50">2026</button>
-                    <button onclick="switchResultYear('all')" id="btn-all" class="px-3 py-1.5 rounded text-sm font-bold text-indigo-600 hover:bg-slate-50 border-l border-slate-200 ml-1">Tümü</button>
+                    <button onclick="switchResultYear('2024')" id="btn-2024" class="px-3 py-1.5 rounded text-sm text-slate-500">2024</button>
+                    <button onclick="switchResultYear('2025')" id="btn-2025" class="px-3 py-1.5 rounded text-sm bg-indigo-100 text-indigo-700 font-bold">2025</button>
+                    <button onclick="switchResultYear('2026')" id="btn-2026" class="px-3 py-1.5 rounded text-sm text-slate-500">2026</button>
+                    <button onclick="switchResultYear('all')" id="btn-all" class="px-3 py-1.5 rounded text-sm font-bold text-indigo-600 border-l ml-1">Tümü</button>
                 </div>
             </div>
 
-            <!-- AI Panel -->
-            <div class="bg-white rounded-2xl shadow border border-indigo-100 p-4 mb-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-bold text-indigo-800 flex items-center gap-2"><i class="fa-solid fa-robot"></i> Barış Öğretmen AI</h3>
-                    <span class="text-[10px] text-slate-400 bg-slate-100 px-2 py-1 rounded">Beta</span>
-                </div>
+            <!-- AI Buttons -->
+            <div class="bg-white rounded-2xl shadow p-4 mb-6 border border-indigo-100">
+                <div class="flex items-center gap-2 mb-3"><i class="fa-solid fa-wand-magic-sparkles text-indigo-600"></i> <h3 class="font-bold text-indigo-900">AI Asistanı</h3></div>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                    <button onclick="attemptAiAction('salary')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3 py-2 rounded-lg text-xs font-bold transition">Maaş Yorumla</button>
-                    <button onclick="attemptAiAction('negotiation')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3 py-2 rounded-lg text-xs font-bold transition">Pazarlık Koçu</button>
-                    <button onclick="attemptAiAction('parent_comm')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3 py-2 rounded-lg text-xs font-bold transition">Veli Mesajı</button>
-                    <button onclick="attemptAiAction('activity_idea')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3 py-2 rounded-lg text-xs font-bold transition">Etkinlik Öner</button>
+                    <button onclick="attemptAiAction('salary')" class="bg-indigo-50 text-indigo-700 px-3 py-2 rounded text-xs font-bold hover:bg-indigo-100 transition">Maaş Yorumla</button>
+                    <button onclick="attemptAiAction('negotiation')" class="bg-indigo-50 text-indigo-700 px-3 py-2 rounded text-xs font-bold hover:bg-indigo-100 transition">Pazarlık Koçu</button>
+                    <button onclick="attemptAiAction('parent_comm')" class="bg-indigo-50 text-indigo-700 px-3 py-2 rounded text-xs font-bold hover:bg-indigo-100 transition">Veli Mesajı</button>
+                    <button onclick="attemptAiAction('activity_idea')" class="bg-indigo-50 text-indigo-700 px-3 py-2 rounded text-xs font-bold hover:bg-indigo-100 transition">Etkinlik Öner</button>
                 </div>
-                <div id="ai-result-container" class="hidden mt-4 p-4 bg-slate-50 rounded-lg text-sm text-slate-700 border border-slate-200">
-                    <div id="ai-loading" class="hidden text-center"><i class="fa-solid fa-spinner fa-spin text-indigo-600"></i> Düşünüyor...</div>
-                    <div id="ai-content"></div>
-                    <div id="ai-error" class="hidden text-red-600 font-bold"></div>
-                </div>
+                <div id="ai-result-container" class="hidden mt-3 p-3 bg-slate-50 rounded text-sm border border-slate-200"><div id="ai-content"></div></div>
             </div>
 
             <!-- Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div class="stat-card bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-                    <p class="text-xs text-slate-400 font-bold">Filtrelenen</p>
-                    <p class="text-2xl font-extrabold text-slate-800" id="stat-count">0</p>
-                </div>
-                <div class="stat-card bg-indigo-600 p-5 rounded-xl shadow-lg text-white">
-                    <p class="text-xs text-indigo-200 font-bold">Ortalama</p>
-                    <p class="text-2xl font-extrabold" id="stat-avg">-- ₺</p>
-                </div>
-                <div class="stat-card bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-                    <p class="text-xs text-slate-400 font-bold">Medyan</p>
-                    <p class="text-2xl font-extrabold text-indigo-600" id="stat-median">-- ₺</p>
-                </div>
-                <div class="stat-card bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-                    <p class="text-xs text-slate-400 font-bold">Maksimum</p>
-                    <p class="text-2xl font-extrabold text-emerald-600" id="stat-max">-- ₺</p>
-                </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white p-4 rounded-xl border shadow-sm"><p class="text-xs text-slate-400 font-bold">Filtrelenen</p><p class="text-xl font-extrabold" id="stat-count">0</p></div>
+                <div class="bg-indigo-600 p-4 rounded-xl shadow-lg text-white"><p class="text-xs text-indigo-200 font-bold">Ortalama</p><p class="text-xl font-extrabold" id="stat-avg">--</p></div>
+                <div class="bg-white p-4 rounded-xl border shadow-sm"><p class="text-xs text-slate-400 font-bold">Medyan</p><p class="text-xl font-extrabold text-indigo-600" id="stat-median">--</p></div>
+                <div class="bg-white p-4 rounded-xl border shadow-sm"><p class="text-xs text-slate-400 font-bold">Maksimum</p><p class="text-xl font-extrabold text-green-600" id="stat-max">--</p></div>
             </div>
 
             <!-- Charts -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
-                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
-                    <div class="h-64"><canvas id="districtChart"></canvas></div>
-                </div>
-                <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
-                    <div class="h-64"><canvas id="expChart"></canvas></div>
-                </div>
+                <div class="bg-white p-4 rounded-xl border shadow-sm h-64"><canvas id="districtChart"></canvas></div>
+                <div class="bg-white p-4 rounded-xl border shadow-sm h-64"><canvas id="expChart"></canvas></div>
             </div>
 
-            <!-- List -->
-            <div class="mt-8 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                <div class="bg-slate-50 px-6 py-3 border-b border-slate-200 font-bold text-slate-700 text-sm">
-                    <i class="fa-solid fa-list mr-2"></i> Son Veriler
-                </div>
+            <!-- Live List -->
+            <div class="mt-8 bg-white rounded-xl border shadow-sm overflow-hidden">
+                <div class="bg-slate-50 px-6 py-3 border-b font-bold text-slate-700 text-sm">Son Veriler</div>
                 <div class="overflow-x-auto max-h-80 custom-scrollbar">
                     <table class="w-full text-left text-sm text-slate-600">
-                        <thead class="bg-slate-50 text-xs uppercase font-semibold text-slate-500 sticky top-0">
-                            <tr>
-                                <th class="px-6 py-3 border-b">Rumuz</th>
-                                <th class="px-6 py-3 border-b">Branş</th>
-                                <th class="px-6 py-3 border-b">İlçe</th>
-                                <th class="px-6 py-3 border-b">Yıl</th>
-                                <th class="px-6 py-3 border-b">Maaş</th>
-                                <th class="px-6 py-3 border-b admin-controls text-right">Yönetim</th>
-                            </tr>
-                        </thead>
+                        <thead class="bg-slate-50 text-xs uppercase sticky top-0"><tr><th class="px-4 py-2">Rumuz</th><th class="px-4 py-2">İlçe</th><th class="px-4 py-2">Maaş</th><th class="px-4 py-2 admin-controls">İşlem</th></tr></thead>
                         <tbody id="live-feed-body" class="divide-y divide-slate-100"></tbody>
                     </table>
                 </div>
             </div>
 
             <div class="text-center mt-8">
-                <button onclick="showFormAgain()" class="bg-slate-200 text-slate-700 px-6 py-3 rounded-full font-bold hover:bg-slate-300 transition">
-                    <i class="fa-solid fa-arrow-left mr-2"></i> Yeni Veri Gir
-                </button>
+                <button onclick="showFormAgain()" class="bg-slate-200 text-slate-700 px-6 py-3 rounded-full font-bold hover:bg-slate-300 transition">Yeni Veri Gir</button>
             </div>
-
         </section>
-
     </main>
 
-    <footer class="bg-white border-t border-slate-200 mt-12 py-10">
-        <div class="container mx-auto px-4 text-center">
-            <p class="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 text-lg mb-4">Barış Öğretmen Projesi</p>
-            <div class="max-w-lg mx-auto mb-6 bg-slate-50 p-4 rounded-xl border border-slate-100">
+    <footer class="bg-white border-t mt-12 py-8 text-center">
+        <div class="container mx-auto px-4">
+            <p class="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 text-lg">Barış Öğretmen Projesi</p>
+            <div class="max-w-lg mx-auto mb-6 bg-slate-50 p-4 rounded-xl border border-slate-100 mt-4">
                 <p class="text-slate-600 text-sm italic">"Ben de sizin gibi bir rehabilitasyon merkezi çalışanı olarak, üç yıldır sektörün tüm branşlarına yönelik dijital eğitim içerikleri üretiyorum."</p>
             </div>
             <p class="text-[10px] text-slate-400">Veriler anonimdir. Sistem kâr amacı gütmez.</p>
@@ -380,182 +264,134 @@
     </footer>
 
     <!-- Modals -->
-    <div id="api-modal" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 modal-overlay" onclick="toggleApiKeyModal()"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl p-6 w-full max-w-sm shadow-2xl">
-            <h3 class="font-bold text-lg mb-3">API Ayarları</h3>
-            <input type="password" id="user-api-key" placeholder="Google Gemini API Key..." class="w-full px-3 py-2 border rounded mb-3">
-            <button onclick="saveApiKey()" class="w-full bg-indigo-600 text-white py-2 rounded font-bold">Kaydet</button>
-        </div>
-    </div>
+    <div id="api-modal" class="fixed inset-0 z-50 hidden"><div class="absolute inset-0 modal-overlay" onclick="toggleApiKeyModal()"></div><div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl p-6 w-80 shadow-2xl"><h3 class="font-bold mb-3">API Anahtarı</h3><p class="text-xs text-slate-500 mb-2">Yapay zeka özelliklerini kullanmak için (ücretsiz) Google Gemini API anahtarınızı giriniz.</p><input type="password" id="user-api-key" placeholder="AIzaSy..." class="w-full border rounded mb-3 p-2"><button onclick="saveApiKey()" class="w-full bg-indigo-600 text-white py-2 rounded font-bold">Kaydet</button></div></div>
+    
+    <div id="admin-modal" class="fixed inset-0 z-50 hidden"><div class="absolute inset-0 modal-overlay" onclick="toggleAdminModal()"></div><div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl p-6 w-64 shadow-2xl text-center"><h3 class="font-bold mb-3">Yönetici</h3><button onclick="performAdminLogin()" class="bg-slate-800 text-white px-4 py-2 rounded font-bold text-sm">Giriş</button></div></div>
 
-    <!-- Admin Login -->
-    <div id="admin-modal" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 modal-overlay" onclick="toggleAdminModal()"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl p-6 w-64 shadow-2xl text-center">
-            <i class="fa-solid fa-user-secret text-4xl text-slate-700 mb-4"></i>
-            <p class="text-sm font-bold text-slate-600 mb-4">Yönetici Modunu Aç</p>
-            <button onclick="performAdminLogin()" class="bg-slate-800 text-white px-4 py-2 rounded font-bold text-sm">Giriş Yap</button>
-        </div>
-    </div>
-
-    <!-- Application Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Global Utility Functions (Defined first to be available)
-        window.saveApiKey = function() {
-            const k = document.getElementById('user-api-key').value.trim();
-            if(k) {
-                localStorage.setItem('ist_rehab_user_api_key', k);
-                window.toggleApiKeyModal();
-                alert("Anahtar kaydedildi.");
-            }
-        };
-
-        window.toggleApiKeyModal = function() {
-            const m = document.getElementById('api-modal');
-            m.classList.toggle('hidden');
-        };
-
-        window.toggleAdminModal = function() {
-            const m = document.getElementById('admin-modal');
-            m.classList.toggle('hidden');
-        };
-
-        window.showFormAgain = function() {
+        // --- GLOBAL FUNCTIONS ---
+        window.toggleApiKeyModal = () => document.getElementById('api-modal').classList.toggle('hidden');
+        window.toggleAdminModal = () => document.getElementById('admin-modal').classList.toggle('hidden');
+        window.showFormAgain = () => {
             document.getElementById('results-section').classList.add('hidden');
             document.getElementById('notification-area').classList.add('hidden');
             document.getElementById('entry-section').classList.remove('hidden');
             window.scrollTo({top:0, behavior:'smooth'});
         };
-
-        // Configuration
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-            apiKey: "API_KEY_YOK",
-            authDomain: "demo.firebaseapp.com",
-            projectId: "demo-project"
+        window.saveApiKey = () => {
+            const k = document.getElementById('user-api-key').value.trim();
+            if(k) { localStorage.setItem('ist_rehab_user_api_key', k); toggleApiKeyModal(); alert("Kaydedildi."); }
         };
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'demo-app';
 
-        let app, auth, db;
-        let useLocalStorage = false;
-        let globalData = [];
-        let currentRole, currentDistrict, currentExp, currentSalary;
-        let currentViewYear = '2025';
-        let isAdmin = false;
+        // --- CONFIGURATION ---
+        // SADECE VERİ TABANI ANAHTARI (SİZİN BİLGİLERİNİZ)
+        // AI Anahtarı (apiKey) buraya DEĞİL, kullanıcının ayarlarına girecek.
+        const firebaseConfig = {
+            apiKey: "AIzaSyAjP5jpALGYWIh8HJmkz9L1x8IikgMxsm4", 
+            authDomain: "77854.firebaseapp.com",
+            projectId: "77854",
+            storageBucket: "77854.firebasestorage.app",
+            messagingSenderId: "77854",
+            appId: "baris-ogretmen-app" 
+        };
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'baris-ogretmen-app';
+
+        // --- APP LOGIC ---
+        let db, auth;
+        let globalData = [], user = null, isAdmin = false;
+        let currentRole, currentDistrict, currentExp, currentSalary, currentViewYear='2025';
         let chartInstances = {};
-        let user = null;
+        let useLocalStorage = false;
 
         const DISTRICTS = ["Adalar", "Arnavutköy", "Ataşehir", "Avcılar", "Bağcılar", "Bahçelievler", "Bakırköy", "Başakşehir", "Bayrampaşa", "Beşiktaş", "Beykoz", "Beylikdüzü", "Beyoğlu", "Büyükçekmece", "Çatalca", "Çekmeköy", "Esenler", "Esenyurt", "Eyüpsultan", "Fatih", "Gaziosmanpaşa", "Güngören", "Kadıköy", "Kağıthane", "Kartal", "Küçükçekmece", "Maltepe", "Pendik", "Sancaktepe", "Sarıyer", "Silivri", "Sultanbeyli", "Sultangazi", "Şile", "Şişli", "Tuzla", "Ümraniye", "Üsküdar", "Zeytinburnu"];
         const MIN_WAGE = { '2024': 17002, '2025': 22104, '2026': 28075 };
-        const ADMIN_HASH = "2070366657"; 
 
         async function initApp() {
             populateSelects();
             
             try {
-                if(firebaseConfig.apiKey === "API_KEY_YOK") throw new Error("Config Missing");
-                app = initializeApp(firebaseConfig);
+                // Check if config is dummy
+                if(firebaseConfig.apiKey === "API_KEY_YOK") throw new Error("Config not set");
+
+                const app = initializeApp(firebaseConfig);
                 auth = getAuth(app);
                 db = getFirestore(app);
-                
-                // Robust Auth Logic
-                try {
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        await signInWithCustomToken(auth, __initial_auth_token);
-                    } else {
-                        await signInAnonymously(auth);
-                    }
-                } catch(e) {
-                    console.warn("Primary auth failed, trying anonymous fallback:", e);
-                    await signInAnonymously(auth);
-                }
 
+                try {
+                    await signInAnonymously(auth);
+                } catch(authErr) {
+                    console.warn("Auth fallback", authErr);
+                }
+                
                 onAuthStateChanged(auth, (u) => {
                     user = u;
                     if(u) {
-                        startDataListener();
-                        startAnnouncementListener();
-                        document.getElementById('connection-status').innerHTML = '<span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> Canlı Veri';
+                        startListeners();
+                        document.getElementById('connection-status').innerHTML = '<span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> Canlı';
+                    } else {
+                        switchToLocalMode("Giriş Yapılamadı");
                     }
                 });
 
-                // Safety Timeout
                 setTimeout(() => {
-                    if(document.getElementById('global-loader').style.display !== 'none') {
-                        document.getElementById('loader-text').innerText = "Bağlantı Yavaş...";
+                    if(document.getElementById('global-loader').style.display !== 'none' && !useLocalStorage) {
+                        document.getElementById('loader-text').innerText = "Bağlantı Gecikiyor...";
                         document.getElementById('manual-start-btn').classList.remove('hidden');
                     }
-                }, 4000);
+                }, 5000);
 
             } catch(e) {
-                console.log("Firebase init failed, switching to Local Storage mode.");
-                switchToLocalMode();
+                console.log("Firebase init failed, switching to Local Storage.", e);
+                switchToLocalMode("Ayarlar Hatalı");
             }
 
-            // Bind Events
             document.getElementById('salaryForm').addEventListener('submit', handleFormSubmit);
-            
-            // Expose logic functions to window
             window.performAdminLogin = performAdminLogin;
-            window.attemptAiAction = attemptAiAction;
-            window.switchResultYear = switchResultYear;
-            window.deleteEntry = deleteEntry;
             window.adminLogout = adminLogout;
             window.postAnnouncement = postAnnouncement;
-            window.forceStartApp = () => { switchToLocalMode(); };
+            window.deleteEntry = deleteEntry;
+            window.switchResultYear = switchResultYear;
+            window.attemptAiAction = attemptAiAction;
+            window.forceStartApp = () => switchToLocalMode("Manuel Başlatma");
         }
 
-        function switchToLocalMode() {
+        function switchToLocalMode(reason) {
+            if(useLocalStorage) return;
             useLocalStorage = true;
             document.getElementById('global-loader').style.display = 'none';
             document.getElementById('connection-status').innerHTML = '<span class="w-2 h-2 bg-amber-400 rounded-full"></span> Çevrimdışı';
             const stored = localStorage.getItem('ist_rehab_local_data');
             if(stored) globalData = JSON.parse(stored);
-            updateDashboard();
-            updateLiveFeed();
+            const announcement = document.getElementById('admin-announcement');
+            announcement.classList.remove('hidden');
+            announcement.innerHTML = `<div class="p-2 text-amber-800"><i class="fa-solid fa-triangle-exclamation"></i> <strong>Çevrimdışı Mod:</strong> ${reason}. Veriler yerel saklanıyor.</div>`;
         }
 
-        function startDataListener() {
-            // Using correct path structure
+        function startListeners() {
+            if(useLocalStorage) return;
             const q = collection(db, 'artifacts', appId, 'public', 'data', 'salaries');
-            onSnapshot(q, (snapshot) => {
+            onSnapshot(q, (snap) => {
                 globalData = [];
-                snapshot.forEach(doc => globalData.push({ ...doc.data(), docId: doc.id }));
+                snap.forEach(d => globalData.push({ ...d.data(), docId: d.id }));
                 document.getElementById('global-loader').style.display = 'none';
-                
-                const totalEl = document.getElementById('total-participants');
-                if(totalEl) totalEl.innerText = globalData.length;
-
+                document.getElementById('total-participants').innerText = globalData.length;
                 if(!document.getElementById('results-section').classList.contains('hidden')) updateDashboard();
                 updateLiveFeed();
             }, (error) => {
-                console.error("Data fetch error:", error);
-                // If permission denied or other error, fallback
-                if(error.code === 'permission-denied') {
-                     document.getElementById('loader-text').innerText = "Erişim İzni Yok (Oturum Açılmadı)";
-                } else {
-                     switchToLocalMode();
-                }
+                if(error.code === 'permission-denied') switchToLocalMode("İzin Hatası");
+                else switchToLocalMode("Bağlantı Hatası");
             });
-        }
 
-        function startAnnouncementListener() {
-            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'admin_announcement', 'main');
-            onSnapshot(docRef, (docSnap) => {
-                if(docSnap && docSnap.exists()) {
-                    const msg = docSnap.data().text;
-                    if(msg) {
-                        document.getElementById('announcement-text').innerText = msg;
-                        document.getElementById('admin-announcement').classList.remove('hidden');
-                    } else {
-                        document.getElementById('admin-announcement').classList.add('hidden');
-                    }
+            onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'admin_announcement', 'main'), (snap) => {
+                if(snap && snap.exists() && snap.data().text) {
+                    document.getElementById('announcement-text').innerText = snap.data().text;
+                    document.getElementById('admin-announcement').classList.remove('hidden');
                 }
-            }, (err) => console.log("Announcement fetch error", err));
+            }, (e) => {});
         }
 
         async function handleFormSubmit(e) {
@@ -564,28 +400,23 @@
             const salary = parseInt(document.getElementById('salary').value);
             
             if(salary < MIN_WAGE[year]) {
-                alert(`HATA: ${year} yılı için asgari ücretin (${MIN_WAGE[year]} TL) altında giriş yapılamaz.`);
+                alert(`HATA: ${year} yılı asgari ücreti (${MIN_WAGE[year]} TL) altında giriş yapılamaz.`);
                 return;
             }
 
             const data = {
-                year: year,
+                year, salary,
                 nickname: document.getElementById('nickname').value,
                 role: document.getElementById('position').value,
                 district: document.getElementById('district').value,
                 exp: parseFloat(document.getElementById('experience').value),
-                salary: salary,
-                timestamp: Date.now()
+                timestamp: Date.now(),
+                uid: user ? user.uid : 'anon'
             };
 
-            currentRole = data.role;
-            currentDistrict = data.district;
-            currentExp = data.exp;
-            currentSalary = data.salary;
-            currentViewYear = data.year;
+            currentRole = data.role; currentDistrict = data.district; currentExp = data.exp; currentSalary = data.salary; currentViewYear = data.year;
 
             const btn = document.getElementById('submitBtn');
-            const originalText = btn.innerHTML;
             btn.innerHTML = "Kaydediliyor...";
             btn.disabled = true;
 
@@ -598,13 +429,16 @@
                 }
                 finishSubmit();
             } catch(err) {
-                console.error("Submit Error", err);
-                alert("Hata oluştu, yerel moda geçiliyor.");
-                switchToLocalMode();
-                globalData.push(data);
-                finishSubmit();
+                if(!useLocalStorage) {
+                    switchToLocalMode("Yazma Hatası");
+                    globalData.push(data);
+                    localStorage.setItem('ist_rehab_local_data', JSON.stringify(globalData));
+                    finishSubmit();
+                } else {
+                    alert("Hata: " + err.message);
+                }
             } finally {
-                btn.innerHTML = originalText;
+                btn.innerHTML = "Veriyi Kaydet";
                 btn.disabled = false;
             }
         }
@@ -614,188 +448,120 @@
             document.getElementById('notification-area').classList.remove('hidden');
             document.getElementById('results-section').classList.remove('hidden');
             switchResultYear(currentViewYear);
-            document.getElementById('results-section').scrollIntoView({behavior:'smooth'});
+            window.scrollTo({top:0, behavior:'smooth'});
         }
 
         function updateDashboard() {
             if(!currentRole) return;
-            document.getElementById('total-participants').innerText = globalData.length;
-
             let d = globalData.filter(x => x.role === currentRole);
             if(currentViewYear !== 'all') d = d.filter(x => x.year === currentViewYear);
 
             if(d.length === 0) {
-                ['count','avg','median','max'].forEach(id => document.getElementById('stat-'+id).innerText = '-');
+                ['count','avg','median','max'].forEach(k => document.getElementById('stat-'+k).innerText = '-');
                 return;
             }
 
-            const salaries = d.map(x => x.salary).sort((a,b)=>a-b);
+            const salaries = d.map(x=>x.salary).sort((a,b)=>a-b);
             const sum = salaries.reduce((a,b)=>a+b,0);
+            const avg = Math.round(sum/d.length);
             const mid = Math.floor(salaries.length/2);
-            const wageToggle = document.getElementById('wageToggle').checked;
-            let avg = Math.round(sum/d.length);
-            
-            if(wageToggle) avg = Math.round(avg * 1.25);
+            const median = salaries.length%2!==0 ? salaries[mid] : Math.round((salaries[mid-1]+salaries[mid])/2);
 
             document.getElementById('stat-count').innerText = d.length;
-            document.getElementById('stat-avg').innerText = avg.toLocaleString('tr-TR') + ' ₺';
-            document.getElementById('stat-median').innerText = salaries.length%2!==0 ? salaries[mid] : Math.round((salaries[mid-1]+salaries[mid])/2).toLocaleString('tr-TR') + ' ₺';
-            document.getElementById('stat-max').innerText = salaries[salaries.length-1].toLocaleString('tr-TR') + ' ₺';
+            document.getElementById('stat-avg').innerText = avg.toLocaleString() + ' ₺';
+            document.getElementById('stat-median').innerText = median.toLocaleString() + ' ₺';
+            document.getElementById('stat-max').innerText = salaries[salaries.length-1].toLocaleString() + ' ₺';
 
             renderCharts(d);
         }
 
         function renderCharts(data) {
-            const ctx1 = document.getElementById('districtChart');
-            const ctx2 = document.getElementById('expChart');
-            
-            if(chartInstances.d) chartInstances.d.destroy();
-            if(chartInstances.e) chartInstances.e.destroy();
-
-            const distMap = {}; 
-            const expMap = {};
+            const distMap = {}, expMap = {};
             data.forEach(x => {
-                if(!distMap[x.district]) distMap[x.district] = {s:0, c:0};
-                distMap[x.district].s += x.salary; distMap[x.district].c++;
-                
-                if(!expMap[x.exp]) expMap[x.exp] = {s:0, c:0};
-                expMap[x.exp].s += x.salary; expMap[x.exp].c++;
+                if(!distMap[x.district]) distMap[x.district] = {s:0,c:0}; distMap[x.district].s+=x.salary; distMap[x.district].c++;
+                if(!expMap[x.exp]) expMap[x.exp] = {s:0,c:0}; expMap[x.exp].s+=x.salary; expMap[x.exp].c++;
             });
 
-            const dLabels = Object.keys(distMap);
-            const dData = dLabels.map(k => Math.round(distMap[k].s/distMap[k].c));
-            
-            chartInstances.d = new Chart(ctx1, {
+            if(chartInstances.d) chartInstances.d.destroy();
+            chartInstances.d = new Chart(document.getElementById('districtChart'), {
                 type: 'bar',
                 data: {
-                    labels: dLabels,
-                    datasets: [{ label: 'Ortalama Maaş', data: dData, backgroundColor: '#6366f1', borderRadius: 4 }]
+                    labels: Object.keys(distMap),
+                    datasets: [{ label: 'Ortalama', data: Object.keys(distMap).map(k=>Math.round(distMap[k].s/distMap[k].c)), backgroundColor: '#6366f1', borderRadius:4 }]
                 },
-                options: { responsive: true, maintainAspectRatio: false, scales: { x: { display: true, ticks: { maxRotation: 90, font:{size:10} } } } }
+                options: { responsive: true, maintainAspectRatio: false, scales: { x: { display: true, ticks: { maxRotation: 90, font:{size:9} } } } }
             });
 
-            const eLabels = Object.keys(expMap).sort((a,b)=>parseFloat(a)-parseFloat(b));
-            const eData = eLabels.map(k => Math.round(expMap[k].s/expMap[k].c));
-            
-            chartInstances.e = new Chart(ctx2, {
+            if(chartInstances.e) chartInstances.e.destroy();
+            const eKeys = Object.keys(expMap).sort((a,b)=>parseFloat(a)-parseFloat(b));
+            chartInstances.e = new Chart(document.getElementById('expChart'), {
                 type: 'line',
                 data: {
-                    labels: eLabels.map(v => v==0.5?'0-6 Ay':(v==0.8?'6-12 Ay':v+' Yıl')),
-                    datasets: [{ label: 'Maaş Eğrisi', data: eData, borderColor: '#ec4899', tension: 0.4, fill: true, backgroundColor: 'rgba(236, 72, 153, 0.1)' }]
+                    labels: eKeys.map(v=>v==0.5?'0-6 Ay':(v==0.8?'6-12 Ay':v+' Yıl')),
+                    datasets: [{ label: 'Maaş Eğrisi', data: eKeys.map(k=>Math.round(expMap[k].s/expMap[k].c)), borderColor: '#ec4899', tension: 0.4 }]
                 },
                 options: { responsive: true, maintainAspectRatio: false }
             });
         }
 
         function updateLiveFeed() {
-            const tbody = document.getElementById('live-feed-body');
-            tbody.innerHTML = '';
-            const list = [...globalData].sort((a,b) => b.timestamp - a.timestamp).slice(0, 20);
-            list.forEach(item => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="px-6 py-3 font-medium">${item.nickname || '-'}</td>
-                    <td class="px-6 py-3 text-xs text-slate-500">${item.role}</td>
-                    <td class="px-6 py-3">${item.district}</td>
-                    <td class="px-6 py-3">${item.year}</td>
-                    <td class="px-6 py-3 font-bold text-emerald-600">${item.salary} ₺</td>
-                    <td class="px-6 py-3 text-right admin-controls">
-                        ${item.docId ? `<button onclick="deleteEntry('${item.docId}')" class="text-red-500 font-bold text-xs border border-red-200 px-2 py-1 rounded hover:bg-red-50">SİL</button>` : ''}
-                    </td>
-                `;
-                tbody.appendChild(tr);
+            const t = document.getElementById('live-feed-body');
+            t.innerHTML = '';
+            globalData.sort((a,b)=>b.timestamp-a.timestamp).slice(0,20).forEach(d => {
+                t.innerHTML += `<tr class="border-b"><td class="px-4 py-2">${d.nickname}</td><td class="px-4 py-2">${d.district}</td><td class="px-4 py-2 font-bold text-green-600">${d.salary}</td><td class="px-4 py-2 text-right admin-controls"><button onclick="deleteEntry('${d.docId}')" class="text-red-500 text-xs border border-red-200 px-1 rounded">SİL</button></td></tr>`;
             });
         }
 
-        // --- ADMIN & HELPER FUNCTIONS ---
         function performAdminLogin() {
-            const p = prompt("Yönetici Şifresi:");
-            if(simpleHash(p) === ADMIN_HASH) {
-                isAdmin = true;
-                document.body.classList.add('admin-active');
-                window.toggleAdminModal();
-                alert("Giriş Başarılı");
-            } else { alert("Hatalı"); }
+            if(prompt("Şifre:") === "baris2025") { isAdmin=true; document.body.classList.add('admin-active'); toggleAdminModal(); alert("Giriş Başarılı"); } else alert("Hatalı");
         }
-        
-        function simpleHash(str) {
-            let hash = 0;
-            if (str.length === 0) return hash.toString();
-            for (let i = 0; i < str.length; i++) {
-                hash = ((hash << 5) - hash) + str.charCodeAt(i);
-                hash |= 0; 
-            }
-            return hash.toString();
-        }
-
-        function adminLogout() {
-            isAdmin = false;
-            document.body.classList.remove('admin-active');
-        }
-
+        function adminLogout() { isAdmin=false; document.body.classList.remove('admin-active'); }
         async function deleteEntry(id) {
-            if(!isAdmin || useLocalStorage) return;
-            if(confirm("Silinsin mi?")) {
-                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'salaries', id));
+            if(isAdmin && confirm("Silinsin mi?")) {
+                if(useLocalStorage) {
+                    globalData = globalData.filter(d => d.docId !== id);
+                    localStorage.setItem('ist_rehab_local_data', JSON.stringify(globalData));
+                    updateDashboard(); updateLiveFeed();
+                } else {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'salaries', id));
+                }
             }
         }
-
         async function postAnnouncement() {
-            if(!isAdmin) return;
-            const text = document.getElementById('new-announcement').value;
-            try {
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'admin_announcement', 'main'), { text: text, timestamp: Date.now() });
-                alert("Duyuru yayınlandı.");
-                document.getElementById('new-announcement').value = "";
-            } catch(e) {
-                console.error(e);
-                alert("Hata.");
+            if(isAdmin) {
+                const t = document.getElementById('new-announcement').value;
+                if(!useLocalStorage) {
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'admin_announcement', 'main'), { text: t });
+                    alert("Yayınlandı");
+                }
             }
         }
-
         async function attemptAiAction(type) {
-            const key = localStorage.getItem('ist_rehab_user_api_key');
-            if(!key) { window.toggleApiKeyModal(); return; }
-            if(!currentRole) { alert("Veri giriniz."); return; }
-
-            const div = document.getElementById('ai-result-container');
-            const content = document.getElementById('ai-content');
-            div.classList.remove('hidden');
+            const k = localStorage.getItem('ist_rehab_user_api_key');
+            if(!k) { toggleApiKeyModal(); return; }
+            document.getElementById('ai-result-container').classList.remove('hidden');
             document.getElementById('ai-loading').classList.remove('hidden');
-            content.innerHTML = "";
-
-            const prompt = `Rol: ${currentRole}, İlçe: ${currentDistrict}, Maaş: ${currentSalary}, Yıl: ${currentViewYear}. 
-            GÖREV: ${type === 'salary' ? 'Maaşı piyasaya göre yorumla.' : (type === 'negotiation' ? 'Pazarlık taktiği ver.' : (type === 'parent_comm' ? 'Veliye mesaj taslağı yaz.' : 'Etkinlik öner.'))} Türkçe cevap ver.`;
-
+            document.getElementById('ai-content').innerHTML = "";
+            
             try {
-                const req = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${key}`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${k}`, {
+                    method: 'POST', headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ contents: [{ parts: [{ text: `Rol: ${currentRole}, İlçe: ${currentDistrict}, Maaş: ${currentSalary}. GÖREV: ${type} hakkında Türkçe kısa tavsiye ver.` }] }] })
                 });
-                const res = await req.json();
-                content.innerHTML = marked.parse(res.candidates[0].content.parts[0].text);
-            } catch(e) {
-                content.innerHTML = "Hata: API Anahtarını kontrol et.";
-            } finally {
-                document.getElementById('ai-loading').classList.add('hidden');
-            }
+                const j = await res.json();
+                document.getElementById('ai-content').innerHTML = marked.parse(j.candidates[0].content.parts[0].text);
+            } catch(e) { document.getElementById('ai-content').innerText = "Hata: " + e.message; }
+            finally { document.getElementById('ai-loading').classList.add('hidden'); }
         }
 
         function populateSelects() {
             const el = document.getElementById('district');
-            DISTRICTS.forEach(d => {
-                const opt = document.createElement('option');
-                opt.value = d; opt.innerText = d;
-                el.appendChild(opt);
-            });
+            DISTRICTS.forEach(d => { const o=document.createElement('option'); o.value=d; o.innerText=d; el.appendChild(o); });
         }
-
         function switchResultYear(y) {
             currentViewYear = y;
             ['2024','2025','2026','all'].forEach(x => {
-                const b = document.getElementById('btn-'+x);
-                b.className = (x===y) ? "px-3 py-1.5 rounded text-sm font-bold bg-indigo-100 text-indigo-700 transition" : "px-3 py-1.5 rounded text-sm font-medium text-slate-500 hover:bg-slate-50 transition";
+                document.getElementById('btn-'+x).className = (x===y) ? "px-3 py-1.5 rounded text-sm bg-indigo-100 text-indigo-700 font-bold" : "px-3 py-1.5 rounded text-sm text-slate-500 hover:bg-slate-50 transition";
             });
             updateDashboard();
         }
