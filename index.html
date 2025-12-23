@@ -288,14 +288,13 @@
         };
 
         // --- CONFIGURATION ---
-        // SADECE VERİ TABANI ANAHTARI (SİZİN BİLGİLERİNİZ)
-        // AI Anahtarı (apiKey) buraya DEĞİL, kullanıcının ayarlarına girecek.
+        // SİZİN GİRDİĞİNİZ BİLGİLER
         const firebaseConfig = {
             apiKey: "AIzaSyAjP5jpALGYWIh8HJmkz9L1x8IikgMxsm4", 
-            authDomain: "77854.firebaseapp.com",
-            projectId: "77854",
-            storageBucket: "77854.firebasestorage.app",
-            messagingSenderId: "77854",
+            authDomain: "sekilli-totem-481514-c5.firebaseapp.com",
+            projectId: "sekilli-totem-481514-c5",
+            storageBucket: "sekilli-totem-481514-c5.firebasestorage.app",
+            messagingSenderId: "519295049418",
             appId: "baris-ogretmen-app" 
         };
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'baris-ogretmen-app';
@@ -314,8 +313,10 @@
             populateSelects();
             
             try {
-                // Check if config is dummy
-                if(firebaseConfig.apiKey === "API_KEY_YOK") throw new Error("Config not set");
+                // If config is placeholder, force local mode immediately
+                if(firebaseConfig.apiKey.includes("API_KEY_YOK")) {
+                     throw new Error("Ayarlar Eksik");
+                }
 
                 const app = initializeApp(firebaseConfig);
                 auth = getAuth(app);
@@ -345,7 +346,7 @@
                 }, 5000);
 
             } catch(e) {
-                console.log("Firebase init failed, switching to Local Storage.", e);
+                console.log("Firebase Error", e);
                 switchToLocalMode("Ayarlar Hatalı");
             }
 
@@ -538,20 +539,35 @@
         }
         async function attemptAiAction(type) {
             const k = localStorage.getItem('ist_rehab_user_api_key');
-            if(!k) { toggleApiKeyModal(); return; }
-            document.getElementById('ai-result-container').classList.remove('hidden');
+            
+            // Eğer kullanıcı kendi anahtarını girmemişse uyar ve dur.
+            if(!k) { 
+                window.toggleApiKeyModal(); 
+                alert("Lütfen yapay zeka özellikleri için kendi ücretsiz Google Gemini anahtarınızı giriniz.");
+                return; 
+            }
+
+            if(!currentRole) { alert("Veri giriniz."); return; }
+
+            const div = document.getElementById('ai-result-container');
+            const content = document.getElementById('ai-content');
+            div.classList.remove('hidden');
             document.getElementById('ai-loading').classList.remove('hidden');
-            document.getElementById('ai-content').innerHTML = "";
+            content.innerHTML = "";
             
             try {
                 const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${k}`, {
                     method: 'POST', headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({ contents: [{ parts: [{ text: `Rol: ${currentRole}, İlçe: ${currentDistrict}, Maaş: ${currentSalary}. GÖREV: ${type} hakkında Türkçe kısa tavsiye ver.` }] }] })
                 });
+                
                 const j = await res.json();
+                if(j.error) throw new Error(j.error.message);
+                
                 document.getElementById('ai-content').innerHTML = marked.parse(j.candidates[0].content.parts[0].text);
-            } catch(e) { document.getElementById('ai-content').innerText = "Hata: " + e.message; }
-            finally { document.getElementById('ai-loading').classList.add('hidden'); }
+            } catch(e) { 
+                document.getElementById('ai-content').innerHTML = `<span class="text-red-500">Hata: ${e.message}</span>`;
+            } finally { document.getElementById('ai-loading').classList.add('hidden'); }
         }
 
         function populateSelects() {
