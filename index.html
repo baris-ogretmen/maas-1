@@ -73,8 +73,8 @@
     <!-- Loader -->
     <div id="global-loader">
         <div class="w-16 h-16 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
-        <p class="mt-4 text-indigo-900 font-bold text-lg animate-pulse" id="loader-text">Canlı Havuza Bağlanılıyor...</p>
-        <p class="text-xs text-slate-500 mt-2" id="loader-subtext">Veriler bekleniyor</p>
+        <p class="mt-4 text-indigo-900 font-bold text-lg animate-pulse" id="loader-text">Ortak Havuza Bağlanılıyor...</p>
+        <p class="text-xs text-slate-500 mt-2" id="loader-subtext">Veriler yükleniyor</p>
     </div>
 
     <!-- Header -->
@@ -90,8 +90,8 @@
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <span id="connection-status" class="flex items-center gap-2 bg-black/20 px-3 py-1.5 rounded-full text-xs font-bold border border-white/10 backdrop-blur-md transition-all duration-500">
-                    <span id="status-dot" class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span> <span class="hidden md:inline" id="status-text">Bağlanıyor...</span>
+                <span id="connection-status" class="flex items-center gap-2 bg-black/20 px-3 py-1.5 rounded-full text-xs font-bold border border-white/10 backdrop-blur-md">
+                    <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> <span class="hidden md:inline">Canlı Bağlantı</span>
                 </span>
             </div>
         </div>
@@ -110,6 +110,9 @@
                 <div class="flex gap-2">
                     <input type="text" id="new-announcement" placeholder="Duyuru metni..." class="flex-grow px-4 py-2 rounded bg-slate-700 border border-slate-600 text-white text-sm focus:outline-none focus:border-amber-500">
                     <button onclick="postAnnouncement()" class="bg-amber-600 hover:bg-amber-700 px-6 py-2 rounded text-sm font-bold shadow-lg transition">Yayınla</button>
+                </div>
+                <div class="mt-3 text-[11px] text-slate-400 flex items-center gap-2">
+                    <i class="fa-solid fa-info-circle"></i> Tablodaki [SİL] butonları ile hatalı verileri anında kaldırabilirsiniz.
                 </div>
             </div>
         </section>
@@ -136,7 +139,7 @@
             <div class="grid grid-cols-3 gap-2 max-w-md mx-auto text-xs font-bold text-slate-600">
                 <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200 flex flex-col items-center gap-1">
                     <i class="fa-solid fa-users text-indigo-500 text-xl"></i>
-                    <span>Veri Sayısı: <span id="global-count" class="text-indigo-700">--</span></span>
+                    <span>Veri Sayısı: <span id="global-count" class="text-indigo-700">0</span></span>
                 </div>
                 <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-200 flex flex-col items-center gap-1">
                     <i class="fa-solid fa-bolt text-amber-500 text-xl"></i>
@@ -160,11 +163,8 @@
                 </div>
                 
                 <form id="salaryForm" class="space-y-6">
-                    <div class="bg-blue-50 border border-blue-100 p-4 rounded-xl flex items-start gap-3">
-                        <i class="fa-solid fa-circle-info text-blue-600 mt-1"></i>
-                        <div class="text-xs text-blue-800">
-                            <strong>Veri Doğrulama:</strong> Asgari ücretin altındaki girişler havuza eklenmez.
-                        </div>
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-3 text-xs text-blue-800 rounded-r">
+                        <strong>Kural:</strong> Asgari ücretin altındaki girişler havuza eklenmez. (2024: 17002₺, 2025: 22104₺, 2026: 28075₺)
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
@@ -453,15 +453,20 @@
                 auth = getAuth(app);
                 db = getFirestore(app);
 
-                // Try auth but don't block
+                // Anti-Freeze: Try connect, but don't block UI if it fails
                 signInAnonymously(auth).catch(e => {
                     console.warn("Auth mode failed, proceeding read-only", e);
-                    startListeners(); // Try starting anyway
+                    startListeners(); // Try anyway, rules allow it
+                    document.getElementById('global-loader').style.display = 'none';
                 });
                 
                 onAuthStateChanged(auth, (u) => {
                     user = u;
-                    if(u && !listenersStarted) startListeners();
+                    if(u && !listenersStarted) {
+                        startListeners();
+                        document.getElementById('connection-status').innerHTML = '<span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> <span class="hidden md:inline text-green-700">Canlı</span>';
+                        document.getElementById('global-loader').classList.add('hidden');
+                    }
                 });
 
                 // Fail-safe: Force start listeners if nothing happened in 2s
@@ -469,6 +474,7 @@
                     if(!listenersStarted) {
                         console.log("Forcing listeners start");
                         startListeners();
+                        document.getElementById('global-loader').style.display = 'none';
                     }
                 }, 2000);
 
@@ -490,9 +496,6 @@
             if(listenersStarted) return;
             listenersStarted = true;
             document.getElementById('global-loader').style.display = 'none'; // Hide loader immediately
-
-            // Update UI status
-            document.getElementById('connection-status').innerHTML = '<span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> <span class="hidden md:inline text-green-700">Canlı</span>';
 
             const q = collection(db, 'artifacts', appId, 'public', 'data', 'salaries');
             onSnapshot(q, (snap) => {
@@ -720,7 +723,7 @@
         }
 
         function simpleHash(str) { let h=0; for(let i=0;i<str.length;i++) h=Math.imul(31,h)+str.charCodeAt(i)|0; return h.toString(); }
-        function performAdminLogin() { if(simpleHash(prompt("Şifre:")) === ADMIN_HASH) { isAdmin=true; document.body.classList.add('admin-active'); toggleAdminModal(); alert("Giriş Başarılı"); } else alert("Hatalı"); }
+        function performAdminLogin() { if(simpleHash(prompt("Şifre:")) === ADMIN_HASH) { isAdmin=true; document.body.classList.add('admin-active'); document.getElementById('admin-modal').classList.add('hidden'); alert("Giriş Başarılı"); } else alert("Hatalı"); }
         function adminLogout() { isAdmin=false; document.body.classList.remove('admin-active'); }
         async function deleteEntry(id) { if(isAdmin && confirm("Silinsin mi?")) await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'salaries', id)); }
         async function postAnnouncement() { if(isAdmin) { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'admin_announcement', 'main'), { text: document.getElementById('new-announcement').value }); alert("Yayınlandı"); } }
