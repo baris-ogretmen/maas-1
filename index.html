@@ -4,13 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <!-- Kimlik ve SEO -->
     <title>Canlı Maaş Ağı | Barış Öğretmen</title>
-    <meta name="description" content="Rehabilitasyon sektörü çalışanları için Türkiye'nin ilk ve tek canlı, anonim maaş analiz platformu.">
     <meta name="theme-color" content="#4f46e5">
-    <meta property="og:title" content="Rehabilitasyon Maaş Analizi 📊">
-    <meta property="og:description" content="Sektördeki gerçekleri gör. Canlı, Anonim ve Şeffaf. Tıkla ve katıl.">
-    <meta property="og:type" content="website">
     
     <!-- Kütüphaneler -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -18,51 +13,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
-                    colors: { 
-                        brand: { 
-                            primary: '#6366f1', 
-                            dark: '#1e1b4b',
-                            success: '#10b981'
-                        } 
-                    },
-                    animation: { 'pulse-slow': 'pulse 3s infinite' }
-                }
-            }
-        }
-    </script>
-
     <style>
-        body { 
-            background-color: #f8fafc; 
-            color: #334155; 
-            background-image: radial-gradient(#cbd5e1 1px, transparent 1px); 
-            background-size: 24px 24px; 
-        }
-        .glass-panel { 
-            background: rgba(255, 255, 255, 0.98); 
-            border: 1px solid rgba(255, 255, 255, 1); 
-            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1); 
-        }
-        .gradient-header { 
-            background: linear-gradient(135deg, #4f46e5 0%, #8b5cf6 100%); 
-        }
-        #global-loader { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: #fff; z-index: 9999; 
-            display: flex; justify-content: center; align-items: center; flex-direction: column; 
-            transition: opacity 0.5s;
-        }
+        body { background-color: #f8fafc; color: #1e293b; font-family: 'Outfit', sans-serif; background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 24px 24px; }
+        .glass-panel { background: rgba(255, 255, 255, 0.98); border: 1px solid rgba(255, 255, 255, 1); box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1); }
+        .gradient-header { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); }
+        #global-loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; }
         .modal-overlay { background-color: rgba(15, 23, 42, 0.9); backdrop-filter: blur(5px); }
         .admin-controls { display: none; }
         .admin-active .admin-controls { display: table-cell; }
         .admin-active .admin-section { display: block !important; }
-        
-        /* Modern Scrollbar */
         .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
@@ -70,11 +29,24 @@
 </head>
 <body class="antialiased flex flex-col min-h-screen font-sans">
 
-    <!-- Loader -->
+    <!-- Loader & Connection Status -->
     <div id="global-loader">
         <div class="w-16 h-16 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
-        <p class="mt-4 text-indigo-900 font-bold text-lg animate-pulse" id="loader-text">Ortak Havuza Bağlanılıyor...</p>
-        <p class="text-xs text-slate-500 mt-2" id="loader-subtext">Veriler yükleniyor</p>
+        <p class="mt-4 text-indigo-900 font-bold text-lg animate-pulse" id="loader-text">Canlı Havuza Bağlanılıyor...</p>
+        <p class="text-xs text-slate-500 mt-2" id="loader-subtext">Veriler senkronize ediliyor</p>
+        
+        <!-- Hata Kutusu (Bağlantı Olmazsa Görünür) -->
+        <div id="error-box" class="hidden mt-6 p-4 bg-red-50 border-l-4 border-red-500 text-left max-w-md mx-4 shadow-lg">
+            <h4 class="font-bold text-red-700 text-sm mb-1"><i class="fa-solid fa-triangle-exclamation"></i> Bağlantı Sorunu Tespit Edildi</h4>
+            <p id="error-detail" class="text-xs text-red-600 mb-3">...</p>
+            <div class="bg-white p-2 rounded text-[10px] font-mono text-slate-600 border border-slate-200 overflow-x-auto">
+                <strong>Çözüm İçin Firebase Konsolu'nda Yapılması Gerekenler:</strong><br>
+                1. <strong>Authentication > Sign-in method</strong> sekmesinde <strong>"Anonymous"</strong> (Anonim) seçeneğini <strong>Etkinleştir (Enable)</strong> yapın.<br>
+                2. <strong>Firestore Database > Rules</strong> sekmesinde kodu şu şekilde değiştirip <strong>Yayınla (Publish)</strong> deyin:<br>
+                <code class="text-blue-600">allow read, write: if true;</code>
+            </div>
+            <button onclick="location.reload()" class="mt-4 w-full bg-red-600 text-white py-2 rounded font-bold text-xs hover:bg-red-700">Tekrar Dene</button>
+        </div>
     </div>
 
     <!-- Header -->
@@ -91,7 +63,7 @@
             </div>
             <div class="flex items-center gap-2">
                 <span id="connection-status" class="flex items-center gap-2 bg-black/20 px-3 py-1.5 rounded-full text-xs font-bold border border-white/10 backdrop-blur-md">
-                    <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> <span class="hidden md:inline">Canlı Bağlantı</span>
+                    <span id="status-dot" class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span> <span class="hidden md:inline" id="status-text">Bağlanıyor...</span>
                 </span>
             </div>
         </div>
@@ -155,7 +127,7 @@
         <!-- Form -->
         <section id="entry-section" class="max-w-xl mx-auto">
             <div class="glass-panel rounded-3xl p-6 md:p-8 shadow-2xl border-t-4 border-indigo-500 relative overflow-hidden">
-                <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center justify-between mb-8">
                     <h3 class="text-xl font-bold text-slate-800 flex items-center gap-3">
                         <div class="bg-indigo-100 p-2.5 rounded-xl text-indigo-600"><i class="fa-solid fa-pen-to-square"></i></div> 
                         Veri Girişi
@@ -164,7 +136,7 @@
                 
                 <form id="salaryForm" class="space-y-6">
                     <div class="bg-blue-50 border-l-4 border-blue-500 p-3 text-xs text-blue-800 rounded-r">
-                        <strong>Kural:</strong> Asgari ücretin altındaki girişler havuza eklenmez. (2024: 17002₺, 2025: 22104₺, 2026: 28075₺)
+                        <strong>Kural:</strong> Asgari ücretin (17.002₺) altındaki girişler havuza eklenmez.
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
@@ -422,7 +394,7 @@
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // GLOBAL FUNCTIONS
+        // GLOBAL CONFIG
         window.toggleAdminModal = () => document.getElementById('admin-modal').classList.toggle('hidden');
         window.showFormAgain = () => { document.getElementById('results-section').classList.add('hidden'); document.getElementById('entry-section').classList.remove('hidden'); window.scrollTo(0,0); };
 
@@ -453,34 +425,41 @@
                 auth = getAuth(app);
                 db = getFirestore(app);
 
-                // Anti-Freeze: Try connect, but don't block UI if it fails
+                // FORCE START: Don't wait for auth. 
+                // If the user didn't enable "Anonymous Auth" in Firebase Console, 
+                // we still try to read/write because Firestore rules might be public.
                 signInAnonymously(auth).catch(e => {
-                    console.warn("Auth mode failed, proceeding read-only", e);
-                    startListeners(); // Try anyway, rules allow it
-                    document.getElementById('global-loader').style.display = 'none';
+                    console.warn("Auth blocked/failed, proceeding in unauthenticated mode", e);
+                    // Force start listeners even if auth fails
+                    startListeners();
                 });
                 
                 onAuthStateChanged(auth, (u) => {
                     user = u;
-                    if(u && !listenersStarted) {
-                        startListeners();
-                        document.getElementById('connection-status').innerHTML = '<span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> <span class="hidden md:inline text-green-700">Canlı</span>';
-                        document.getElementById('global-loader').classList.add('hidden');
-                    }
+                    // If auth succeeds, great. If not, we already tried starting listeners.
+                    if(u && !listenersStarted) startListeners();
                 });
 
-                // Fail-safe: Force start listeners if nothing happened in 2s
+                // Fail-safe: Always remove loader after 2s
                 setTimeout(() => {
-                    if(!listenersStarted) {
-                        console.log("Forcing listeners start");
-                        startListeners();
-                        document.getElementById('global-loader').style.display = 'none';
-                    }
+                    document.getElementById('global-loader').style.display = 'none';
+                    if(!listenersStarted) startListeners(); 
                 }, 2000);
 
             } catch(e) {
                 console.error("Init Error", e);
-                document.getElementById('global-loader').style.display = 'none'; // Open app anyway
+                // Even on critical error, remove loader so user isn't stuck
+                document.getElementById('global-loader').style.display = 'none';
+                
+                // Show a clear error message in place of the loader text IF it's still visible
+                const statusEl = document.getElementById('connection-status');
+                if(statusEl) statusEl.innerHTML = '<span class="w-2 h-2 bg-red-500 rounded-full"></span> <span class="text-red-300">Bağlantı Hatası</span>';
+                
+                // Show specific error if user is admin or on console
+                const errorBox = document.createElement('div');
+                errorBox.className = "fixed bottom-4 right-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-lg z-50 text-xs";
+                errorBox.innerHTML = `<strong>Bağlantı Hatası:</strong><br>${e.message}<br>Lütfen Firebase Console'dan "Anonymous Auth" ve "Firestore Rules" ayarlarını kontrol ediniz.`;
+                document.body.appendChild(errorBox);
             }
 
             document.getElementById('salaryForm').addEventListener('submit', handleFormSubmit);
@@ -495,7 +474,10 @@
         function startListeners() {
             if(listenersStarted) return;
             listenersStarted = true;
-            document.getElementById('global-loader').style.display = 'none'; // Hide loader immediately
+            
+            // Update UI status to show we are live
+            const statusEl = document.getElementById('connection-status');
+            if(statusEl) statusEl.innerHTML = '<span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> <span class="hidden md:inline text-green-200">Canlı</span>';
 
             const q = collection(db, 'artifacts', appId, 'public', 'data', 'salaries');
             onSnapshot(q, (snap) => {
@@ -511,7 +493,16 @@
 
                 if(!document.getElementById('results-section').classList.contains('hidden')) updateDashboard();
                 updateLiveFeed();
-            }, (err) => console.log("Stream error (harmless)", err));
+            }, (err) => {
+                 console.log("Stream error (likely permission)", err);
+                 // If permission error, show alert ONCE
+                 if(err.code === 'permission-denied') {
+                     const errorBox = document.createElement('div');
+                     errorBox.className = "fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-6 py-3 rounded-full shadow-2xl z-50 font-bold text-sm animate-bounce";
+                     errorBox.innerHTML = "<i class='fa-solid fa-lock'></i> ERİŞİM REDDEDİLDİ: Lütfen Yöneticiye Bildirin (Firebase Kuralları Kapalı)";
+                     document.body.appendChild(errorBox);
+                 }
+            });
 
             // Announcement
             onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'admin_announcement', 'main'), (snap) => {
@@ -528,6 +519,9 @@
             const originalText = btn.innerHTML;
             btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> İşleniyor...";
             btn.disabled = true;
+
+            // Wait a tiny bit for UI update
+            await new Promise(r => setTimeout(r, 300));
 
             const year = document.getElementById('year').value;
             const salary = parseInt(document.getElementById('salary').value);
@@ -551,24 +545,33 @@
 
             currentRole = data.role; currentDistrict = data.district; currentExp = data.exp; currentSalary = data.salary; currentViewYear = data.year;
 
-            // Optimistic Update: Don't wait for server
-            // 1. Show results immediately
+            // FIRE AND FORGET STRATEGY for speed
+            // We initiate the write, but immediately show the user the "Success" screen
+            // This prevents "hanging" on slow networks.
+            
+            // 1. Update UI immediately
             document.getElementById('entry-section').classList.add('hidden');
             document.getElementById('results-section').classList.remove('hidden');
             renderLatestEntry(data);
             switchResultYear(currentViewYear);
             window.scrollTo(0,0);
             
-            // 2. Send to server in background
-            try {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'salaries'), data);
-            } catch(err) {
-                console.log("Background save failed, but user saw results.");
-                // We don't alert the user to avoid breaking the flow, data is locally visible in charts via snapshot update anyway
-            } finally {
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }
+            // 2. Perform write in background
+            addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'salaries'), data)
+                .then(() => {
+                    console.log("Write success");
+                })
+                .catch((err) => {
+                    console.error("Write failed:", err);
+                    // If write fails, the user is already on the results screen.
+                    // We can show a toast, or just let them see the cached/live data when it eventually syncs or doesn't.
+                    // For a "no stress" experience, we don't alert unless critical.
+                    // The live listener will NOT update if write failed, which is expected behavior for offline.
+                });
+
+            // Reset button state
+            btn.innerHTML = originalText;
+            btn.disabled = false;
         }
 
         function renderLatestEntry(data) {
@@ -723,7 +726,7 @@
         }
 
         function simpleHash(str) { let h=0; for(let i=0;i<str.length;i++) h=Math.imul(31,h)+str.charCodeAt(i)|0; return h.toString(); }
-        function performAdminLogin() { if(simpleHash(prompt("Şifre:")) === ADMIN_HASH) { isAdmin=true; document.body.classList.add('admin-active'); document.getElementById('admin-modal').classList.add('hidden'); alert("Giriş Başarılı"); } else alert("Hatalı"); }
+        function performAdminLogin() { if(simpleHash(prompt("Şifre:")) === ADMIN_HASH) { isAdmin=true; document.body.classList.add('admin-active'); toggleAdminModal(); alert("Giriş Başarılı"); } else alert("Hatalı"); }
         function adminLogout() { isAdmin=false; document.body.classList.remove('admin-active'); }
         async function deleteEntry(id) { if(isAdmin && confirm("Silinsin mi?")) await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'salaries', id)); }
         async function postAnnouncement() { if(isAdmin) { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'admin_announcement', 'main'), { text: document.getElementById('new-announcement').value }); alert("Yayınlandı"); } }
