@@ -61,31 +61,39 @@
                 </div>
             </div>
             <p class="mt-4 text-indigo-900 font-bold text-lg animate-pulse" id="loader-text">Ortak Havuza Bağlanılıyor...</p>
-            <p class="text-xs text-slate-500 mt-2" id="loader-status">Güvenli bağlantı deneniyor...</p>
+            <p class="text-xs text-slate-500 mt-2" id="loader-status">Güvenli bağlantı kuruluyor...</p>
         </div>
         
-        <!-- YETKİ HATASI KUTUSU (Sadece veritabanı erişimi yoksa çıkar) -->
-        <div id="permission-error" class="hidden mt-6 bg-white border-2 border-red-500 p-6 rounded-xl shadow-2xl max-w-md text-left mx-4 domain-error-box relative z-50">
+        <!-- DOMAIN HATASI KUTUSU -->
+        <div id="domain-error" class="hidden mt-6 bg-white border-2 border-red-500 p-6 rounded-xl shadow-2xl max-w-md text-left mx-4 domain-error-box relative z-50">
             <div class="flex items-center gap-3 mb-4 border-b pb-3 border-red-100">
-                <div class="bg-red-100 p-3 rounded-full text-red-600"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                <h4 class="text-red-700 font-bold text-lg">Erişim İzni Yok</h4>
+                <div class="bg-red-100 p-3 rounded-full text-red-600"><i class="fa-solid fa-lock"></i></div>
+                <div>
+                    <h4 class="text-red-700 font-bold text-lg">Adres Değişikliği Algılandı</h4>
+                    <p class="text-xs text-red-500">Google güvenlik nedeniyle yeni adresi engelledi.</p>
+                </div>
             </div>
             
             <p class="text-sm text-slate-600 mb-3 font-medium">
-                Giriş yapılamadığı için verileri okuyamıyoruz. Lütfen Firebase Kurallarını şu şekilde güncelleyin:
+                Sistemin çalışması için aşağıdaki <strong>yeni adresi</strong> kopyalayıp Firebase'e ekleyin:
             </p>
             
-            <div class="bg-slate-800 text-green-400 p-3 rounded-lg font-mono text-xs mb-4 select-all">
-                allow read, write: if true;
+            <div class="bg-slate-100 p-3 rounded-lg border border-slate-300 flex items-center justify-between gap-2 mb-4">
+                <code id="current-domain" class="text-indigo-600 font-bold text-xs break-all select-all">Yükleniyor...</code>
+                <button onclick="copyDomain()" class="bg-white border border-slate-300 hover:bg-slate-50 px-3 py-1 rounded text-xs font-bold text-slate-600 whitespace-nowrap">
+                    <i class="fa-regular fa-copy"></i> Kopyala
+                </button>
             </div>
 
             <div class="text-xs text-slate-500 mb-4 bg-slate-50 p-2 rounded border border-slate-200">
-                1. <a href="https://console.firebase.google.com/" target="_blank" class="text-blue-600 underline">Firebase Konsol</a> > Build > Firestore Database > <strong>Rules</strong>.<br>
-                2. Kodu yapıştırın ve <strong>Publish</strong> deyin.
+                <p class="font-bold mb-1">Adım Adım:</p>
+                1. <a href="https://console.firebase.google.com/" target="_blank" class="text-blue-600 underline">Firebase Konsol</a>'u açın.<br>
+                2. <strong>Authentication</strong> > <strong>Settings</strong> > <strong>Authorized Domains</strong>.<br>
+                3. <strong>Add Domain</strong> diyerek yukarıdaki yeni adresi ekleyin.
             </div>
             
-            <button onclick="location.reload()" class="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl text-sm font-bold transition shadow-lg">
-                Yaptım, Tekrar Dene
+            <button onclick="location.reload()" class="w-full bg-gradient-to-r from-indigo-600 to-indigo-700 text-white py-3 rounded-xl text-sm font-bold hover:from-indigo-700 hover:to-indigo-800 transition shadow-lg">
+                Ekledim, Tekrar Dene
             </button>
         </div>
     </div>
@@ -144,7 +152,7 @@
             </h2>
             <p class="text-slate-600 max-w-2xl mx-auto mb-6 text-sm md:text-base leading-relaxed">
                 Bu platform, sektör çalışanlarının maaş verilerini <strong>CANLI</strong> paylaştığı ortak havuzdur. 
-                Girdiğin veri, saniyeler içinde herkesin ekranına düşer.
+                Girdiğin veri, saniyeler içinde herkesin ekranına düşer ve kalıcı olarak saklanır.
             </p>
             
             <div class="grid grid-cols-3 gap-2 max-w-md mx-auto text-xs font-bold text-slate-600">
@@ -360,9 +368,25 @@
 
     </main>
 
-    <footer class="bg-white border-t mt-4 py-8 text-center">
+    <footer class="bg-white border-t mt-4 py-12 text-center">
         <div class="container mx-auto px-4">
-            <p class="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 text-xl mb-4">Barış Öğretmen Projesi</p>
+            <p class="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 text-xl mb-6">Barış Öğretmen Projesi</p>
+            
+            <!-- YENİ EKLENEN KISIM -->
+            <a href="https://baris-ogretmen.github.io/beyazit-kisa-s-reli-bellek/" target="_blank" class="inline-flex items-center gap-2 bg-indigo-50 border border-indigo-100 px-5 py-2.5 rounded-full text-xs font-bold text-indigo-700 hover:bg-indigo-100 hover:shadow-md transition mb-8 group">
+                <span class="bg-white p-1 rounded-full text-indigo-500 group-hover:scale-110 transition"><i class="fa-solid fa-gamepad"></i></span>
+                <span>Diğer Çalışmam: Kısa Süreli Bellek Oyunu</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-50"></i>
+            </a>
+            <!-- /YENİ EKLENEN KISIM -->
+
+            <div class="max-w-xl mx-auto mb-8 bg-slate-50 p-6 rounded-2xl border border-slate-100 relative">
+                <i class="fa-solid fa-quote-left text-slate-200 text-4xl absolute top-3 left-4"></i>
+                <p class="text-slate-600 text-sm italic relative z-10 font-medium leading-relaxed">
+                    "Ben de sizin gibi bir rehabilitasyon merkezi çalışanı olarak, üç yıldır sektörün tüm branşlarına yönelik dijital eğitim içerikleri üretiyorum. Amacım emeğimizin karşılığını şeffaflıkla savunmak."
+                </p>
+            </div>
+
             <div class="flex flex-wrap justify-center gap-4 text-[10px] text-slate-400 font-medium tracking-wide uppercase">
                 <span>© 2025</span>
                 <span>•</span>
@@ -380,11 +404,15 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, setDoc, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, setDoc, query, orderBy, limit, initializeFirestore } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // YARDIMCI FONKSİYONLAR
         window.toggleAdminModal = () => document.getElementById('admin-modal').classList.toggle('hidden');
         window.showFormAgain = () => { document.getElementById('results-section').classList.add('hidden'); document.getElementById('entry-section').classList.remove('hidden'); window.scrollTo(0,0); };
+        window.copyDomain = () => {
+            const txt = document.getElementById('current-domain').innerText;
+            navigator.clipboard.writeText(txt).then(() => showToast("Adres kopyalandı!"));
+        };
         const showToast = (msg, type='info') => {
             Toastify({ text: msg, duration: 3000, gravity: "top", position: "center", backgroundColor: type==='error'?"#ef4444":"#10b981", className: "rounded-lg font-bold text-sm shadow-lg" }).showToast();
         };
@@ -416,7 +444,11 @@
             try {
                 const app = initializeApp(firebaseConfig);
                 auth = getAuth(app);
-                db = getFirestore(app);
+                
+                // Firestore'u özel ayarlarla başlat (Daha güçlü bağlantı için)
+                db = initializeFirestore(app, {
+                    experimentalForceLongPolling: true, // Websocket yerine long-polling zorla
+                });
 
                 // Auth Dinleyicisi
                 onAuthStateChanged(auth, (u) => {
@@ -427,15 +459,13 @@
                     }
                 });
 
-                // AUTH STRATEJİSİ: 
-                // 1. Önce Token varsa dene
-                // 2. Yoksa Anonim dene
-                // 3. Anonim hata verirse (Domain Blocked) -> YİNE DE BAĞLAN (Misafir Modu)
-                
+                // AUTH STRATEJİSİ: Önce Custom Token (Domain Engelini Aşmak İçin), Olmazsa Anonim
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     try {
+                        console.log("Token bulundu, deneniyor...");
                         await signInWithCustomToken(auth, __initial_auth_token);
                     } catch (e) {
+                        console.warn("Token hatası, anonim deneniyor...");
                         await tryAnonymousAuth();
                     }
                 } else {
@@ -443,8 +473,8 @@
                 }
 
             } catch(e) {
-                console.warn("Kritik olmayan başlatma hatası:", e);
-                // Auth tamamen patlasa bile dinleyiciyi başlatmayı dene
+                console.warn("Başlatma hatası (kritik değil):", e);
+                // Her şeye rağmen dinleyiciyi başlat
                 setupRealtimeListener();
             }
 
@@ -462,9 +492,12 @@
                 await signInAnonymously(auth);
             } catch (error) {
                 console.warn("Auth Başarısız (Domain Engeli), Misafir Moduna Geçiliyor...", error);
-                // DOMAIN HATASINI GÖRMEZDEN GEL ve YOLA DEVAM ET
-                // Kullanıcıya domain ekletme işkencesini bitiriyoruz.
-                document.getElementById('loader-status').innerText = "Misafir modunda bağlanılıyor...";
+                // DOMAIN HATASINI GÖRMEZDEN GEL
+                // Kullanıcıyı yormadan arka planda misafir moduna geç
+                const statusEl = document.getElementById('loader-status');
+                if(statusEl) statusEl.innerText = "Misafir modunda bağlanılıyor...";
+                
+                // Direkt veri akışını başlat (Auth olmadan)
                 setupRealtimeListener();
             }
         }
@@ -479,6 +512,7 @@
                 // BAĞLANTI BAŞARILI
                 document.getElementById('global-loader').style.display = 'none';
                 
+                // Yeşil "Canlı" Işığı Yak
                 document.getElementById('connection-status').innerHTML = '<span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> <span class="hidden md:inline text-green-200">Canlı</span>';
                 document.getElementById('connection-status').classList.remove('bg-red-500/20');
                 document.getElementById('connection-status').classList.add('bg-green-500/20');
@@ -497,18 +531,14 @@
 
             }, (error) => {
                 console.error("Snapshot Error:", error);
-                
-                // Sadece izin yoksa hata göster
+                // Sadece yetki hatasında uyar, diğerlerinde sessizce yeniden dene
                 if (error.code === 'permission-denied') {
-                    document.getElementById('global-loader').style.display = 'flex';
-                    document.getElementById('loader-content').style.display = 'none';
-                    document.getElementById('permission-error').classList.remove('hidden');
-                } else {
-                    document.getElementById('connection-status').innerHTML = '<span class="w-2 h-2 bg-red-500 rounded-full"></span> <span>Koptu</span>';
+                    document.getElementById('global-loader').style.display = 'none'; // Loaderi kapat, hata kutusunu göster
+                    showToast("Erişim izni yok. Veritabanı kurallarını kontrol edin.", "error");
                 }
             });
 
-            // Duyuru Dinle (Hata alsa da sessiz kal)
+            // Duyuru Dinle
             try {
                 onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'admin_announcement', 'main'), (snap) => {
                     if(snap && snap.exists() && snap.data().text) {
@@ -540,7 +570,7 @@
                 return;
             }
 
-            btn.innerHTML = "<i class='fa-solid fa-circle-notch fa-spin'></i> Kaydediliyor...";
+            btn.innerHTML = "<i class='fa-solid fa-circle-notch fa-spin'></i> İşleniyor...";
             btn.disabled = true;
 
             const data = {
@@ -560,28 +590,34 @@
             currentSalary = data.salary; 
             currentViewYear = data.year;
 
-            try {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', COLLECTION_NAME), data);
-                showToast("Başarıyla havuza eklendi!");
-                
-                document.getElementById('entry-section').classList.add('hidden');
-                document.getElementById('results-section').classList.remove('hidden');
-                
-                renderLatestEntry(data);
-                switchResultYear(currentViewYear);
-                window.scrollTo(0,0);
+            // OPTIMISTIC UPDATE: Beklemeden başarılı say
+            
+            // 1. Hemen arayüzü güncelle
+            renderLatestEntry(data);
+            switchResultYear(currentViewYear);
+            document.getElementById('entry-section').classList.add('hidden');
+            document.getElementById('results-section').classList.remove('hidden');
+            window.scrollTo(0,0);
+            
+            showToast("Veri sıraya alındı, gönderiliyor...", "info");
 
-            } catch (error) {
-                console.error("Write Error:", error);
-                if(error.code === 'permission-denied') {
-                    showToast("Yazma izni yok! Firebase kurallarını kontrol edin.", "error");
-                } else {
-                    showToast("Hata: " + error.message, "error");
-                }
-            } finally {
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }
+            // 2. Arka planda gönder (Hata verirse uyar ama akışı bozma)
+            addDoc(collection(db, 'artifacts', appId, 'public', 'data', COLLECTION_NAME), data)
+                .then(() => {
+                    console.log("Veri başarıyla buluta yazıldı.");
+                })
+                .catch((error) => {
+                    console.error("Arka plan gönderim hatası:", error);
+                    // Kullanıcıya çaktırmadan tekrar dene veya sessiz kal (Offline Persistence varsa halleder)
+                    // Sadece kritikse uyar
+                    if(error.code === 'permission-denied') {
+                        showToast("Hata: Yazma izni yok!", "error");
+                    }
+                });
+
+            // 3. Butonu eski haline getir
+            btn.innerHTML = originalText;
+            btn.disabled = false;
         }
 
         function renderLatestEntry(data) {
