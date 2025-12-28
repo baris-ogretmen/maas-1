@@ -7,13 +7,11 @@
     <title>Maaş Gözlem 2.0 | Barış Öğretmen</title>
     <meta name="description" content="Rehabilitasyon ve Özel Eğitim sektörü canlı maaş veritabanı ve analiz platformu.">
     
-    <!-- Kütüphaneler -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Toast Bildirimleri -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
@@ -53,13 +51,11 @@
 </head>
 <body class="text-slate-800 flex flex-col min-h-screen">
 
-    <!-- Yükleme Ekranı -->
     <div id="app-loader" class="loader-overlay">
         <div class="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
         <h2 class="text-xl font-bold text-slate-800">Sisteme Bağlanılıyor...</h2>
-        <p class="text-sm text-slate-500 mt-2 text-center">Mobil bağlantı optimize ediliyor.</p>
+        <p class="text-sm text-slate-500 mt-2 text-center">Veritabanı bağlantısı kuruluyor.</p>
         
-        <!-- Hata Mesajı Alanı -->
         <div id="error-container" class="hidden mt-6 bg-red-50 border border-red-200 p-4 rounded-xl max-w-sm w-full text-center">
             <div class="text-red-500 text-3xl mb-2"><i class="fa-solid fa-triangle-exclamation"></i></div>
             <h3 class="font-bold text-red-700 mb-1" id="error-title">Bağlantı Hatası</h3>
@@ -68,7 +64,6 @@
         </div>
     </div>
 
-    <!-- Haber Bandı -->
     <div class="bg-indigo-900 text-white text-xs py-2 font-medium relative z-40 border-b border-indigo-800 overflow-hidden">
         <div class="marquee-container">
             <div id="marquee-text" class="marquee-content">
@@ -77,7 +72,6 @@
         </div>
     </div>
 
-    <!-- Header -->
     <header class="glass-header sticky top-0 z-30">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-3" onclick="location.reload()">
@@ -102,10 +96,8 @@
         </div>
     </header>
 
-    <!-- Ana İçerik -->
     <main class="flex-grow container mx-auto px-4 py-6 max-w-6xl">
 
-        <!-- Tab Navigasyon -->
         <div class="flex p-1 bg-white rounded-xl shadow-sm border border-slate-200 mb-6 max-w-md mx-auto">
             <button onclick="switchTab('entry')" id="tab-btn-entry" class="flex-1 py-2.5 text-sm font-bold rounded-lg transition-all text-white bg-blue-600 shadow-sm flex items-center justify-center gap-2">
                 <i class="fa-solid fa-plus-circle"></i> Veri Gir
@@ -115,20 +107,6 @@
             </button>
         </div>
 
-        <!-- YÖNETİCİ DUYURUSU (Her iki sekmede de görünür eğer varsa) -->
-        <div id="global-announcement" class="hidden max-w-4xl mx-auto mb-6 bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r shadow-sm">
-            <div class="flex items-start">
-                <div class="flex-shrink-0">
-                    <i class="fa-solid fa-bullhorn text-amber-500 mt-0.5"></i>
-                </div>
-                <div class="ml-3">
-                    <p class="text-sm text-amber-800 font-bold">Yönetici Duyurusu</p>
-                    <p id="announcement-text" class="text-sm text-amber-700 mt-1"></p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 1. SEKME: VERİ GİRİŞİ -->
         <div id="tab-entry" class="tab-content active max-w-lg mx-auto">
             <div class="bg-white rounded-2xl p-6 shadow-lg border border-slate-100 relative overflow-hidden">
                 <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-50 rounded-full blur-3xl"></div>
@@ -221,10 +199,8 @@
             </div>
         </div>
 
-        <!-- 2. SEKME: VERİ İNCELEME (DASHBOARD) -->
         <div id="tab-explore" class="tab-content">
             
-            <!-- Filtre Alanı -->
             <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm mb-6">
                 <h3 class="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
                     <i class="fa-solid fa-filter text-blue-500"></i> Filtreleme Seçenekleri
@@ -247,7 +223,6 @@
                 </div>
             </div>
 
-            <!-- Özet Kartlar -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
                 <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
                     <p class="text-[10px] text-slate-400 font-bold uppercase">Veri Sayısı</p>
@@ -267,7 +242,6 @@
                 </div>
             </div>
 
-            <!-- Grafikler -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                     <h3 class="font-bold text-slate-700 text-xs mb-4">Deneyim Bazlı Ortalama</h3>
@@ -279,7 +253,6 @@
                 </div>
             </div>
 
-            <!-- Detaylı Liste -->
             <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                 <div class="px-5 py-3 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
                     <h3 class="font-bold text-slate-700 text-xs">Detaylı Liste</h3>
@@ -305,7 +278,6 @@
     </main>
 
     <footer class="mt-auto py-8 text-center bg-white border-t border-slate-100">
-        <!-- Diğer Proje Linki -->
         <div class="mb-6">
             <a href="https://baris-ogretmen.github.io/beyazit-kisa-s-reli-bellek/" target="_blank" class="inline-flex items-center gap-2 bg-indigo-50 border border-indigo-100 px-5 py-3 rounded-full text-xs font-bold text-indigo-700 hover:bg-indigo-100 hover:shadow-md transition group">
                 <span class="bg-white p-1.5 rounded-full text-indigo-500 group-hover:scale-110 transition shadow-sm"><i class="fa-solid fa-gamepad"></i></span>
@@ -318,7 +290,6 @@
         <p class="text-slate-400 text-[10px] font-medium">Barış Öğretmen | %100 Anonim Veri Ağı</p>
     </footer>
 
-    <!-- Admin Panel Modal -->
     <div id="admin-modal" class="fixed inset-0 bg-slate-900/80 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl overflow-y-auto max-h-[90vh]">
             <div class="flex justify-between items-center mb-4 border-b pb-3">
@@ -333,23 +304,6 @@
             </div>
             
             <div id="admin-controls-view" class="hidden space-y-5">
-                <!-- Haber Bandı Ayarı -->
-                <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100">
-                    <label class="block text-xs font-bold text-indigo-800 mb-2"><i class="fa-solid fa-newspaper mr-1"></i> Haber Bandını Güncelle</label>
-                    <textarea id="admin-ticker-input" rows="3" class="w-full p-2 text-xs border border-indigo-200 rounded-lg mb-2 focus:outline-none focus:border-indigo-500" placeholder="Kayan yazı metni..."></textarea>
-                    <button onclick="updateTicker()" class="w-full bg-indigo-600 text-white py-2 rounded-lg text-xs font-bold hover:bg-indigo-700 transition">Güncelle</button>
-                </div>
-
-                <!-- Duyuru Ayarı -->
-                <div class="bg-amber-50 p-4 rounded-xl border border-amber-100">
-                    <label class="block text-xs font-bold text-amber-800 mb-2"><i class="fa-solid fa-bullhorn mr-1"></i> Grup Duyurusu Yap</label>
-                    <textarea id="admin-announce-input" rows="3" class="w-full p-2 text-xs border border-amber-200 rounded-lg mb-2 focus:outline-none focus:border-amber-500" placeholder="Duyuru metni... (Boş bırakırsanız gizlenir)"></textarea>
-                    <button onclick="updateAnnouncement()" class="w-full bg-amber-600 text-white py-2 rounded-lg text-xs font-bold hover:bg-amber-700 transition">Yayınla / Gizle</button>
-                </div>
-
-                <hr class="border-slate-100">
-
-                <!-- Veri Temizleme -->
                 <div>
                     <h4 class="text-xs font-bold text-red-500 mb-2">Tehlikeli Bölge</h4>
                     <p class="text-[10px] text-slate-400 mb-2">Hatalı kayıtları silmek için "Verileri İncele" sekmesindeki çöp kutusu ikonlarını kullanın.</p>
@@ -359,19 +313,30 @@
         </div>
     </div>
 
-    <!-- Script Logic -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, setDoc, enableIndexedDbPersistence, initializeFirestore } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        // Firebase Kütüphaneleri (Stable Version 10.7.1)
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         // --- AYARLAR ---
         const DISTRICTS = ["Adalar", "Arnavutköy", "Ataşehir", "Avcılar", "Bağcılar", "Bahçelievler", "Bakırköy", "Başakşehir", "Bayrampaşa", "Beşiktaş", "Beykoz", "Beylikdüzü", "Beyoğlu", "Büyükçekmece", "Çatalca", "Çekmeköy", "Esenler", "Esenyurt", "Eyüpsultan", "Fatih", "Gaziosmanpaşa", "Güngören", "Kadıköy", "Kağıthane", "Kartal", "Küçükçekmece", "Maltepe", "Pendik", "Sancaktepe", "Sarıyer", "Silivri", "Sultanbeyli", "Sultangazi", "Şile", "Şişli", "Tuzla", "Ümraniye", "Üsküdar", "Zeytinburnu"];
         const MIN_WAGE = { '2024': 17002, '2025': 22104, '2026': 28000 };
-        const APP_ID = typeof __app_id !== 'undefined' ? __app_id : 'maas-gozlem-v2';
-        const COLLECTION = 'salary_records';
-        const SETTINGS_DOC = 'global_settings'; // Ayarların tutulacağı döküman
+        
+        // SİZİN GERÇEK VERİTABANI BİLGİLERİNİZ
+        const COLLECTION_NAME = 'maas_verileri'; 
         const ADMIN_PASS = "1453"; 
+
+        // Firebase Config (Sizin verdiğiniz kod)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAqeO-yQyQPnLsOqKmSNvVH23WPvneIjaU",
+            authDomain: "shaped-totem-481514-c5.firebaseapp.com",
+            projectId: "shaped-totem-481514-c5",
+            storageBucket: "shaped-totem-481514-c5.firebasestorage.app",
+            messagingSenderId: "519295049418",
+            appId: "1:519295049418:web:7d04e18c4ea36bc088de33",
+            measurementId: "G-10ENZQDXK1"
+        };
         
         let db, auth, user;
         let globalData = [];
@@ -383,56 +348,19 @@
             populateSelects();
             
             try {
-                // Dinamik veya Statik Config Seçimi (Fallback Logic)
-                let firebaseConfig;
-                if(typeof __firebase_config !== 'undefined' && __firebase_config) {
-                    firebaseConfig = JSON.parse(__firebase_config);
-                } else {
-                    // YEDEK CONFIG (Mobil ve farklı domainler için)
-                    firebaseConfig = {
-                        apiKey: "AIzaSyAjP5jpALGYWIh8HJmkz9L1x8IikgMxsm4", 
-                        authDomain: "sekilli-totem-481514-c5.firebaseapp.com",
-                        projectId: "sekilli-totem-481514-c5",
-                        storageBucket: "sekilli-totem-481514-c5.firebasestorage.app",
-                        messagingSenderId: "519295049418",
-                        appId: APP_ID
-                    };
-                }
-
                 const app = initializeApp(firebaseConfig);
                 auth = getAuth(app);
-                
-                // MOBİL İÇİN KRİTİK: Persistence Ayarı
-                try {
-                    await setPersistence(auth, browserLocalPersistence);
-                } catch(err) {
-                    console.warn("Persistence warning:", err);
-                }
-
-                db = initializeFirestore(app, { experimentalForceLongPolling: true });
-
-                // Çevrimdışı destek (Mobil iframe'de hata verebilir, yutuyoruz)
-                try { await enableIndexedDbPersistence(db); } catch(e) {}
+                db = getFirestore(app);
 
                 onAuthStateChanged(auth, (u) => {
                     if(u) {
                         user = u;
                         startRealtimeListener();
-                        startSettingsListener(); 
                     }
                 });
 
-                // GİRİŞ DENEMESİ
-                try {
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        await signInWithCustomToken(auth, __initial_auth_token);
-                    } else {
-                        await signInAnonymously(auth);
-                    }
-                } catch (authError) {
-                    console.error("Auth Failed:", authError);
-                    showConnectionError(authError);
-                }
+                // Giriş yap
+                await signInAnonymously(auth);
 
             } catch (error) {
                 console.error("Init error", error);
@@ -441,75 +369,29 @@
         }
 
         function showConnectionError(error) {
-            document.getElementById('app-loader').classList.remove('hidden'); // Loader kalsın
-            document.querySelector('#app-loader .animate-spin').classList.add('hidden'); // Spinner gitsin
-            document.querySelector('#app-loader h2').innerText = "Bağlantı Kurulamadı";
-            document.querySelector('#app-loader p').innerText = "Lütfen aşağıdakileri kontrol edin:";
-            
-            const errContainer = document.getElementById('error-container');
-            const errTitle = document.getElementById('error-title');
-            const errDesc = document.getElementById('error-desc');
-            
-            errContainer.classList.remove('hidden');
-            
-            if (error.code === 'auth/requests-from-referer-blocked') { // Domain hatası
-                errTitle.innerText = "Domain İzni Yok";
-                errDesc.innerText = "Bu web sitesi adresi (domain), veritabanı güvenlik listesinde yok. Lütfen doğru adresten girdiğinize emin olun.";
-            } else if (error.code === 'auth/network-request-failed') { // İnternet yok
-                errTitle.innerText = "İnternet Yok";
-                errDesc.innerText = "Lütfen internet bağlantınızı kontrol edip tekrar deneyin.";
-            } else {
-                errTitle.innerText = "Sistem Hatası";
-                errDesc.innerText = "Kod: " + (error.code || error.message);
-            }
+            document.getElementById('app-loader').classList.remove('hidden');
+            document.querySelector('#app-loader h2').innerText = "Bağlantı Hatası";
+            document.querySelector('#app-loader p').innerText = "Veritabanına bağlanılamadı.";
+            document.getElementById('error-container').classList.remove('hidden');
+            document.getElementById('error-desc').innerText = error.message;
         }
 
         // --- VERİ DİNLEME ---
         function startRealtimeListener() {
-            const q = collection(db, 'artifacts', APP_ID, 'public', 'data', COLLECTION);
+            const q = collection(db, COLLECTION_NAME);
             
             onSnapshot(q, (snapshot) => {
                 globalData = [];
                 snapshot.forEach(doc => {
                     globalData.push({ id: doc.id, ...doc.data() });
                 });
-                document.getElementById('app-loader').classList.add('hidden'); // Başarılıysa gizle
+                document.getElementById('app-loader').classList.add('hidden'); // Başarılıysa yükleme ekranını kapat
                 updateHeaderCount();
                 updateMiniFeed();
                 applyFilters();
             }, (error) => {
-                if(error.code === 'permission-denied') {
-                    document.getElementById('db-error-msg').classList.remove('hidden');
-                } else {
-                    showConnectionError(error);
-                }
-            });
-        }
-
-        // --- AYAR DİNLEME (Haber Bandı ve Duyuru) ---
-        function startSettingsListener() {
-            const docRef = doc(db, 'artifacts', APP_ID, 'public', 'data', 'settings', SETTINGS_DOC);
-            
-            onSnapshot(docRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    if(data.tickerText) {
-                        document.getElementById('marquee-text').innerHTML = data.tickerText;
-                    }
-                    const announceBox = document.getElementById('global-announcement');
-                    if(data.announcementText && data.announcementText.trim() !== "") {
-                        document.getElementById('announcement-text').innerHTML = data.announcementText;
-                        announceBox.classList.remove('hidden');
-                    } else {
-                        announceBox.classList.add('hidden');
-                    }
-                } else {
-                    // Varsayılan değer yoksa oluştur
-                     setDoc(docRef, {
-                         tickerText: 'Rehabilitasyon merkezlerinde 10 yılı aşkın süredir edindiğim deneyim ve son 3 yıldır her modüle uygun ürettiğim dijital eğitim içerikleriyle, bu alandaki ihtiyaca kalıcı bir çözüm sunmak amacıyla bu platformu hayata geçirdim. Soru ve görüşleriniz için her zaman bana ulaşabilirsiniz. &nbsp; • &nbsp; Maaş Gözlem Platformu &nbsp; • &nbsp; Barış Öğretmen',
-                         announcementText: ''
-                     });
-                }
+                console.error(error);
+                showToast("Veri okuma hatası: " + error.code, "error");
             });
         }
 
@@ -526,28 +408,24 @@
             const nick = document.getElementById('entry-nick').value || "Anonim";
 
             if(salary < MIN_WAGE[year]) { showToast(`${year} asgari ücreti (${MIN_WAGE[year]} TL) altı girilemez.`, "error"); return; }
-            if(salary > 300000) { showToast(`Maaş çok yüksek, kontrol ediniz.`, "error"); return; }
-
+            
             btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Kaydediliyor...`;
             btn.disabled = true;
 
             try {
-                await addDoc(collection(db, 'artifacts', APP_ID, 'public', 'data', COLLECTION), {
+                await addDoc(collection(db, COLLECTION_NAME), {
                     year, salary, role, district, exp, nickname: nick,
-                    uid: user.uid, timestamp: Date.now()
+                    uid: user ? user.uid : 'anon',
+                    timestamp: serverTimestamp() 
                 });
-                showToast("Veri eklendi!", "success");
+                showToast("Veri başarıyla eklendi!", "success");
                 document.getElementById('salaryForm').reset();
                 switchTab('explore');
                 document.getElementById('filter-year').value = year;
-                applyFilters();
+                applyFilters(); 
             } catch (error) {
                 console.error(error);
-                if(error.code === 'permission-denied') {
-                    showToast("Yazma izni yok! (Rules kontrol edin)", "error");
-                } else {
-                    showToast("Kayıt başarısız: " + error.code, "error");
-                }
+                showToast("Kayıt başarısız: " + error.message, "error");
             } finally {
                 btn.innerHTML = `<span>Havuza Gönder</span><i class="fa-solid fa-paper-plane"></i>`;
                 btn.disabled = false;
@@ -561,10 +439,21 @@
             const fYear = document.getElementById('filter-year').value;
             const fRole = document.getElementById('filter-role').value;
             const fDist = document.getElementById('filter-district').value;
+            
             let filtered = globalData;
+            
+            // Sıralama için zaman damgası kontrolü
+            filtered = filtered.map(d => {
+                let time = 0;
+                if (d.timestamp && d.timestamp.toMillis) time = d.timestamp.toMillis();
+                else if (typeof d.timestamp === 'number') time = d.timestamp;
+                return { ...d, sortTime: time };
+            });
+
             if(fYear !== 'all') filtered = filtered.filter(d => d.year == fYear);
             if(fRole !== 'all') filtered = filtered.filter(d => d.role == fRole);
             if(fDist !== 'all') filtered = filtered.filter(d => d.district == fDist);
+            
             renderStats(filtered);
             renderCharts(filtered);
             renderTable(filtered);
@@ -586,15 +475,15 @@
                 if(chartInstances.dist) chartInstances.dist.destroy();
                 return;
             }
-            // Exp Chart
+            // Deneyim Grafiği
             const eG = {}; data.forEach(d => { if(!eG[d.exp]) eG[d.exp]={s:0,c:0}; eG[d.exp].s+=d.salary; eG[d.exp].c++; });
             const eL = Object.keys(eG).sort((a,b)=>parseFloat(a)-parseFloat(b));
-            updateChart('chartExp', 'line', eL.map(v=>v==0.5?"0-6 Ay":(v==10?"10+ Yıl":v+" Yıl")), eL.map(k=>Math.round(eG[k].s/eG[k].c)), 'Maaş', '#3b82f6');
+            updateChart('chartExp', 'line', eL.map(v=>v==0.5?"0-6 Ay":(v==10?"10+ Yıl":v+" Yıl")), eL.map(k=>Math.round(eG[k].s/eG[k].c)), 'Ortalama Maaş', '#3b82f6');
             
-            // District Chart
+            // İlçe Grafiği
             const dG = {}; data.forEach(d => { if(!dG[d.district]) dG[d.district]={s:0,c:0}; dG[d.district].s+=d.salary; dG[d.district].c++; });
             const sorted = Object.keys(dG).map(k=>({n:k,a:Math.round(dG[k].s/dG[k].c)})).sort((a,b)=>b.a-a.a).slice(0,5);
-            updateChart('chartDistrict', 'bar', sorted.map(x=>x.n), sorted.map(x=>x.a), 'Ortalama', '#10b981');
+            updateChart('chartDistrict', 'bar', sorted.map(x=>x.n), sorted.map(x=>x.a), 'Ortalama Maaş', '#10b981');
         }
 
         function updateChart(cid, type, labels, data, label, color) {
@@ -609,13 +498,13 @@
         function renderTable(data) {
             const tbody = document.getElementById('table-body');
             tbody.innerHTML = '';
-            [...data].sort((a,b)=>(b.timestamp||0)-(a.timestamp||0)).slice(0,100).forEach(d => {
-                let del = isAdmin ? `<button onclick="deleteRecord('${d.id}')" class="ml-2 text-red-500"><i class="fa-solid fa-trash"></i></button>` : '';
+            [...data].sort((a,b)=> b.sortTime - a.sortTime).slice(0,100).forEach(d => {
+                let del = isAdmin ? `<button onclick="window.deleteRecord('${d.id}')" class="ml-2 text-red-500"><i class="fa-solid fa-trash"></i></button>` : '';
                 tbody.innerHTML += `<tr class="hover:bg-slate-50 border-b border-slate-50"><td class="px-4 py-3 font-medium">${d.nickname}</td><td class="px-4 py-3">${d.role}</td><td class="px-4 py-3 text-slate-500">${d.district}</td><td class="px-4 py-3 text-xs font-bold text-slate-400">${d.exp==0.5?"0-6 Ay":d.exp+" Yıl"}</td><td class="px-4 py-3 text-right font-bold text-blue-600 flex justify-end items-center">${formatMoney(d.salary)} ${del}</td></tr>`;
             });
         }
 
-        // --- YÖNETİCİ & AYARLAR FONKSİYONLARI ---
+        // --- YÖNETİCİ ---
         window.toggleAdminPanel = () => document.getElementById('admin-modal').classList.toggle('hidden');
         
         window.adminLogin = () => {
@@ -624,7 +513,7 @@
                 document.getElementById('admin-login-view').classList.add('hidden');
                 document.getElementById('admin-controls-view').classList.remove('hidden');
                 showToast("Yönetici girişi başarılı", "success");
-                applyFilters(); // Sil butonlarını aktif et
+                applyFilters();
             } else {
                 showToast("Şifre Hatalı!", "error");
             }
@@ -639,30 +528,15 @@
             applyFilters();
         };
 
-        window.updateTicker = async () => {
-            const txt = document.getElementById('admin-ticker-input').value;
-            if(!txt) return;
-            try {
-                await setDoc(doc(db, 'artifacts', APP_ID, 'public', 'data', 'settings', SETTINGS_DOC), { tickerText: txt }, { merge: true });
-                showToast("Haber bandı güncellendi", "success");
-            } catch(e) { showToast("Güncelleme hatası", "error"); }
-        };
-
-        window.updateAnnouncement = async () => {
-            const txt = document.getElementById('admin-announce-input').value;
-            try {
-                await setDoc(doc(db, 'artifacts', APP_ID, 'public', 'data', 'settings', SETTINGS_DOC), { announcementText: txt }, { merge: true });
-                showToast("Duyuru güncellendi", "success");
-            } catch(e) { showToast("Güncelleme hatası", "error"); }
-        };
-
         window.deleteRecord = async (id) => {
             if(!confirm("Silmek istediğine emin misin?")) return;
-            await deleteDoc(doc(db, 'artifacts', APP_ID, 'public', 'data', COLLECTION, id));
-            showToast("Kayıt silindi", "success");
+            try {
+                await deleteDoc(doc(db, COLLECTION_NAME, id));
+                showToast("Kayıt silindi", "success");
+            } catch(e) { showToast("Hata: " + e.message, "error"); }
         };
 
-        // --- GENEL UTILS ---
+        // --- YARDIMCI FONKSİYONLAR ---
         window.switchTab = (t) => {
             document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active'));
             document.getElementById('tab-'+t).classList.add('active');
@@ -676,7 +550,7 @@
         function updateHeaderCount() { document.getElementById('header-total-count').innerText = globalData.length; }
         function updateMiniFeed() {
             const f = document.getElementById('mini-feed'); f.innerHTML = '';
-            [...globalData].sort((a,b)=>(b.timestamp||0)-(a.timestamp||0)).slice(0,3).forEach(d => {
+            [...globalData].sort((a,b)=> (b.sortTime||0) - (a.sortTime||0)).slice(0,3).forEach(d => {
                 f.innerHTML += `<div class="flex justify-between items-center bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-xs"><div><span class="font-bold text-slate-700">${d.role}</span><span class="text-slate-400 mx-1">•</span><span class="text-slate-500">${d.district}</span></div><span class="font-bold text-blue-600">${formatMoney(d.salary)}</span></div>`;
             });
             if(globalData.length===0) f.innerHTML = '<p class="text-xs text-slate-400 italic pl-1">Henüz veri yok.</p>';
