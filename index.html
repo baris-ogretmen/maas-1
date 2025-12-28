@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -48,7 +47,7 @@
 
         /* Haber Bandı Animasyonu */
         .marquee-container { overflow: hidden; white-space: nowrap; position: relative; }
-        .marquee-content { display: inline-block; animation: marquee 30s linear infinite; padding-left: 100%; }
+        .marquee-content { display: inline-block; animation: marquee 45s linear infinite; padding-left: 100%; }
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
     </style>
 </head>
@@ -70,7 +69,7 @@
     <div class="bg-indigo-900 text-white text-xs py-2 font-medium relative z-40 border-b border-indigo-800 overflow-hidden">
         <div class="marquee-container">
             <div id="marquee-text" class="marquee-content">
-                Barış Öğretmen Maaş Gözlem Platformuna Hoş Geldiniz! • Verileriniz anonimdir. • Diğer projelerimizi incelemeyi unutmayın!
+                Rehabilitasyon merkezlerinde 10 yılı aşkın süredir edindiğim deneyim ve son 3 yıldır her modüle uygun ürettiğim dijital eğitim içerikleriyle, bu alandaki ihtiyaca kalıcı bir çözüm sunmak amacıyla bu platformu hayata geçirdim. Soru ve görüşleriniz için her zaman bana ulaşabilirsiniz. &nbsp; • &nbsp; Maaş Gözlem Platformu &nbsp; • &nbsp; Barış Öğretmen
             </div>
         </div>
     </div>
@@ -386,7 +385,7 @@
                     firebaseConfig = JSON.parse(__firebase_config);
                 } else {
                     firebaseConfig = {
-                        apiKey: "", 
+                        apiKey: "AIzaSyAjP5jpALGYWIh8HJmkz9L1x8IikgMxsm4", 
                         authDomain: "sekilli-totem-481514-c5.firebaseapp.com",
                         projectId: "sekilli-totem-481514-c5",
                         storageBucket: "sekilli-totem-481514-c5.firebasestorage.app",
@@ -466,7 +465,7 @@
                 } else {
                     // Varsayılan değer yoksa (ilk açılış), döküman oluştur
                      setDoc(docRef, {
-                         tickerText: 'Maaş Gözlem Platformuna Hoş Geldiniz! • Barış Öğretmen • <a href="https://baris-ogretmen.github.io/beyazit-kisa-s-reli-bellek/" target="_blank" class="underline">Kısa Süreli Bellek Çalışması</a>',
+                         tickerText: 'Rehabilitasyon merkezlerinde 10 yılı aşkın süredir edindiğim deneyim ve son 3 yıldır her modüle uygun ürettiğim dijital eğitim içerikleriyle, bu alandaki ihtiyaca kalıcı bir çözüm sunmak amacıyla bu platformu hayata geçirdim. Soru ve görüşleriniz için her zaman bana ulaşabilirsiniz. &nbsp; • &nbsp; Maaş Gözlem Platformu &nbsp; • &nbsp; Barış Öğretmen',
                          announcementText: ''
                      });
                 }
