@@ -47,6 +47,12 @@
         .marquee-container { overflow: hidden; white-space: nowrap; position: relative; }
         .marquee-content { display: inline-block; animation: marquee 45s linear infinite; padding-left: 100%; }
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        /* Admin Split Layout */
+        .admin-grid { display: grid; grid-template-columns: 1fr 320px; gap: 20px; height: 100%; overflow: hidden; }
+        @media (max-width: 768px) { .admin-grid { grid-template-columns: 1fr; overflow-y: auto; } .admin-sidebar { display: none; } }
+        .pop-in { animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body class="text-slate-800 flex flex-col min-h-screen">
@@ -67,7 +73,7 @@
     <div class="bg-indigo-900 text-white text-xs py-2 font-medium relative z-40 border-b border-indigo-800 overflow-hidden">
         <div class="marquee-container">
             <div id="marquee-text" class="marquee-content">
-                Rehabilitasyon merkezlerinde 10 yılı aşkın süredir edindiğim deneyim ve son 3 yıldır her modüle uygun ürettiğim dijital eğitim içerikleriyle, bu alandaki ihtiyaca kalıcı bir çözüm sunmak amacıyla bu platformu hayata geçirdim. Soru ve görüşleriniz için her zaman bana ulaşabilirsiniz. &nbsp; • &nbsp; Maaş Gözlem Platformu &nbsp; • &nbsp; Barış Öğretmen
+                Maaş Gözlem Platformu Yükleniyor...
             </div>
         </div>
     </div>
@@ -278,38 +284,78 @@
     </main>
 
     <footer class="mt-auto py-8 text-center bg-white border-t border-slate-100">
-        <div class="mb-6">
-            <a href="https://baris-ogretmen.github.io/beyazit-kisa-s-reli-bellek/" target="_blank" class="inline-flex items-center gap-2 bg-indigo-50 border border-indigo-100 px-5 py-3 rounded-full text-xs font-bold text-indigo-700 hover:bg-indigo-100 hover:shadow-md transition group">
-                <span class="bg-white p-1.5 rounded-full text-indigo-500 group-hover:scale-110 transition shadow-sm"><i class="fa-solid fa-gamepad"></i></span>
-                <span>Diğer Çalışmam: Beyazıt Kısa Süreli Bellek</span>
-                <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-50"></i>
-            </a>
+        <div class="container mx-auto px-4">
+            <h4 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-widest">Öğretmen Çalışmaları</h4>
+            <div id="footer-links-container" class="flex flex-wrap justify-center gap-3 mb-6">
+                </div>
+            
+            <p class="font-bold text-slate-600 text-xs mb-1">Maaş Gözlem v2.0</p>
+            <p class="text-slate-400 text-[10px] font-medium">Barış Öğretmen | %100 Anonim Veri Ağı</p>
         </div>
-        
-        <p class="font-bold text-slate-600 text-xs mb-1">Maaş Gözlem v2.0</p>
-        <p class="text-slate-400 text-[10px] font-medium">Barış Öğretmen | %100 Anonim Veri Ağı</p>
     </footer>
 
-    <div id="admin-modal" class="fixed inset-0 bg-slate-900/80 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl overflow-y-auto max-h-[90vh]">
-            <div class="flex justify-between items-center mb-4 border-b pb-3">
-                <h3 class="font-bold text-lg text-slate-800">Yönetici Paneli</h3>
-                <button onclick="toggleAdminPanel()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-times"></i></button>
+    <div id="admin-modal" class="fixed inset-0 bg-slate-900/90 z-50 hidden flex items-center justify-center p-4 backdrop-blur-md">
+        <div class="bg-white rounded-[2rem] p-6 w-full max-w-5xl shadow-2xl h-[85vh] flex flex-col relative overflow-hidden">
+            <button onclick="toggleAdminPanel()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 z-10"><i class="fa-solid fa-circle-xmark text-2xl"></i></button>
+            
+            <div id="admin-login-view" class="h-full flex flex-col items-center justify-center">
+                <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-3xl mb-4 shadow-lg"><i class="fa-solid fa-lock"></i></div>
+                <h3 class="text-xl font-bold mb-4 text-slate-800">Yönetici Paneli</h3>
+                <input type="password" id="admin-pass" placeholder="Şifre" class="border-2 border-slate-200 p-3 rounded-xl mb-4 text-center outline-none focus:border-blue-500 transition font-bold w-64">
+                <button onclick="adminLogin()" class="bg-slate-800 text-white px-12 py-3 rounded-xl font-bold hover:bg-slate-700 transition shadow-lg">Giriş Yap</button>
             </div>
             
-            <div id="admin-login-view">
-                <p class="text-xs text-slate-500 mb-2">Devam etmek için şifreyi giriniz.</p>
-                <input type="password" id="admin-pass" placeholder="Şifre" class="w-full border-2 border-slate-200 p-2.5 rounded-xl mb-3 text-center outline-none focus:border-blue-500 transition font-bold">
-                <button onclick="adminLogin()" class="w-full bg-slate-800 text-white py-3 rounded-xl font-bold hover:bg-slate-700 transition">Giriş Yap</button>
-            </div>
-            
-            <div id="admin-controls-view" class="hidden space-y-5">
-                <div>
-                    <h4 class="text-xs font-bold text-red-500 mb-2">Tehlikeli Bölge</h4>
-                    <p class="text-[10px] text-slate-400 mb-2">Hatalı kayıtları silmek için "Verileri İncele" sekmesindeki çöp kutusu ikonlarını kullanın.</p>
-                    <button onclick="logoutAdmin()" class="w-full bg-slate-100 text-slate-600 py-3 rounded-xl text-xs font-bold hover:bg-slate-200">Çıkış Yap</button>
+            <div id="admin-controls-view" class="hidden h-full flex flex-col">
+                <div class="flex items-center gap-3 mb-6 border-b pb-4">
+                    <div class="w-10 h-10 bg-slate-800 text-white rounded-xl flex items-center justify-center text-lg"><i class="fa-solid fa-user-tie"></i></div>
+                    <div><h3 class="font-bold text-lg text-slate-800">Yönetim Merkezi</h3><p class="text-xs text-slate-500">Sistem ayarları ve veri yönetimi.</p></div>
+                    <button onclick="logoutAdmin()" class="ml-auto bg-slate-100 text-slate-600 px-4 py-2 rounded-lg text-xs font-bold hover:bg-slate-200">Çıkış</button>
+                </div>
+
+                <div class="admin-grid">
+                    <div class="overflow-y-auto pr-2 space-y-4 custom-scroll">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-blue-700 text-sm mb-2 flex items-center gap-2"><i class="fa-solid fa-comment-dots"></i> Pop-up Duyuru</h4>
+                            <textarea id="admin-input-popup" class="w-full p-3 rounded-lg border border-slate-300 text-xs mb-2 outline-none" rows="2" placeholder="Sisteme giren herkese görünecek mesaj..."></textarea>
+                            <button onclick="saveConfig('popup')" class="w-full bg-blue-600 text-white py-2 rounded-lg text-xs font-bold hover:bg-blue-700">Yayınla</button>
+                        </div>
+
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-orange-600 text-sm mb-2 flex items-center gap-2"><i class="fa-solid fa-scroll"></i> Haber Bandı</h4>
+                            <input type="text" id="admin-input-news" class="w-full p-3 rounded-lg border border-slate-300 text-xs mb-2 outline-none" placeholder="Üstte kayan yazı...">
+                            <button onclick="saveConfig('news')" class="w-full bg-orange-500 text-white py-2 rounded-lg text-xs font-bold hover:bg-orange-600">Güncelle</button>
+                        </div>
+
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-green-600 text-sm mb-2 flex items-center gap-2"><i class="fa-solid fa-link"></i> Yeni Çalışma Linki</h4>
+                            <div class="space-y-2 mb-2">
+                                <input type="text" id="admin-link-title" class="w-full p-3 rounded-lg border border-slate-300 text-xs outline-none" placeholder="Başlık (Örn: Hafıza Oyunu)">
+                                <input type="text" id="admin-link-url" class="w-full p-3 rounded-lg border border-slate-300 text-xs outline-none" placeholder="URL (https://...)">
+                            </div>
+                            <button onclick="addFooterLink()" class="w-full bg-green-600 text-white py-2 rounded-lg text-xs font-bold hover:bg-green-700">Footer'a Ekle</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 rounded-xl flex flex-col overflow-hidden shadow-inner h-full">
+                        <div class="p-3 bg-slate-100 border-b flex justify-between items-center text-xs font-bold text-slate-600">
+                            <span>Kayıtlı Maaşlar</span>
+                            <span id="admin-record-count" class="bg-white px-2 py-0.5 rounded shadow-sm text-slate-800">0</span>
+                        </div>
+                        <div id="admin-records-list" class="flex-1 overflow-y-auto p-2 space-y-2 custom-scroll bg-slate-50">
+                            </div>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="user-announcement-modal" class="fixed inset-0 z-[100] bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2rem] p-8 w-full max-w-sm text-center shadow-2xl pop-in relative border-4 border-blue-600">
+            <button onclick="document.getElementById('user-announcement-modal').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 animate-bounce"><i class="fa-solid fa-bell"></i></div>
+            <h3 class="text-xl font-black text-slate-800 mb-3">DUYURU</h3>
+            <p id="user-popup-content" class="text-slate-600 mb-8 font-medium text-sm leading-relaxed">...</p>
+            <button onclick="document.getElementById('user-announcement-modal').classList.add('hidden')" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold shadow-lg shadow-blue-200">Tamam, Okudum</button>
         </div>
     </div>
 
@@ -317,17 +363,16 @@
         // Firebase Kütüphaneleri (Stable Version 10.7.1)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, serverTimestamp, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         // --- AYARLAR ---
         const DISTRICTS = ["Adalar", "Arnavutköy", "Ataşehir", "Avcılar", "Bağcılar", "Bahçelievler", "Bakırköy", "Başakşehir", "Bayrampaşa", "Beşiktaş", "Beykoz", "Beylikdüzü", "Beyoğlu", "Büyükçekmece", "Çatalca", "Çekmeköy", "Esenler", "Esenyurt", "Eyüpsultan", "Fatih", "Gaziosmanpaşa", "Güngören", "Kadıköy", "Kağıthane", "Kartal", "Küçükçekmece", "Maltepe", "Pendik", "Sancaktepe", "Sarıyer", "Silivri", "Sultanbeyli", "Sultangazi", "Şile", "Şişli", "Tuzla", "Ümraniye", "Üsküdar", "Zeytinburnu"];
         const MIN_WAGE = { '2024': 17002, '2025': 22104, '2026': 28000 };
         
-        // SİZİN GERÇEK VERİTABANI BİLGİLERİNİZ
         const COLLECTION_NAME = 'maas_verileri'; 
+        const CONFIG_DOC = 'maas_config/global'; // Ayarlar burada tutulacak
         const ADMIN_PASS = "1453"; 
 
-        // Firebase Config (Sizin verdiğiniz kod)
         const firebaseConfig = {
             apiKey: "AIzaSyAqeO-yQyQPnLsOqKmSNvVH23WPvneIjaU",
             authDomain: "shaped-totem-481514-c5.firebaseapp.com",
@@ -340,6 +385,7 @@
         
         let db, auth, user;
         let globalData = [];
+        let globalConfig = { news: "", popup: "", links: [] };
         let chartInstances = {};
         let isAdmin = false;
 
@@ -353,13 +399,9 @@
                 db = getFirestore(app);
 
                 onAuthStateChanged(auth, (u) => {
-                    if(u) {
-                        user = u;
-                        startRealtimeListener();
-                    }
+                    if(u) { user = u; startRealtimeListener(); startConfigListener(); }
                 });
 
-                // Giriş yap
                 await signInAnonymously(auth);
 
             } catch (error) {
@@ -376,23 +418,60 @@
             document.getElementById('error-desc').innerText = error.message;
         }
 
-        // --- VERİ DİNLEME ---
+        // --- VERİ & AYAR DİNLEME ---
         function startRealtimeListener() {
             const q = collection(db, COLLECTION_NAME);
-            
             onSnapshot(q, (snapshot) => {
                 globalData = [];
-                snapshot.forEach(doc => {
-                    globalData.push({ id: doc.id, ...doc.data() });
-                });
-                document.getElementById('app-loader').classList.add('hidden'); // Başarılıysa yükleme ekranını kapat
+                snapshot.forEach(doc => { globalData.push({ id: doc.id, ...doc.data() }); });
+                document.getElementById('app-loader').classList.add('hidden');
                 updateHeaderCount();
                 updateMiniFeed();
                 applyFilters();
-            }, (error) => {
-                console.error(error);
-                showToast("Veri okuma hatası: " + error.code, "error");
+                if(isAdmin) renderAdminList(); // Admin açıksa listeyi güncelle
+            }, (error) => { console.error(error); });
+        }
+
+        function startConfigListener() {
+            onSnapshot(doc(db, "maas_config", "global"), (docSnap) => {
+                if (docSnap.exists()) {
+                    globalConfig = docSnap.data();
+                    applyConfig();
+                }
             });
+        }
+
+        function applyConfig() {
+            // Haber Bandı
+            if(globalConfig.news) document.getElementById('marquee-text').innerText = globalConfig.news;
+            
+            // Linkler
+            const linkCont = document.getElementById('footer-links-container');
+            linkCont.innerHTML = '';
+            if(globalConfig.links && globalConfig.links.length > 0) {
+                globalConfig.links.forEach((link, index) => {
+                    let delBtn = isAdmin ? `<button onclick="window.deleteLink(${index})" class="ml-2 text-red-400 hover:text-red-600"><i class="fa-solid fa-xmark"></i></button>` : '';
+                    linkCont.innerHTML += `
+                        <a href="${link.url}" target="_blank" class="inline-flex items-center gap-2 bg-indigo-50 border border-indigo-100 px-4 py-2 rounded-full text-[10px] font-bold text-indigo-700 hover:bg-indigo-100 hover:shadow-md transition group">
+                            <span class="bg-white p-1 rounded-full text-indigo-500 group-hover:scale-110 transition"><i class="fa-solid fa-link"></i></span>
+                            <span>${link.title}</span>
+                            ${delBtn}
+                        </a>
+                    `;
+                });
+            } else {
+                linkCont.innerHTML = '<span class="text-[10px] text-slate-300">Henüz çalışma eklenmedi.</span>';
+            }
+
+            // Popup (Kullanıcı için)
+            if(globalConfig.popup && globalConfig.popup.trim() !== "") {
+                // Session kontrolü (her açışta 1 kere görsün)
+                if(sessionStorage.getItem('last_popup') !== globalConfig.popup) {
+                    document.getElementById('user-popup-content').innerText = globalConfig.popup;
+                    document.getElementById('user-announcement-modal').classList.remove('hidden');
+                    sessionStorage.setItem('last_popup', globalConfig.popup);
+                }
+            }
         }
 
         // --- FORM İŞLEMLERİ ---
@@ -434,7 +513,110 @@
 
         document.getElementById('salaryForm').addEventListener('submit', window.handleFormSubmit);
 
-        // --- DASHBOARD ---
+        // --- ADMIN FONKSİYONLARI ---
+        window.toggleAdminPanel = () => document.getElementById('admin-modal').classList.toggle('hidden');
+        
+        window.adminLogin = () => {
+            if(document.getElementById('admin-pass').value === ADMIN_PASS) {
+                isAdmin = true;
+                document.getElementById('admin-login-view').classList.add('hidden');
+                document.getElementById('admin-controls-view').classList.remove('hidden');
+                showToast("Yönetici girişi başarılı", "success");
+                
+                // Admin inputlarını doldur
+                document.getElementById('admin-input-news').value = globalConfig.news || "";
+                document.getElementById('admin-input-popup').value = globalConfig.popup || "";
+                
+                renderAdminList();
+                applyConfig(); // Link silme butonlarını göstermek için
+            } else {
+                showToast("Şifre Hatalı!", "error");
+            }
+        };
+
+        window.logoutAdmin = () => {
+            isAdmin = false;
+            document.getElementById('admin-login-view').classList.remove('hidden');
+            document.getElementById('admin-controls-view').classList.add('hidden');
+            document.getElementById('admin-pass').value = '';
+            showToast("Çıkış yapıldı");
+            applyConfig(); // Silme butonlarını gizle
+        };
+
+        // AYAR KAYDETME (Haber Bandı / Popup)
+        window.saveConfig = async (type) => {
+            const val = document.getElementById(`admin-input-${type}`).value;
+            const updateData = {};
+            updateData[type] = val;
+            
+            try {
+                await setDoc(doc(db, "maas_config", "global"), updateData, { merge: true });
+                showToast("Ayar güncellendi!", "success");
+            } catch(e) { showToast("Hata: " + e.message, "error"); }
+        };
+
+        // LİNK EKLEME
+        window.addFooterLink = async () => {
+            const t = document.getElementById('admin-link-title').value;
+            const u = document.getElementById('admin-link-url').value;
+            if(!t || !u) { showToast("Başlık ve URL gerekli", "error"); return; }
+
+            const newLinks = [...(globalConfig.links || []), {title: t, url: u}];
+            try {
+                await setDoc(doc(db, "maas_config", "global"), { links: newLinks }, { merge: true });
+                showToast("Link eklendi", "success");
+                document.getElementById('admin-link-title').value='';
+                document.getElementById('admin-link-url').value='';
+            } catch(e) { showToast("Hata: " + e.message, "error"); }
+        };
+
+        // LİNK SİLME
+        window.deleteLink = async (index) => {
+            if(!confirm("Bu linki kaldırmak istediğine emin misin?")) return;
+            const newLinks = globalConfig.links.filter((_, i) => i !== index);
+            try {
+                await setDoc(doc(db, "maas_config", "global"), { links: newLinks }, { merge: true });
+                showToast("Link silindi", "success");
+            } catch(e) { showToast("Hata: " + e.message, "error"); }
+        };
+
+        // KAYIT SİLME
+        window.deleteRecord = async (id) => {
+            if(!confirm("Silmek istediğine emin misin?")) return;
+            try {
+                await deleteDoc(doc(db, COLLECTION_NAME, id));
+                showToast("Kayıt silindi", "success");
+            } catch(e) { showToast("Hata: " + e.message, "error"); }
+        };
+
+        function renderAdminList() {
+            const list = document.getElementById('admin-records-list');
+            document.getElementById('admin-record-count').innerText = globalData.length;
+            list.innerHTML = '';
+            
+            // En yeniden eskiye
+            const sorted = [...globalData].sort((a,b) => {
+                const ta = a.timestamp ? (a.timestamp.seconds || 0) : 0;
+                const tb = b.timestamp ? (b.timestamp.seconds || 0) : 0;
+                return tb - ta;
+            });
+
+            sorted.forEach(d => {
+                list.innerHTML += `
+                    <div class="flex justify-between items-center bg-white p-3 rounded-lg border border-slate-100 shadow-sm hover:shadow-md transition">
+                        <div>
+                            <p class="text-xs font-bold text-slate-800">${d.nickname}</p>
+                            <p class="text-[10px] text-slate-500">${d.role} | ${formatMoney(d.salary)}</p>
+                        </div>
+                        <button onclick="window.deleteRecord('${d.id}')" class="w-8 h-8 rounded-full bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition">
+                            <i class="fa-solid fa-trash text-xs"></i>
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        // --- DASHBOARD (MEVCUT KOD) ---
         window.applyFilters = () => {
             const fYear = document.getElementById('filter-year').value;
             const fRole = document.getElementById('filter-role').value;
@@ -442,7 +624,6 @@
             
             let filtered = globalData;
             
-            // Sıralama için zaman damgası kontrolü
             filtered = filtered.map(d => {
                 let time = 0;
                 if (d.timestamp && d.timestamp.toMillis) time = d.timestamp.toMillis();
@@ -475,12 +656,10 @@
                 if(chartInstances.dist) chartInstances.dist.destroy();
                 return;
             }
-            // Deneyim Grafiği
             const eG = {}; data.forEach(d => { if(!eG[d.exp]) eG[d.exp]={s:0,c:0}; eG[d.exp].s+=d.salary; eG[d.exp].c++; });
             const eL = Object.keys(eG).sort((a,b)=>parseFloat(a)-parseFloat(b));
             updateChart('chartExp', 'line', eL.map(v=>v==0.5?"0-6 Ay":(v==10?"10+ Yıl":v+" Yıl")), eL.map(k=>Math.round(eG[k].s/eG[k].c)), 'Ortalama Maaş', '#3b82f6');
             
-            // İlçe Grafiği
             const dG = {}; data.forEach(d => { if(!dG[d.district]) dG[d.district]={s:0,c:0}; dG[d.district].s+=d.salary; dG[d.district].c++; });
             const sorted = Object.keys(dG).map(k=>({n:k,a:Math.round(dG[k].s/dG[k].c)})).sort((a,b)=>b.a-a.a).slice(0,5);
             updateChart('chartDistrict', 'bar', sorted.map(x=>x.n), sorted.map(x=>x.a), 'Ortalama Maaş', '#10b981');
@@ -499,42 +678,9 @@
             const tbody = document.getElementById('table-body');
             tbody.innerHTML = '';
             [...data].sort((a,b)=> b.sortTime - a.sortTime).slice(0,100).forEach(d => {
-                let del = isAdmin ? `<button onclick="window.deleteRecord('${d.id}')" class="ml-2 text-red-500"><i class="fa-solid fa-trash"></i></button>` : '';
-                tbody.innerHTML += `<tr class="hover:bg-slate-50 border-b border-slate-50"><td class="px-4 py-3 font-medium">${d.nickname}</td><td class="px-4 py-3">${d.role}</td><td class="px-4 py-3 text-slate-500">${d.district}</td><td class="px-4 py-3 text-xs font-bold text-slate-400">${d.exp==0.5?"0-6 Ay":d.exp+" Yıl"}</td><td class="px-4 py-3 text-right font-bold text-blue-600 flex justify-end items-center">${formatMoney(d.salary)} ${del}</td></tr>`;
+                tbody.innerHTML += `<tr class="hover:bg-slate-50 border-b border-slate-50"><td class="px-4 py-3 font-medium">${d.nickname}</td><td class="px-4 py-3">${d.role}</td><td class="px-4 py-3 text-slate-500">${d.district}</td><td class="px-4 py-3 text-xs font-bold text-slate-400">${d.exp==0.5?"0-6 Ay":d.exp+" Yıl"}</td><td class="px-4 py-3 text-right font-bold text-blue-600">${formatMoney(d.salary)}</td></tr>`;
             });
         }
-
-        // --- YÖNETİCİ ---
-        window.toggleAdminPanel = () => document.getElementById('admin-modal').classList.toggle('hidden');
-        
-        window.adminLogin = () => {
-            if(document.getElementById('admin-pass').value === ADMIN_PASS) {
-                isAdmin = true;
-                document.getElementById('admin-login-view').classList.add('hidden');
-                document.getElementById('admin-controls-view').classList.remove('hidden');
-                showToast("Yönetici girişi başarılı", "success");
-                applyFilters();
-            } else {
-                showToast("Şifre Hatalı!", "error");
-            }
-        };
-
-        window.logoutAdmin = () => {
-            isAdmin = false;
-            document.getElementById('admin-login-view').classList.remove('hidden');
-            document.getElementById('admin-controls-view').classList.add('hidden');
-            document.getElementById('admin-pass').value = '';
-            showToast("Çıkış yapıldı");
-            applyFilters();
-        };
-
-        window.deleteRecord = async (id) => {
-            if(!confirm("Silmek istediğine emin misin?")) return;
-            try {
-                await deleteDoc(doc(db, COLLECTION_NAME, id));
-                showToast("Kayıt silindi", "success");
-            } catch(e) { showToast("Hata: " + e.message, "error"); }
-        };
 
         // --- YARDIMCI FONKSİYONLAR ---
         window.switchTab = (t) => {
