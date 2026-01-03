@@ -301,8 +301,10 @@
             <div id="admin-login-view" class="h-full flex flex-col items-center justify-center">
                 <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-3xl mb-4 shadow-lg"><i class="fa-solid fa-lock"></i></div>
                 <h3 class="text-xl font-bold mb-4 text-slate-800">Yönetici Paneli</h3>
-                <input type="password" id="admin-pass" placeholder="Şifre" class="border-2 border-slate-200 p-3 rounded-xl mb-4 text-center outline-none focus:border-blue-500 transition font-bold w-64">
+                <input type="email" id="admin-email" placeholder="E-posta" class="border-2 border-slate-200 p-3 rounded-xl mb-2 w-64 outline-none focus:border-blue-500 font-bold text-center">
+                <input type="password" id="admin-pass" placeholder="Şifre" class="border-2 border-slate-200 p-3 rounded-xl mb-4 w-64 outline-none focus:border-blue-500 font-bold text-center">
                 <button onclick="adminLogin()" class="bg-slate-800 text-white px-12 py-3 rounded-xl font-bold hover:bg-slate-700 transition shadow-lg">Giriş Yap</button>
+                <div id="admin-msg" class="text-red-500 text-sm mt-3 font-bold hidden"></div>
             </div>
             
             <div id="admin-controls-view" class="hidden h-full flex flex-col">
@@ -360,9 +362,8 @@
     </div>
 
     <script type="module">
-        // Firebase Kütüphaneleri (Stable Version 10.7.1)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, serverTimestamp, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         // --- AYARLAR ---
@@ -370,8 +371,7 @@
         const MIN_WAGE = { '2024': 17002, '2025': 22104, '2026': 28000 };
         
         const COLLECTION_NAME = 'maas_verileri'; 
-        const CONFIG_DOC = 'maas_config/global'; // Ayarlar burada tutulacak
-        const ADMIN_PASS = "1453"; 
+        const CONFIG_DOC = 'maas_config/global';
 
         const firebaseConfig = {
             apiKey: "AIzaSyAqeO-yQyQPnLsOqKmSNvVH23WPvneIjaU",
@@ -399,10 +399,23 @@
                 db = getFirestore(app);
 
                 onAuthStateChanged(auth, (u) => {
-                    if(u) { user = u; startRealtimeListener(); startConfigListener(); }
+                    if(u) { 
+                        user = u; 
+                        startRealtimeListener(); 
+                        startConfigListener();
+                        // Eğer admin ise paneli otomatik aç (İsteğe bağlı)
+                        if(!u.isAnonymous) {
+                            isAdmin = true;
+                            // document.getElementById('admin-modal').classList.remove('hidden'); // Otomatik açmak istersen bunu aç
+                            document.getElementById('admin-login-view').classList.add('hidden');
+                            document.getElementById('admin-controls-view').classList.remove('hidden');
+                            renderAdminList();
+                        }
+                    } else {
+                        // Kimse yoksa anonim giriş yap (Veri okumak için)
+                        signInAnonymously(auth);
+                    }
                 });
-
-                await signInAnonymously(auth);
 
             } catch (error) {
                 console.error("Init error", error);
@@ -428,7 +441,7 @@
                 updateHeaderCount();
                 updateMiniFeed();
                 applyFilters();
-                if(isAdmin) renderAdminList(); // Admin açıksa listeyi güncelle
+                if(isAdmin) renderAdminList(); 
             }, (error) => { console.error(error); });
         }
 
@@ -465,7 +478,6 @@
 
             // Popup (Kullanıcı için)
             if(globalConfig.popup && globalConfig.popup.trim() !== "") {
-                // Session kontrolü (her açışta 1 kere görsün)
                 if(sessionStorage.getItem('last_popup') !== globalConfig.popup) {
                     document.getElementById('user-popup-content').innerText = globalConfig.popup;
                     document.getElementById('user-announcement-modal').classList.remove('hidden');
@@ -513,38 +525,61 @@
 
         document.getElementById('salaryForm').addEventListener('submit', window.handleFormSubmit);
 
-        // --- ADMIN FONKSİYONLARI ---
-        window.toggleAdminPanel = () => document.getElementById('admin-modal').classList.toggle('hidden');
+        // --- ADMIN FONKSİYONLARI (GÜVENLİK GÜNCELLEMESİ) ---
+        window.toggleAdminPanel = () => {
+            document.getElementById('admin-modal').classList.toggle('hidden');
+            // Panel kapanırsa ve admin değilse, login ekranına dön
+            if(document.getElementById('admin-modal').classList.contains('hidden') && !isAdmin) {
+                 document.getElementById('admin-login-view').classList.remove('hidden');
+                 document.getElementById('admin-controls-view').classList.add('hidden');
+            }
+        };
         
         window.adminLogin = () => {
-            if(document.getElementById('admin-pass').value === ADMIN_PASS) {
-                isAdmin = true;
-                document.getElementById('admin-login-view').classList.add('hidden');
-                document.getElementById('admin-controls-view').classList.remove('hidden');
-                showToast("Yönetici girişi başarılı", "success");
-                
-                // Admin inputlarını doldur
-                document.getElementById('admin-input-news').value = globalConfig.news || "";
-                document.getElementById('admin-input-popup').value = globalConfig.popup || "";
-                
-                renderAdminList();
-                applyConfig(); // Link silme butonlarını göstermek için
-            } else {
-                showToast("Şifre Hatalı!", "error");
-            }
+            const email = document.getElementById('admin-email').value;
+            const pass = document.getElementById('admin-pass').value;
+            const msg = document.getElementById('admin-msg');
+
+            msg.classList.add('hidden');
+
+            signInWithEmailAndPassword(auth, email, pass)
+                .then((userCredential) => {
+                    // Başarılı Giriş
+                    isAdmin = true;
+                    document.getElementById('admin-login-view').classList.add('hidden');
+                    document.getElementById('admin-controls-view').classList.remove('hidden');
+                    showToast("Yönetici girişi başarılı", "success");
+                    
+                    // Admin inputlarını doldur
+                    document.getElementById('admin-input-news').value = globalConfig.news || "";
+                    document.getElementById('admin-input-popup').value = globalConfig.popup || "";
+                    
+                    renderAdminList();
+                    applyConfig(); 
+                })
+                .catch((error) => {
+                    console.error(error);
+                    msg.innerText = "Hatalı e-posta veya şifre!";
+                    msg.classList.remove('hidden');
+                });
         };
 
         window.logoutAdmin = () => {
-            isAdmin = false;
-            document.getElementById('admin-login-view').classList.remove('hidden');
-            document.getElementById('admin-controls-view').classList.add('hidden');
-            document.getElementById('admin-pass').value = '';
-            showToast("Çıkış yapıldı");
-            applyConfig(); // Silme butonlarını gizle
+            signOut(auth).then(() => {
+                isAdmin = false;
+                document.getElementById('admin-login-view').classList.remove('hidden');
+                document.getElementById('admin-controls-view').classList.add('hidden');
+                document.getElementById('admin-pass').value = '';
+                showToast("Çıkış yapıldı");
+                applyConfig();
+                // Tekrar anonim olarak bağlan ki site çalışmaya devam etsin
+                signInAnonymously(auth);
+            });
         };
 
         // AYAR KAYDETME (Haber Bandı / Popup)
         window.saveConfig = async (type) => {
+            if(!isAdmin) return;
             const val = document.getElementById(`admin-input-${type}`).value;
             const updateData = {};
             updateData[type] = val;
@@ -557,6 +592,7 @@
 
         // LİNK EKLEME
         window.addFooterLink = async () => {
+            if(!isAdmin) return;
             const t = document.getElementById('admin-link-title').value;
             const u = document.getElementById('admin-link-url').value;
             if(!t || !u) { showToast("Başlık ve URL gerekli", "error"); return; }
@@ -572,6 +608,7 @@
 
         // LİNK SİLME
         window.deleteLink = async (index) => {
+            if(!isAdmin) return;
             if(!confirm("Bu linki kaldırmak istediğine emin misin?")) return;
             const newLinks = globalConfig.links.filter((_, i) => i !== index);
             try {
@@ -582,6 +619,7 @@
 
         // KAYIT SİLME
         window.deleteRecord = async (id) => {
+            if(!isAdmin) return;
             if(!confirm("Silmek istediğine emin misin?")) return;
             try {
                 await deleteDoc(doc(db, COLLECTION_NAME, id));
