@@ -287,7 +287,7 @@
         <div class="container mx-auto px-4">
             <h4 class="text-xs font-bold text-slate-400 uppercase mb-3 tracking-widest">Öğretmen Çalışmaları</h4>
             <div id="footer-links-container" class="flex flex-wrap justify-center gap-3 mb-6">
-                </div>
+            </div>
             
             <p class="font-bold text-slate-600 text-xs mb-1">Maaş Gözlem v2.0</p>
             <p class="text-slate-400 text-[10px] font-medium">Barış Öğretmen | %100 Anonim Veri Ağı</p>
@@ -318,7 +318,7 @@
                     <div class="overflow-y-auto pr-2 space-y-4 custom-scroll">
                         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
                             <h4 class="font-bold text-blue-700 text-sm mb-2 flex items-center gap-2"><i class="fa-solid fa-comment-dots"></i> Pop-up Duyuru</h4>
-                            <textarea id="admin-input-popup" class="w-full p-3 rounded-lg border border-slate-300 text-xs mb-2 outline-none" rows="2" placeholder="Sisteme giren herkese görünecek mesaj..."></textarea>
+                            <textarea id="admin-input-popup" class="w-full p-3 rounded-lg border border-slate-300 text-xs mb-2 outline-none" rows="2" placeholder="Duyuru metni... Link yazarsan otomatik tıklanabilir olur."></textarea>
                             <button onclick="saveConfig('popup')" class="w-full bg-blue-600 text-white py-2 rounded-lg text-xs font-bold hover:bg-blue-700">Yayınla</button>
                         </div>
 
@@ -344,7 +344,7 @@
                             <span id="admin-record-count" class="bg-white px-2 py-0.5 rounded shadow-sm text-slate-800">0</span>
                         </div>
                         <div id="admin-records-list" class="flex-1 overflow-y-auto p-2 space-y-2 custom-scroll bg-slate-50">
-                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -356,7 +356,7 @@
             <button onclick="document.getElementById('user-announcement-modal').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
             <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 animate-bounce"><i class="fa-solid fa-bell"></i></div>
             <h3 class="text-xl font-black text-slate-800 mb-3">DUYURU</h3>
-            <p id="user-popup-content" class="text-slate-600 mb-8 font-medium text-sm leading-relaxed">...</p>
+            <p id="user-popup-content" class="text-slate-600 mb-8 font-medium text-sm leading-relaxed whitespace-pre-line">...</p>
             <button onclick="document.getElementById('user-announcement-modal').classList.add('hidden')" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold shadow-lg shadow-blue-200">Tamam, Okudum</button>
         </div>
     </div>
@@ -476,10 +476,14 @@
                 linkCont.innerHTML = '<span class="text-[10px] text-slate-300">Henüz çalışma eklenmedi.</span>';
             }
 
-            // Popup (Kullanıcı için)
+            // Popup (Kullanıcı için) -- GÜNCELLENEN KISIM
             if(globalConfig.popup && globalConfig.popup.trim() !== "") {
                 if(sessionStorage.getItem('last_popup') !== globalConfig.popup) {
-                    document.getElementById('user-popup-content').innerText = globalConfig.popup;
+                    const popupText = globalConfig.popup;
+                    // Regex ile linkleri bul ve <a> etiketi içine al
+                    const linkedText = popupText.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" class="text-blue-600 underline font-bold hover:text-blue-800">$1</a>');
+                    
+                    document.getElementById('user-popup-content').innerHTML = linkedText;
                     document.getElementById('user-announcement-modal').classList.remove('hidden');
                     sessionStorage.setItem('last_popup', globalConfig.popup);
                 }
